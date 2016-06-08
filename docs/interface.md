@@ -6,14 +6,14 @@ This document is a rough spec (i.e., *not* a formal web standard draft) of the
 Web Share API. The basic Share API only allows share requests to be sent (this
 API does not provide the capability to receive share requests). For a follow-up
 plan to have websites receive share requests from the system, or other websites,
-see the [Share Target API](../../share-target/docs/interface.md).
+see the [Share Target API](https://github.com/mgiuca/web-share-target).
 
 Examples of using the Share API for sharing can be seen in the
 [explainer document](explainer.md).
 
 **Note**: The Web Share API is the first concrete proposal of the [Ballista
-project](../../README.md), which aims to explore website-to-website and
-website-to-native interoperability.
+project](https://github.com/chromium/ballista), which aims to explore
+website-to-website and website-to-native interoperability.
 
 ## navigator.share
 
@@ -97,7 +97,7 @@ sources, depending on the user agent and underlying OS:
 * Built-in service (e.g., "copy to clipboard").
 * Native applications.
 * Web applications registered using the [Web Share Target
-  API](../../share-target/docs/interface.md).
+  API](https://github.com/mgiuca/web-share-target).
 
 The user agent can support any or all of the above (for example, on some
 platforms, there is no system for native apps to receive share data; some user

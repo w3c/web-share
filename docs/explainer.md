@@ -8,8 +8,9 @@ system service, a native app or another website. The goal is to enable web
 developers to build a generic "share" button that the user can click to trigger
 a system share dialog.
 
-This is a product of the [Ballista project](../../README.md), which aims to
-explore website-to-website and website-to-native interoperability.
+This is a product of the [Ballista
+project](https://github.com/chromium/ballista), which aims to explore
+website-to-website and website-to-native interoperability.
 
 See also:
 * [Interface document](interface.md), an informal spec.
@@ -96,7 +97,8 @@ choosing.
 
 We definitely want to let web apps receive shares, not just send them. To keep
 the discussion focused, we've split that functionality out into a separate
-proposal, the [Web Share Target API](../../share-target/docs/explainer.md).
+proposal, the [Web Share Target
+API](https://github.com/mgiuca/web-share-target).
 
 ### How is this different from other web intents / sharing systems?
 
@@ -162,7 +164,8 @@ This is largely sound and has a couple of advantages over the DOM API:
   JavaScript click event handler.
 * A page could register to receive shares via the
   [registerProtocolHandler](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/registerProtocolHandler)
-  API without the need for a new [Share Target API](../../share-target/docs/explainer.md).
+  API without the need for a new [Share Target
+  API](https://github.com/mgiuca/web-share-target).
 
 but this has a few practical concerns:
 
