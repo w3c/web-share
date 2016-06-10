@@ -16,3 +16,7 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 This is a product of the [Ballista
 project](https://github.com/chromium/ballista), which aims to explore
 website-to-website and website-to-native interoperability.
+
+## Licensing and contributions
+
+See [LICENSE](LICENSE.md) and [CONTRIBUTING](CONTRIBUTING.md).
