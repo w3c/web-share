@@ -51,11 +51,13 @@ shareButton.addEventListener('click', () => {
 });
 ```
 
-You can also test in advance whether there are any installed apps or services
-that support sharing (so you can not show the button if you know it won't work):
+Developers should be aware that not all user agents will provide
+`navigator.share` (sometimes intentionally; for instance, a browser may not
+provide it when running on a platform that has no share support). Feature
+detection can be used to avoid showing a non-functioning button on a web page:
 
 ```js
-if (!navigator.canShare())
+if (navigator.share === undefined)
   shareButton.hidden = true;
 ```
 
