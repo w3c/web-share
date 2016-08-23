@@ -1,0 +1,70 @@
+<html>
+<head>
+  <title>Web Share Test</title>
+  <style>
+    .error {
+      color: #d22;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Share Test</h1>
+  <table>
+    <tr><td>Title:</td><td><input id="title" value="The Title" size="40" /></td></tr>
+    <tr><td>Message:</td><td><input id="message" value="The message" size="40"/></td></tr>
+  </table>
+  <p><input id="share" type="button" value="Share" /></p>
+  <div id="output"></div>
+  <p>This is a test page for the <a href="https://github.com/WICG/web-share">Web
+  Share API</a>. It will only work in browsers that have implemented the draft
+  proposal. At the time of writing, this works with:</p>
+  <ul>
+    <li>Google Chrome 54 for Android, with
+    chrome://flags#enable-experimental-web-platform-features enabled.</li>
+  </ul>
+  <script>
+    'use strict';
+
+    function logText(message, isError) {
+      if (isError)
+        console.error(message);
+      else
+        console.log(message);
+
+      var p = document.createElement('p');
+      if (isError)
+        p.setAttribute('class', 'error');
+      document.querySelector('#output').appendChild(p);
+      p.appendChild(document.createTextNode(message));
+    }
+
+    function logError(message) {
+      logText(message, true);
+    }
+
+    function testWebShare() {
+      if (navigator.share === undefined) {
+        logError('Error: Unsupported feature: navigator.share');
+        return;
+      }
+
+      var title = document.querySelector('#title').value;
+      var message = document.querySelector('#message').value;
+      navigator.share({title: title, text: message})
+        .then(() => logText('Successfully sent share'),
+              error => logError('Error sharing: ' + error));
+    }
+
+    function onLoad() {
+      document.querySelector('#share').addEventListener('click', testWebShare);
+
+      if (navigator.share === undefined) {
+        logError('Error: You need to use a browser that supports this draft ' +
+                 'proposal.');
+      }
+    }
+
+    window.addEventListener('load', onLoad);
+  </script>
+</body>
+</html>
