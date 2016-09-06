@@ -11,7 +11,7 @@
   <h1>Web Share Test</h1>
   <table>
     <tr><td>Title:</td><td><input id="title" value="The Title" size="40" /></td></tr>
-    <tr><td>Message:</td><td><input id="message" value="The message" size="40"/></td></tr>
+    <tr><td>Text:</td><td><input id="text" value="The message" size="40"/></td></tr>
   </table>
   <p><input id="share" type="button" value="Share" />
      <input id="share-no-gesture" type="button" value="Share without user gesture" /></p>
@@ -50,8 +50,8 @@
       }
 
       var title = document.querySelector('#title').value;
-      var message = document.querySelector('#message').value;
-      navigator.share({title: title, text: message})
+      var text = document.querySelector('#text').value;
+      navigator.share({title: title, text: text})
         .then(() => logText('Successfully sent share'),
               error => logError('Error sharing: ' + error));
     }
