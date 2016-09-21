@@ -22,11 +22,11 @@ workers) is the main method of the interface:
 
 ```WebIDL
 partial interface Navigator {
-  Promise<void> share(ShareData data);
+  [SecureContext] Promise<void> share(ShareData data);
 };
 
 partial interface WorkerNavigator {
-  Promise<void> share(ShareData data);
+  [SecureContext] Promise<void> share(ShareData data);
 };
 
 dictionary ShareData {
@@ -134,9 +134,8 @@ platform).
   asking them to select a target application (even if there is only one possible
   target). This surface serves as a security confirmation, ensuring that
   websites cannot silently send data to native applications.
-* Due to the capabilities of the API surface, implementations MAY choose to
-  restrict `navigator.share` to secure browsing contexts (such as `https://`
-  schemes).
+* Due to the capabilities of the API surface, `navigator.share` is restricted to
+  secure browsing contexts (such as `https://` schemes).
 * Use of `navigator.share` from a [private browsing
   mode](https://en.wikipedia.org/wiki/Privacy_mode) may leak private data to a
   third-party application that does not respect the user's privacy setting.
