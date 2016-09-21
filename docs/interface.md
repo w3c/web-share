@@ -134,8 +134,9 @@ platform).
   asking them to select a target application (even if there is only one possible
   target). This surface serves as a security confirmation, ensuring that
   websites cannot silently send data to native applications.
-* Due to the capabilities of the API surface, websites MAY choose to restrict
-  `navigator.share` to secure browsing contexts (such as `https://` schemes).
+* Due to the capabilities of the API surface, implementations MAY choose to
+  restrict `navigator.share` to secure browsing contexts (such as `https://`
+  schemes).
 * Use of `navigator.share` from a [private browsing
   mode](https://en.wikipedia.org/wiki/Privacy_mode) may leak private data to a
   third-party application that does not respect the user's privacy setting.
