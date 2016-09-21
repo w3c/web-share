@@ -126,10 +126,9 @@ this ability is not unique to Web Share, it does come with a number of potential
 security issues that may vary in severity (depending on the underlying
 platform).
 
-* Implementations MUST NOT allow the website to learn which apps are
-  installed, or which app was chosen from `navigator.share`. This information
-  could be used for fingerprinting, as well as leaking details about the user's
-  device.
+* User agents MUST NOT allow the website to learn which apps are installed, or
+  which app was chosen from `navigator.share`. This information could be used
+  for fingerprinting, as well as leaking details about the user's device.
 * On every call to `navigator.share`, the user MUST be presented with a dialog
   asking them to select a target application (even if there is only one possible
   target). This surface serves as a security confirmation, ensuring that
@@ -139,11 +138,11 @@ platform).
 * Use of `navigator.share` from a [private browsing
   mode](https://en.wikipedia.org/wiki/Privacy_mode) may leak private data to a
   third-party application that does not respect the user's privacy setting.
-  Implementations should consider presenting additional warnings or disabling
-  the feature entirely when in a private browsing mode.
+  User agents should consider presenting additional warnings or disabling the
+  feature entirely when in a private browsing mode.
 * The data passed to `navigator.share` may be used to exploit buffer overflow
   or other remote code execution vulnerabilities in native applications that
   receive shares. There is no general way to guard against this, but
-  implementors should be aware that it is a possibility. Implementations SHOULD
-  NOT require target applications to opt in to receiving Web Shares (as that
-  would severely limit the usefulness of Web Share).
+  implementors should be aware that it is a possibility. User agents SHOULD NOT
+  require target applications to opt in to receiving Web Shares (as that would
+  severely limit the usefulness of Web Share).
