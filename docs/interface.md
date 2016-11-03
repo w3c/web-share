@@ -66,28 +66,9 @@ modes, but not learn the identity of the chosen application):
 * The data could not be delivered to the target app (e.g., the chosen app could
   not be launched), or the target app explicitly rejected the share event.
 
-## navigator.canShare
-
-`navigator` also provides a method for determining whether there are any
-applications that can handle sharing:
-
-```WebIDL
-partial interface Navigator {
-  boolean canShare();
-};
-```
-
-Returns `true` if there are one or more applications that could handle a share
-event (i.e., if `share` was called, would any applications be presented to the
-user?). May give false positives, but not false negatives (on some systems, it
-may not be possible to determine in advance whether any native applications
-support sharing, in which case `canShare` should return `true`; `false` means
-that `share` will definitely fail). This can be used by websites to hide or
-disable the sharing UI, to avoid presenting a button that just fails when users
-press it.
-
-**TODO(mgiuca)**: This may have to be asynchronous, so that the implementation
-can query the file system without blocking.
+In a user agent that will never provide any share targets (e.g., on a platform
+that does not support sharing) `navigator.share` SHOULD NOT be present, so that
+sites can use feature detection to avoid showing sharing UI.
 
 ## Share handlers
 
