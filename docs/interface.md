@@ -67,7 +67,7 @@ modes, but not learn the identity of the chosen application):
   not be launched), or the target app explicitly rejected the share event.
 
 In a user agent that will never provide any share targets (e.g., on a platform
-that does not support sharing) `navigator.share` SHOULD be `undefined`, so that
+that does not support sharing) `navigator.share` SHOULD NOT be present, so that
 sites can use feature detection to avoid showing sharing UI.
 
 ## Share handlers
