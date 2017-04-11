@@ -30,9 +30,9 @@ partial interface WorkerNavigator {
 };
 
 dictionary ShareData {
-  DOMString? title;
-  DOMString? text;
-  DOMString? url;
+  DOMString title;
+  DOMString text;
+  DOMString url;
 };
 ```
 
