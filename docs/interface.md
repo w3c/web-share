@@ -48,7 +48,9 @@ following optional fields:
   shared.
 * `url` (string): A URL or URI referring to a resource being shared.
 
-**TODO**: Expand this to allow image data and/or file blobs.
+**TODO**: Expand this to allow [image
+data](https://github.com/WICG/web-share/issues/12) and/or [file
+blobs](https://github.com/WICG/web-share/issues/7).
 
 `share` always shows some form of UI, to give the user a choice of application
 and get their approval to invoke and send data to a potentially native
