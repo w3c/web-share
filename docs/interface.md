@@ -48,12 +48,15 @@ following optional fields:
   shared.
 * `url` (string): A URL or URI referring to a resource being shared.
 
-**TODO**: Expand this to allow image data and/or file blobs.
+**TODO**: Expand this to allow [image
+data](https://github.com/WICG/web-share/issues/12) and/or [file
+blobs](https://github.com/WICG/web-share/issues/7).
 
 `share` always shows some form of UI, to give the user a choice of application
 and get their approval to invoke and send data to a potentially native
 application (which carries a security risk). UX mocks are shown
-[here](explainer.md#user-flow).
+[here](explainer.md#user-flow). The function must be triggered from a user
+gesture.
 
 `share`'s promise is resolved if the user chooses a target application,
 and that application accepts the data without error. The promise may be rejected
