@@ -30,8 +30,8 @@ partial interface WorkerNavigator {
 };
 
 dictionary ShareData {
-  DOMString title;
-  DOMString text;
+  USVString title;
+  USVString text;
   USVString url;
 };
 ```
