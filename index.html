@@ -88,53 +88,92 @@
           };
         </pre>
         <p>
-          In a user agent that will never provide any share targets (e.g., on a
-          platform that does not support sharing)
-          <a><code>navigator.share</code></a> SHOULD NOT be present, so that
-          sites can use feature detection to avoid showing sharing UI.
+          User agents that do not support sharing SHOULD NOT expose
+          <a for="Navigator"><code>share</code></a> on the
+          <a><code>Navigator</code></a> interface.
         </p>
+        <div class="note">
+          The above statement is designed to permit feature detection. If <a
+          for="Navigator"><code>share</code></a> is present, there is a
+          reasonable expectation that it will work and present the user with at
+          least one <a>share target</a>. Clients should be able to use the
+          presence or absence of this method to determine whether to show UI
+          that triggers its use.
+        </div>
         <section>
           <h4><code>share</code> method</h4>
           <p>
-            <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
+            When the <dfn>share</dfn> method is called with argument
+            <var>data</var>, run the following steps:
           </p>
-          <p>
-            The <dfn>share</dfn> method takes one argument: the object that will
-            be delivered to the handler. It contains the data being shared
-            between applications.
-          </p>
-          <p>
+          <ol>
+            <li>
+              Let <var>p</var> be a newly created promise.
+            </li>
+            <li>
+              If the method call was not <a
+              data-cite="!HTML#triggered-by-user-activation">triggered by user
+              activation</a>, reject <var>p</var> with <a
+              data-cite="!WebIDL#securityerror"><code>SecurityError</code></a>,
+              and abort these steps.
+            </li>
+            <li>
+              <a data-cite="!HTML#in-parallel">In parallel</a>:
+              <ol>
+                <li>
+                  If there are no <a>share targets</a> available, reject
+                  <var>p</var> with <a
+                  data-cite="!WebIDL#aborterror"><code>AbortError</code></a>,
+                  and abort these steps.
+                </li>
+                <li>
+                  Present the user with a choice of one or more <a>share
+                  targets</a>, selected at the user agent's discretion. The user
+                  MUST be given the option to cancel rather than choosing any of
+                  the share targets. Wait for the user's choice.
+                </li>
+                <li>
+                  If the user chose to cancel the share operation, reject
+                  <var>p</var> with <a
+                  data-cite="!WebIDL#aborterror"><code>AbortError</code></a>,
+                  and abort these steps.
+                </li>
+                <li>
+                  Activate the chosen <a>share target</a>, convert
+                  <var>data</var> to a format suitable for ingestion into the
+                  target, and transmit the converted data to the target. If an
+                  error occurs starting the target or transmitting the data, or
+                  if the target declines to receive the data, reject
+                  <var>p</var> with <a
+                  data-cite="!WebIDL#aborterror"><code>AbortError</code></a>,
+                  and abort these steps.
+                </li>
+                <li>
+                  Once the data has been successfully transmitted to the target,
+                  resolve <var>p</var>.
+                </li>
+              </ol>
+            </li>
+            <li>
+              Return <var>p</var>.
+            </li>
+          </ol>
+          <div class="note">
             <a for="Navigator"><code>share</code></a> always shows some form of
             UI, to give the user a choice of application and get their approval
             to invoke and send data to a potentially native application (which
-            carries a security risk). The function must be triggered from a user
-            gesture.
-          </p>
-          <p>
-            <a for="Navigator"><code>share</code></a>'s promise is
-            resolved if the user chooses a target application, and that
-            application accepts the data without error. The promise may be
-            rejected in the following cases (it is possible to distinguish
-            between these four failure modes, but not learn the identity of the
-            chosen application):
-          </p>
-          <ul>
-            <li>
-              The share was invalid (e.g., inappropriate fields in the
-              <code>data</code> parameter).
-            </li>
-            <li>
-              There were no apps available to handle sharing.
-            </li>
-            <li>
-              The user cancelled the picker dialog instead of picking an app.
-            </li>
-            <li>
-              The data could not be delivered to the target app (e.g., the
-              chosen app could not be launched), or the target app explicitly
-              rejected the share event.
-            </li>
-          </ul>
+            carries a security risk). For this reason, user agents MUST still
+            show UI even if there is only a single share target, and MUST NOT
+            perform any kind of "always use this target" to bypass the UI in
+            subsequent share operations.
+          </div>
+          <div class="note">
+            The user agent MAY differentiate between the three different causes
+            of <a data-cite="!WebIDL#aborterror"><code>AbortError</code></a>
+            failure (e.g., with a different error string in each case). However,
+            it MUST NOT expose the identity of the target chosen by the user, or
+            reveal the identity of any of the available targets.
+          </div>
         </section>
       </section>
       <section data-dfn-for="ShareData">
@@ -184,8 +223,9 @@
         without directly referencing Android and other operating systems.
       </p>
       <p>
-        The list of share targets or handlers can be populated from a variety of
-        sources, depending on the user agent and underlying OS:
+        The list of <dfn data-lt="share target">share targets</dfn> or handlers
+        can be populated from a variety of sources, depending on the user agent
+        and underlying OS:
       </p>
       <ul>
         <li>
