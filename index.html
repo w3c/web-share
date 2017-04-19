@@ -75,84 +75,93 @@
     </section>
 
     <section>
-      <h2>Extensions to the Navigator interface</h2>
-      <p>
-        The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
-        interface is defined in [[!HTML]].
-      </p>
-      <pre class="idl">
-        partial interface Navigator {
-          [SecureContext] Promise&lt;void&gt; share(ShareData data);
-        };
-
-        dictionary ShareData {
-          USVString title;
-          USVString text;
-          USVString url;
-        };
-      </pre>
-      <p>
-        <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
-      </p>
-      <p>
-        The <dfn for="Navigator">share</dfn> method takes one argument: the
-        object that will be delivered to the handler. It contains the data being
-        shared between applications.
-      </p>
-      <p>
-        The <dfn>ShareData</dfn> object may have any of (and should have at
-        least one of) the following optional fields:
-      </p>
-      <ul>
-        <li>
-          <dfn for="ShareData">title</dfn> (string): The title of the document
-          being shared. May be ignored by the handler.
-        </li>
-        <li>
-          <dfn for="ShareData">text</dfn> (string): Arbitrary text that forms
-          the body of the message being shared.
-        </li>
-        <li>
-          <dfn for="ShareData">url</dfn> (string): A URL or URI referring to a
-          resource being shared.
-        </li>
-      </ul>
-      <p>
-        <a for="Navigator"><code>share</code></a> always shows some form of UI,
-        to give the user a choice of application and get their approval to
-        invoke and send data to a potentially native application (which carries
-        a security risk). The function must be triggered from a user gesture.
-      </p>
-      <p>
-        <a for="Navigator"><code>share</code></a>'s promise is
-        resolved if the user chooses a target application, and that application
-        accepts the data without error. The promise may be rejected in the
-        following cases (it is possible to distinguish between these four
-        failure modes, but not learn the identity of the chosen application):
-      </p>
-      <ul>
-        <li>
-          The share was invalid (e.g., inappropriate fields in the
-          <code>data</code> parameter).
-        </li>
-        <li>
-          There were no apps available to handle sharing.
-        </li>
-        <li>
-          The user cancelled the picker dialog instead of picking an app.
-        </li>
-        <li>
-          The data could not be delivered to the target app (e.g., the chosen
-          app could not be launched), or the target app explicitly rejected the
-          share event.
-        </li>
-      </ul>
-      <p>
-        In a user agent that will never provide any share targets (e.g., on a
-        platform that does not support sharing)
-        <a><code>navigator.share</code></a> SHOULD NOT be present, so that sites
-        can use feature detection to avoid showing sharing UI.
-      </p>
+      <h2>API definition</h2>
+      <section>
+        <h3>Navigator.share</h3>
+        <p>
+          The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
+          interface is defined in [[!HTML]].
+        </p>
+        <pre class="idl">
+          partial interface Navigator {
+            [SecureContext] Promise&lt;void&gt; share(ShareData data);
+          };
+        </pre>
+        <p>
+          <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
+        </p>
+        <p>
+          The <dfn for="Navigator">share</dfn> method takes one argument: the
+          object that will be delivered to the handler. It contains the data
+          being shared between applications.
+        </p>
+        <p>
+          <a for="Navigator"><code>share</code></a> always shows some form of
+          UI, to give the user a choice of application and get their approval to
+          invoke and send data to a potentially native application (which
+          carries a security risk). The function must be triggered from a user
+          gesture.
+        </p>
+        <p>
+          <a for="Navigator"><code>share</code></a>'s promise is
+          resolved if the user chooses a target application, and that
+          application accepts the data without error. The promise may be
+          rejected in the following cases (it is possible to distinguish between
+          these four failure modes, but not learn the identity of the chosen
+          application):
+        </p>
+        <ul>
+          <li>
+            The share was invalid (e.g., inappropriate fields in the
+            <code>data</code> parameter).
+          </li>
+          <li>
+            There were no apps available to handle sharing.
+          </li>
+          <li>
+            The user cancelled the picker dialog instead of picking an app.
+          </li>
+          <li>
+            The data could not be delivered to the target app (e.g., the chosen
+            app could not be launched), or the target app explicitly rejected
+            the share event.
+          </li>
+        </ul>
+        <p>
+          In a user agent that will never provide any share targets (e.g., on a
+          platform that does not support sharing)
+          <a><code>navigator.share</code></a> SHOULD NOT be present, so that
+          sites can use feature detection to avoid showing sharing UI.
+        </p>
+      </section>
+      <section>
+      <h3>ShareData</h3>
+        <pre class="idl">
+          dictionary ShareData {
+            USVString title;
+            USVString text;
+            USVString url;
+          };
+        </pre>
+        <p>
+          The <dfn>ShareData</dfn> object may have any of (and should have at
+          least one of) the following optional fields:
+        </p>
+        <ul>
+          <li>
+            <dfn for="ShareData">title</dfn> (string): The title of the document
+            being shared. May be ignored by the handler.
+          </li>
+          <li>
+            <dfn for="ShareData">text</dfn> (string): Arbitrary text that forms
+            the body of the message being shared.
+          </li>
+          <li>
+            <dfn for="ShareData">url</dfn> (string): A URL or URI referring to a
+            resource being shared.
+          </li>
+        </ul>
+      </section>
     </section>
     <section>
       <h2>Share handlers</h2>
