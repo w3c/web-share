@@ -164,6 +164,16 @@
             string</a> referring to a resource being shared.
           </li>
         </ul>
+        <div class="note">
+          These fields are <a
+          data-cite="!WebIDL#idl-USVString"><code>USVString</code></a> (as
+          opposed to <a
+          data-cite="!WebIDL#idl-DOMString"><code>DOMString</code></a>) because
+          they must not contain invalid <a
+          data-cite="rfc2781#section-2">UTF-16</a> surrogates. This means the
+          user agent is free to re-encode them in any Unicode encoding (e.g., <a
+          data-cite="rfc3629#section-3">UTF-8</a>).
+        </div>
       </section>
     </section>
     <section>
