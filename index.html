@@ -74,6 +74,188 @@
       </p>
     </section>
 
+    <section>
+      <h2>Extensions to the Navigator interface</h2>
+      <p>
+        The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
+        interface is defined in [[!HTML]].
+      </p>
+      <pre class="idl">
+        partial interface Navigator {
+          [SecureContext] Promise&lt;void&gt; share(ShareData data);
+        };
+
+        dictionary ShareData {
+          USVString title;
+          USVString text;
+          USVString url;
+        };
+      </pre>
+      <p>
+        <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
+      </p>
+      <p>
+        The <dfn for="Navigator">share</dfn> method takes one argument: the
+        object that will be delivered to the handler. It contains the data being
+        shared between applications.
+      </p>
+      <p>
+        The <dfn>ShareData</dfn> object may have any of (and should have at
+        least one of) the following optional fields:
+      </p>
+      <ul>
+        <li>
+          <dfn for="ShareData">title</dfn> (string): The title of the document
+          being shared. May be ignored by the handler.
+        </li>
+        <li>
+          <dfn for="ShareData">text</dfn> (string): Arbitrary text that forms
+          the body of the message being shared.
+        </li>
+        <li>
+          <dfn for="ShareData">url</dfn> (string): A URL or URI referring to a
+          resource being shared.
+        </li>
+      </ul>
+      <p>
+        <a for="Navigator"><code>share</code></a> always shows some form of UI,
+        to give the user a choice of application and get their approval to
+        invoke and send data to a potentially native application (which carries
+        a security risk). The function must be triggered from a user gesture.
+      </p>
+      <p>
+        <a for="Navigator"><code>share</code></a>'s promise is
+        resolved if the user chooses a target application, and that application
+        accepts the data without error. The promise may be rejected in the
+        following cases (it is possible to distinguish between these four
+        failure modes, but not learn the identity of the chosen application):
+      </p>
+      <ul>
+        <li>
+          The share was invalid (e.g., inappropriate fields in the
+          <code>data</code> parameter).
+        </li>
+        <li>
+          There were no apps available to handle sharing.
+        </li>
+        <li>
+          The user cancelled the picker dialog instead of picking an app.
+        </li>
+        <li>
+          The data could not be delivered to the target app (e.g., the chosen
+          app could not be launched), or the target app explicitly rejected the
+          share event.
+        </li>
+      </ul>
+      <p>
+        In a user agent that will never provide any share targets (e.g., on a
+        platform that does not support sharing)
+        <a><code>navigator.share</code></a> SHOULD NOT be present, so that sites
+        can use feature detection to avoid showing sharing UI.
+      </p>
+    </section>
+    <section>
+      <h2>Share handlers</h2>
+      <p>
+        <b>TODO(mgiuca):</b> This section is mostly non-normative. Write a small
+        normative header, and rewrite the rest in a non-normative section
+        without directly referencing Android and other operating systems.
+      </p>
+      <p>
+        The list of share targets or handlers can be populated from a variety of
+        sources, depending on the user agent and underlying OS:
+      </p>
+      <ul>
+        <li>
+          Built-in service (e.g., "copy to clipboard").
+        </li>
+        <li>
+          Native applications.
+        </li>
+        <li>
+          Web applications registered using the <a
+          href="https://github.com/WICG/web-share-target">Web Share Target
+          API</a>.
+        </li>
+      </ul>
+      <p>
+        The user agent can support any or all of the above (for example, on some
+        platforms, there is no system for native apps to receive share data;
+        some user agents may not support the Share Target API).
+      </p>
+      <p>
+        The user agent may either present its own picker UI and then forward the
+        share data to the chosen app, or simply forward the share data to the
+        system's native app picking system (e.g., Android, iOS and Windows 10
+        all <a href="/WICG/web-share/blob/master/docs/native.md">support this
+        concept natively</a>) and let the OS do the work.
+      </p>
+      <p>
+        When forwarding to a website using the Share Target API, the
+        <a><code>ShareData</code></a> object is simply cloned. When forwarding
+        to a native app, the user agent should do its best to map the fields
+        onto the equivalent concepts. For example, on Android, when a share is
+        sent to a native application, the user agent may create an <a
+        href="http://developer.android.com/reference/android/content/Intent.html">Intent</a>
+        object with <code>ACTION_SEND</code>, setting the
+        <code>EXTRA_SUBJECT</code> to <a for="ShareData"><code>title</code></a>.
+        Since Android intents do not have a URL field, <code>EXTRA_TEXT</code>
+        would be set to <a for="ShareData"><code>text</code></a> and <a
+        for="ShareData"><code>url</code></a> concatenated together.
+      </p>
+    </section>
+    <section>
+      <h2>Security and privacy considerations</h2>
+      <p>
+        Implementations should observe the following security and privacy
+        advice.
+      </p>
+      <p>
+        Web Share enables data to be sent from websites to native applications.
+        While this ability is not unique to Web Share, it does come with a
+        number of potential security issues that may vary in severity (depending
+        on the underlying platform).
+      </p>
+      <ul>
+        <li>
+          User agents MUST NOT allow the website to learn which apps are
+          installed, or which app was chosen from
+          <a><code>navigator.share</code></a>. This information could be used
+          for fingerprinting, as well as leaking details about the user's
+          device.
+        </li>
+        <li>
+          On every call to <a><code>navigator.share</code></a>, the user MUST be
+          presented with a dialog asking them to select a target application
+          (even if there is only one possible target). This surface serves as a
+          security confirmation, ensuring that websites cannot silently send
+          data to native applications.
+        </li>
+        <li>
+          Due to the capabilities of the API surface,
+          <a><code>navigator.share</code></a> is restricted to secure browsing
+          contexts (such as <code>https://</code> schemes).
+        </li>
+        <li>
+          Use of <a><code>navigator.share</code></a> from a <a
+          href="https://en.wikipedia.org/wiki/Privacy_mode">private browsing
+          mode</a> may leak private data to a third-party application that does
+          not respect the user's privacy setting. User agents should consider
+          presenting additional warnings or disabling the feature entirely when
+          in a private browsing mode.
+        </li>
+        <li>
+          The data passed to <a><code>navigator.share</code></a> may be used to
+          exploit buffer overflow or other remote code execution vulnerabilities
+          in native applications that receive shares. There is no general way to
+          guard against this, but implementors should be aware that it is a
+          possibility. User agents SHOULD NOT require target applications to opt
+          in to receiving Web Shares (as that would severely limit the
+          usefulness of Web Share).
+        </li>
+      </ul>
+    </section>
+
     <section class="appendix">
       <h2>Acknowledgements</h2>
       <p>
