@@ -77,7 +77,7 @@
     <section>
       <h2>API definition</h2>
       <section data-dfn-for="Navigator">
-        <h3>Navigator.share</h3>
+        <h3><code>Navigator</code> interface</h3>
         <p>
           The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
           interface is defined in [[!HTML]].
@@ -88,54 +88,57 @@
           };
         </pre>
         <p>
-          <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
-        </p>
-        <p>
-          The <dfn>share</dfn> method takes one argument: the object that will
-          be delivered to the handler. It contains the data being shared between
-          applications.
-        </p>
-        <p>
-          <a for="Navigator"><code>share</code></a> always shows some form of
-          UI, to give the user a choice of application and get their approval to
-          invoke and send data to a potentially native application (which
-          carries a security risk). The function must be triggered from a user
-          gesture.
-        </p>
-        <p>
-          <a for="Navigator"><code>share</code></a>'s promise is
-          resolved if the user chooses a target application, and that
-          application accepts the data without error. The promise may be
-          rejected in the following cases (it is possible to distinguish between
-          these four failure modes, but not learn the identity of the chosen
-          application):
-        </p>
-        <ul>
-          <li>
-            The share was invalid (e.g., inappropriate fields in the
-            <code>data</code> parameter).
-          </li>
-          <li>
-            There were no apps available to handle sharing.
-          </li>
-          <li>
-            The user cancelled the picker dialog instead of picking an app.
-          </li>
-          <li>
-            The data could not be delivered to the target app (e.g., the chosen
-            app could not be launched), or the target app explicitly rejected
-            the share event.
-          </li>
-        </ul>
-        <p>
           In a user agent that will never provide any share targets (e.g., on a
           platform that does not support sharing)
           <a><code>navigator.share</code></a> SHOULD NOT be present, so that
           sites can use feature detection to avoid showing sharing UI.
         </p>
+        <section>
+          <h4><code>share</code> method</h4>
+          <p>
+            <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
+          </p>
+          <p>
+            The <dfn>share</dfn> method takes one argument: the object that will
+            be delivered to the handler. It contains the data being shared
+            between applications.
+          </p>
+          <p>
+            <a for="Navigator"><code>share</code></a> always shows some form of
+            UI, to give the user a choice of application and get their approval
+            to invoke and send data to a potentially native application (which
+            carries a security risk). The function must be triggered from a user
+            gesture.
+          </p>
+          <p>
+            <a for="Navigator"><code>share</code></a>'s promise is
+            resolved if the user chooses a target application, and that
+            application accepts the data without error. The promise may be
+            rejected in the following cases (it is possible to distinguish
+            between these four failure modes, but not learn the identity of the
+            chosen application):
+          </p>
+          <ul>
+            <li>
+              The share was invalid (e.g., inappropriate fields in the
+              <code>data</code> parameter).
+            </li>
+            <li>
+              There were no apps available to handle sharing.
+            </li>
+            <li>
+              The user cancelled the picker dialog instead of picking an app.
+            </li>
+            <li>
+              The data could not be delivered to the target app (e.g., the
+              chosen app could not be launched), or the target app explicitly
+              rejected the share event.
+            </li>
+          </ul>
+        </section>
       </section>
       <section data-dfn-for="ShareData">
-      <h3>ShareData</h3>
+      <h3><code>ShareData</code> dictionary</h3>
         <pre class="idl">
           dictionary ShareData {
             USVString title;
