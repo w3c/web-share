@@ -144,21 +144,22 @@
           };
         </pre>
         <p>
-          The <dfn>ShareData</dfn> object may have any of (and should have at
-          least one of) the following optional fields:
+          The <dfn>ShareData</dfn> dictionary consists of several optional
+          fields:
         </p>
         <ul>
           <li>
-            <dfn for="ShareData">title</dfn> (string): The title of the document
-            being shared. May be ignored by the handler.
+            <dfn for="ShareData">title</dfn>: The title of the document being
+            shared. May be ignored by the handler.
           </li>
           <li>
-            <dfn for="ShareData">text</dfn> (string): Arbitrary text that forms
-            the body of the message being shared.
+            <dfn for="ShareData">text</dfn>: Arbitrary text that forms the body
+            of the message being shared.
           </li>
           <li>
-            <dfn for="ShareData">url</dfn> (string): A URL or URI referring to a
-            resource being shared.
+            <dfn for="ShareData">url</dfn>: A <a
+            data-cite="!URL#valid-url-string">valid URL string</a> referring
+            to a resource being shared.
           </li>
         </ul>
       </section>
