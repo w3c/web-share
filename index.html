@@ -76,7 +76,7 @@
 
     <section>
       <h2>API definition</h2>
-      <section>
+      <section data-dfn-for="Navigator">
         <h3>Navigator.share</h3>
         <p>
           The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
@@ -91,9 +91,9 @@
           <b>TODO(mgiuca):</b> This section is too informal. Rewrite it.
         </p>
         <p>
-          The <dfn for="Navigator">share</dfn> method takes one argument: the
-          object that will be delivered to the handler. It contains the data
-          being shared between applications.
+          The <dfn>share</dfn> method takes one argument: the object that will
+          be delivered to the handler. It contains the data being shared between
+          applications.
         </p>
         <p>
           <a for="Navigator"><code>share</code></a> always shows some form of
@@ -134,7 +134,7 @@
           sites can use feature detection to avoid showing sharing UI.
         </p>
       </section>
-      <section>
+      <section data-dfn-for="ShareData">
       <h3>ShareData</h3>
         <pre class="idl">
           dictionary ShareData {
@@ -149,17 +149,16 @@
         </p>
         <ul>
           <li>
-            <dfn for="ShareData">title</dfn>: The title of the document being
-            shared. May be ignored by the handler.
+            <dfn>title</dfn>: The title of the document being shared. May be
+            ignored by the handler.
           </li>
           <li>
-            <dfn for="ShareData">text</dfn>: Arbitrary text that forms the body
-            of the message being shared.
+            <dfn>text</dfn>: Arbitrary text that forms the body of the message
+            being shared.
           </li>
           <li>
-            <dfn for="ShareData">url</dfn>: A <a
-            data-cite="!URL#valid-url-string">valid URL string</a> referring
-            to a resource being shared.
+            <dfn>url</dfn>: A <a data-cite="!URL#valid-url-string">valid URL
+            string</a> referring to a resource being shared.
           </li>
         </ul>
       </section>
