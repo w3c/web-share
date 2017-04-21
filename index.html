@@ -114,7 +114,7 @@
               If the method call was not <a
               data-cite="!HTML#triggered-by-user-activation">triggered by user
               activation</a>, reject <var>p</var> with <a
-              data-cite="!WebIDL#securityerror"><code>SecurityError</code></a>,
+              data-cite="!WEBIDL#securityerror"><code>SecurityError</code></a>,
               and abort these steps.
             </li>
             <li>
@@ -123,7 +123,7 @@
                 <li>
                   If there are no <a>share targets</a> available, reject
                   <var>p</var> with <a
-                  data-cite="!WebIDL#aborterror"><code>AbortError</code></a>,
+                  data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>,
                   and abort these steps.
                 </li>
                 <li>
@@ -135,7 +135,7 @@
                 <li>
                   If the user chose to cancel the share operation, reject
                   <var>p</var> with <a
-                  data-cite="!WebIDL#aborterror"><code>AbortError</code></a>,
+                  data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>,
                   and abort these steps.
                 </li>
                 <li>
@@ -145,7 +145,7 @@
                   error occurs starting the target or transmitting the data, or
                   if the target declines to receive the data, reject
                   <var>p</var> with <a
-                  data-cite="!WebIDL#aborterror"><code>AbortError</code></a>,
+                  data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>,
                   and abort these steps.
                 </li>
                 <li>
@@ -169,7 +169,7 @@
           </div>
           <div class="note">
             The user agent MAY differentiate between the three different causes
-            of <a data-cite="!WebIDL#aborterror"><code>AbortError</code></a>
+            of <a data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>
             failure (e.g., with a different error string in each case). However,
             it MUST NOT expose the identity of the target chosen by the user, or
             reveal the identity of any of the available targets.
@@ -205,9 +205,9 @@
         </ul>
         <div class="note">
           These fields are <a
-          data-cite="!WebIDL#idl-USVString"><code>USVString</code></a> (as
+          data-cite="!WEBIDL#idl-USVString"><code>USVString</code></a> (as
           opposed to <a
-          data-cite="!WebIDL#idl-DOMString"><code>DOMString</code></a>) because
+          data-cite="!WEBIDL#idl-DOMString"><code>DOMString</code></a>) because
           they must not contain invalid <a
           data-cite="rfc2781#section-2">UTF-16</a> surrogates. This means the
           user agent is free to re-encode them in any Unicode encoding (e.g., <a
