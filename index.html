@@ -302,7 +302,7 @@
         </p>
       </section>
     </section>
-    <section>
+    <section class="informative">
       <h2>Security and privacy considerations</h2>
       <p>
         Implementations should observe the following security and privacy
@@ -331,8 +331,10 @@
         </li>
         <li>
           Due to the capabilities of the API surface,
-          <a><code>navigator.share</code></a> is restricted to secure browsing
-          contexts (such as <code>https://</code> schemes).
+          <a><code>navigator.share</code></a> is
+          <a
+          data-cite="WEBIDL-LS#dfn-available-only-in-secure-contexts">available
+          only in secure contexts</a> (such as <code>https://</code> schemes).
         </li>
         <li>
           Use of <a><code>navigator.share</code></a> from a <a
