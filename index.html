@@ -143,7 +143,7 @@
                   <var>data</var> to a format suitable for ingestion into the
                   target, and transmit the converted data to the target. If an
                   error occurs starting the target or transmitting the data, or
-                  if the target declines to receive the data, reject
+                  if the target <a>declines to receive the data</a>, reject
                   <var>p</var> with <a
                   data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>,
                   and abort these steps.
@@ -218,53 +218,89 @@
     <section>
       <h2>Share targets</h2>
       <p>
-        <b>TODO(mgiuca):</b> This section is mostly non-normative. Write a small
-        normative header, and rewrite the rest in a non-normative section
-        without directly referencing Android and other operating systems.
+        A <dfn data-lt="share targets">share target</dfn> is the abstract
+        concept of a destination that the user agent will transmit the share
+        data to. What constitutes a share target is at the discretion of the
+        user agent.
       </p>
       <p>
-        The list of <dfn data-lt="share target">share targets</dfn> or handlers
-        can be populated from a variety of sources, depending on the user agent
-        and underlying OS:
-      </p>
-      <ul>
-        <li>
-          Built-in service (e.g., "copy to clipboard").
-        </li>
-        <li>
-          Native applications.
-        </li>
-        <li>
-          Web applications registered using the <a
-          href="https://github.com/WICG/web-share-target">Web Share Target
-          API</a>.
-        </li>
-      </ul>
-      <p>
-        The user agent can support any or all of the above (for example, on some
-        platforms, there is no system for native apps to receive share data;
-        some user agents may not support the Share Target API).
+        A share target must have the ability to receive a <a>ShareData</a>
+        payload and process it in some way. The meaning of each field of the
+        payload is at the discretion of the share target. A share target may
+        ignore any field of the payload.
       </p>
       <p>
-        The user agent may either present its own picker UI and then forward the
-        share data to the chosen app, or simply forward the share data to the
-        system's native app picking system (e.g., Android, iOS and Windows 10
-        all <a href="/WICG/web-share/blob/master/docs/native.md">support this
-        concept natively</a>) and let the OS do the work.
+        Each share target may be made conditionally available depending on the
+        <a>ShareData</a> payload delivered to the <a for="Navigator">share</a>
+        method.
       </p>
       <p>
-        When forwarding to a website using the Share Target API, the
-        <a><code>ShareData</code></a> object is simply cloned. When forwarding
-        to a native app, the user agent should do its best to map the fields
-        onto the equivalent concepts. For example, on Android, when a share is
-        sent to a native application, the user agent may create an <a
-        href="http://developer.android.com/reference/android/content/Intent.html">Intent</a>
-        object with <code>ACTION_SEND</code>, setting the
-        <code>EXTRA_SUBJECT</code> to <a for="ShareData"><code>title</code></a>.
-        Since Android intents do not have a URL field, <code>EXTRA_TEXT</code>
-        would be set to <a for="ShareData"><code>text</code></a> and <a
-        for="ShareData"><code>url</code></a> concatenated together.
+        Upon receiving a <a>ShareData</a> payload, the share target may
+        <dfn data-lt="declines to receive the data">decline to receive the
+        data</dfn>, which results in a share failure. The user agent MUST
+        determine whether the share target has accepted or declined the data
+        immediately, without waiting for user action.
       </p>
+      <div class="note">
+        This means that share targets should decide to accept or decline based
+        only on the data they receive, so that the promise on the sending side
+        resolves right away. For example, if the target is an email client, the
+        user agent should reject the promise if the fields are in some way
+        invalid, or pre-fill a mail draft and resolve the promise immediately.
+        It should not wait and see if the user sends the mail or discards the
+        draft before resolving or rejecting the promise. In other words, the <a
+        for="Navigator">share</a> method is "fire and forget", not modal.
+      </div>
+      <section class="informative">
+        <h3>Examples of share targets</h3>
+        <p>
+          <b>TODO(mgiuca):</b> This section should be rewritten without directly
+          referencing Android and other operating systems, or Web Share Target.
+        </p>
+        <p>
+          The list of share targets or handlers can be populated from a variety
+          of sources, depending on the user agent and underlying OS:
+        </p>
+        <ul>
+          <li>
+            Built-in service (e.g., "copy to clipboard").
+          </li>
+          <li>
+            Native applications.
+          </li>
+          <li>
+            Web applications registered using the <a
+            href="https://github.com/WICG/web-share-target">Web Share Target
+            API</a>.
+          </li>
+        </ul>
+        <p>
+          The user agent can support any or all of the above (for example, on
+          some platforms, there is no system for native apps to receive share
+          data; some user agents may not support the Share Target API).
+        </p>
+        <p>
+          The user agent may either present its own picker UI and then forward
+          the share data to the chosen app, or simply forward the share data to
+          the system's native app picking system (e.g., Android, iOS and Windows
+          10 all <a href="/WICG/web-share/blob/master/docs/native.md">support
+          this concept natively</a>) and let the OS do the work.
+        </p>
+        <p>
+          When forwarding to a website using the Share Target API, the
+          <a><code>ShareData</code></a> object is simply cloned. When forwarding
+          to a native app, the user agent should do its best to map the fields
+          onto the equivalent concepts. For example, on Android, when a share is
+          sent to a native application, the user agent may create an <a
+          href="http://developer.android.com/reference/android/content/Intent.html">Intent</a>
+          object with <code>ACTION_SEND</code>, setting the
+          <code>EXTRA_SUBJECT</code> to <a
+          for="ShareData"><code>title</code></a>. Since Android intents do not
+          have a URL field, <code>EXTRA_TEXT</code> would be set to <a
+          for="ShareData"><code>text</code></a> and <a
+          for="ShareData"><code>url</code></a> concatenated together.
+        </p>
+      </section>
     </section>
     <section>
       <h2>Security and privacy considerations</h2>
