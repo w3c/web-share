@@ -139,11 +139,11 @@
                   and abort these steps.
                 </li>
                 <li>
-                  Activate the chosen <a>share target</a>, convert
+                  Activate the chosen <a>share target</a>, <a>convert
                   <var>data</var> to a format suitable for ingestion into the
-                  target, and transmit the converted data to the target. If an
-                  error occurs starting the target or transmitting the data, or
-                  if the target <a>declines to receive the data</a>, reject
+                  target</a>, and transmit the converted data to the target. If
+                  an error occurs starting the target or transmitting the data,
+                  or if the target <a>declines to receive the data</a>, reject
                   <var>p</var> with <a
                   data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>,
                   and abort these steps.
@@ -224,10 +224,14 @@
         user agent.
       </p>
       <p>
-        A share target must have the ability to receive a <a>ShareData</a>
-        payload and process it in some way. The meaning of each field of the
-        payload is at the discretion of the share target. A share target may
-        ignore any field of the payload.
+        A share target may not be directly able to accept a <a>ShareData</a>
+        (due to not having been written with this API in mind). However, it MUST
+        have the ability to receive data that matches some or all of the
+        concepts exposed in <a>ShareData</a>. To <dfn>convert data to a format
+        suitable for ingestion into the target</dfn>, the user agent SHOULD map
+        the fields of <a>ShareData</a> onto equivalent concepts in the target.
+        It MAY discard fields if necessary. The meaning of each field of the
+        payload is at the discretion of the share target.
       </p>
       <p>
         Each share target may be made conditionally available depending on the
@@ -286,14 +290,13 @@
           directly to native applications.
         </p>
         <p>
-          When transmitting the <a>ShareData</a> object to the share target (or
-          operating system), the user agent should make a best-effort attempt to
-          map the fields onto the equivalent concepts in the target. This can be
-          tricky as some platforms will not have the same set of fields. For
-          example, if the target has a "text" field but not a "URL" field, it
-          may be necessary to concatenate both the <a for="ShareData">text</a>
-          and <a for="ShareData">url</a> fields of <a>ShareData</a> and pass the
-          result in the "text" field of the target.
+          Mapping the <a>ShareData</a> to the share target (or operating
+          system)'s native format can be tricky as some platforms will not have
+          an equivalent set of fields. For example, if the target has a "text"
+          field but not a "URL" field, it may be necessary to concatenate both
+          the <a for="ShareData">text</a> and <a for="ShareData">url</a> fields
+          of <a>ShareData</a> and pass the result in the "text" field of the
+          target.
         </p>
       </section>
     </section>
