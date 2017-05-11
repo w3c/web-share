@@ -2,37 +2,363 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Unicorn Toasters Markup API</title>
-    <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class="remove"></script>
+    <title>
+      Web Share API
+    </title>
+    <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class=
+    "remove"></script>
     <script class='remove'>
       var respecConfig = {
-                  specStatus: "webspec"
-              ,   shortName: "web-share"
-              ,   editors: [{
-                      name: "Marcos Cáceres"
-                  }]
+        specStatus: "ED",
+        edDraftURI: "https://wicg.github.io/web-share/",
+        shortName: "web-share",
+        processVersion: 2017,
+        editors: [{
+          name: "Matt Giuca",
+          company: "Google Inc.",
+          companyURL: "https://google.com"
+        }],
+        otherLinks: [{
+          key: 'Repository',
+          data: [{
+            value: 'Github project.',
+            href: 'https://github.com/WICG/web-share'
+          }, {
+            value: 'Issue tracker.',
+            href: 'https://github.com/WICG/web-share/issues'
+          }, {
+            value: 'Commit history.',
+            href: 'https://github.com/WICG/web-share/commits/master'
+          }]
+        }, {
+          key: "Implementation status",
+          data: [{
+            value: "Chromium",
+            href: "https://www.chromestatus.com/features/5668769141620736"
+          }]
+        }]
       };
     </script>
   </head>
   <body>
     <section id="abstract">
       <p>
-        This specification does all manners of neat stuff.
+        This specification defines an API for sharing text, links and other
+        content to an arbitrary destination of the user's choice.
+      </p>
+      <p>
+        The available share targets are not specified here; they are provided
+        by the user agent. They could, for example, be apps, websites or
+        contacts.
       </p>
     </section>
     <section id="sotd">
       <p>
-        Pay no attention to this section at this time.
+        This is an early draft of the Web Share spec. The following links are
+        probably broken.
       </p>
     </section>
-
-    <section id="introduction">
-      <h2>Introduction</h2>
+    <section class="informative">
+      <h2>
+        Usage Examples
+      </h2>
       <p>
-        There is a theory which states that if ever anybody discovers exactly what the Universe is
-        for and why it is here, it will instantly disappear and be replaced by something even more
-        bizarre and inexplicable. There is another theory which states that this has already
-        happened.
+        This example shows a basic share operation. In response to a button
+        click, this JavaScript code shares the current page's URL.
+      </p>
+      <pre class="example javascript" title="Basic usage">
+        shareButton.addEventListener('click', () =&gt; {
+          navigator.share({title: 'Example Page', url: window.location.href})
+              .then(console.log('Share successful'));
+        });
+      </pre>
+      <p>
+        In response to this call to <code>navigator.share</code>, the user
+        agent would display a picker or chooser dialog, allowing the user to
+        select a target to share this title and URL to.
+      </p>
+    </section>
+    <section>
+      <h2>
+        API definition
+      </h2>
+      <section data-dfn-for="Navigator">
+        <h3>
+          <code>Navigator</code> interface
+        </h3>
+        <p>
+          The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
+          interface is defined in [[!HTML]].
+        </p>
+        <pre class="idl">
+          partial interface Navigator {
+            [SecureContext] Promise&lt;void&gt; share(ShareData data);
+          };
+        </pre>
+        <p>
+          User agents that do not support sharing SHOULD NOT expose <a for=
+          "Navigator"><code>share</code></a> on the
+          <a><code>Navigator</code></a> interface.
+        </p>
+        <div class="note">
+          The above statement is designed to permit feature detection. If
+          <a for="Navigator"><code>share</code></a> is present, there is a
+          reasonable expectation that it will work and present the user with at
+          least one <a>share target</a>. Clients should be able to use the
+          presence or absence of this method to determine whether to show UI
+          that triggers its use.
+        </div>
+        <section>
+          <h4>
+            <code>share</code> method
+          </h4>
+          <p>
+            When the <dfn>share</dfn> method is called with argument
+            <var>data</var>, run the following steps:
+          </p>
+          <ol>
+            <li>Let <var>p</var> be a newly created promise.
+            </li>
+            <li>If the method call was not <a data-cite=
+            "!HTML#triggered-by-user-activation">triggered by user
+            activation</a>, reject <var>p</var> with <a data-cite=
+            "!WEBIDL#securityerror"><code>SecurityError</code></a>, and abort
+            these steps.
+            </li>
+            <li>
+              <a data-cite="!HTML#in-parallel">In parallel</a>:
+              <ol>
+                <li>If there are no <a>share targets</a> available, reject
+                <var>p</var> with <a data-cite=
+                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                these steps.
+                </li>
+                <li>Present the user with a choice of one or more <a>share
+                targets</a>, selected at the user agent's discretion. The user
+                MUST be given the option to cancel rather than choosing any of
+                the share targets. Wait for the user's choice.
+                </li>
+                <li>If the user chose to cancel the share operation, reject
+                <var>p</var> with <a data-cite=
+                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                these steps.
+                </li>
+                <li>Activate the chosen <a>share target</a>, <a>convert
+                <var>data</var> to a format suitable for ingestion into the
+                target</a>, and transmit the converted data to the target. If
+                an error occurs starting the target or transmitting the data,
+                or if the target <a>declines to receive the data</a>, reject
+                <var>p</var> with <a data-cite=
+                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                these steps.
+                </li>
+                <li>Once the data has been successfully transmitted to the
+                target, resolve <var>p</var>.
+                </li>
+              </ol>
+            </li>
+            <li>Return <var>p</var>.
+            </li>
+          </ol>
+          <div class="note">
+            <a for="Navigator"><code>share</code></a> always shows some form of
+            UI, to give the user a choice of application and get their approval
+            to invoke and send data to a potentially native application (which
+            carries a security risk). For this reason, user agents MUST still
+            show UI even if there is only a single share target, and MUST NOT
+            perform any kind of "always use this target" to bypass the UI in
+            subsequent share operations.
+          </div>
+          <div class="note">
+            The user agent MAY differentiate between the three different causes
+            of <a data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>
+            failure (e.g., with a different error string in each case).
+            However, it MUST NOT expose the identity of the target chosen by
+            the user, or reveal the identity of any of the available targets.
+          </div>
+        </section>
+      </section>
+      <section data-dfn-for="ShareData">
+        <h3>
+          <code>ShareData</code> dictionary
+        </h3>
+        <pre class="idl">
+          dictionary ShareData {
+            USVString title;
+            USVString text;
+            USVString url;
+          };
+        </pre>
+        <p>
+          The <dfn>ShareData</dfn> dictionary consists of several optional
+          fields:
+        </p>
+        <ul>
+          <li>
+            <dfn>title</dfn>: The title of the document being shared. May be
+            ignored by the target.
+          </li>
+          <li>
+            <dfn>text</dfn>: Arbitrary text that forms the body of the message
+            being shared.
+          </li>
+          <li>
+            <dfn>url</dfn>: A <a data-cite="!URL#valid-url-string">valid URL
+            string</a> referring to a resource being shared.
+          </li>
+        </ul>
+        <div class="note">
+          These fields are <a data-cite=
+          "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
+          <a data-cite="!WEBIDL#idl-DOMString"><code>DOMString</code></a>)
+          because they must not contain invalid <a data-cite=
+          "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
+          is free to re-encode them in any Unicode encoding (e.g.,
+          <a data-cite="rfc3629#section-3">UTF-8</a>).
+        </div>
+      </section>
+    </section>
+    <section>
+      <h2>
+        Share targets
+      </h2>
+      <p>
+        A <dfn data-lt="share targets">share target</dfn> is the abstract
+        concept of a destination that the user agent will transmit the share
+        data to. What constitutes a share target is at the discretion of the
+        user agent.
+      </p>
+      <p>
+        A share target may not be directly able to accept a <a>ShareData</a>
+        (due to not having been written with this API in mind). However, it
+        MUST have the ability to receive data that matches some or all of the
+        concepts exposed in <a>ShareData</a>. To <dfn>convert data to a format
+        suitable for ingestion into the target</dfn>, the user agent SHOULD map
+        the fields of <a>ShareData</a> onto equivalent concepts in the target.
+        It MAY discard fields if necessary. The meaning of each field of the
+        payload is at the discretion of the share target.
+      </p>
+      <p>
+        Each share target may be made conditionally available depending on the
+        <a>ShareData</a> payload delivered to the <a for="Navigator">share</a>
+        method.
+      </p>
+      <p>
+        Upon receiving a <a>ShareData</a> payload, the share target may
+        <dfn data-lt="declines to receive the data">decline to receive the
+        data</dfn>, which results in a share failure. The user agent MUST
+        determine whether the share target has accepted or declined the data
+        immediately, without waiting for user action.
+      </p>
+      <div class="note">
+        This means that share targets should decide to accept or decline based
+        only on the data they receive, so that the promise on the sending side
+        resolves right away. For example, if the target is an email client, the
+        user agent should reject the promise if the fields are in some way
+        invalid, or pre-fill a mail draft and resolve the promise immediately.
+        It should not wait and see if the user sends the mail or discards the
+        draft before resolving or rejecting the promise. In other words, the
+        <a for="Navigator">share</a> method is "fire and forget", not modal.
+      </div>
+      <section class="informative">
+        <h3>
+          Examples of share targets
+        </h3>
+        <p>
+          The list of share targets can be populated from a variety of sources,
+          depending on the user agent and host operating system. For example:
+        </p>
+        <ul>
+          <li>Built-in service (e.g., "copy to clipboard").
+          </li>
+          <li>Native applications written for the host operating system.
+          </li>
+          <li>Contacts (e.g., the user agent directly shares to a person from
+          the user's address book, using a specific app).
+          </li>
+          <li>Websites (e.g., the user agent fills in a template URL with the
+          fields of the <a>ShareData</a>, then navigates to that URL in a new
+          browsing context).
+          </li>
+        </ul>
+        <div class="note">
+          There is an attempt to standardize the registration of websites to
+          receive share data for that final use case; see <a href=
+          "https://github.com/WICG/web-share-target">Web Share Target</a>.
+        </div>
+        <p>
+          In some cases, the host operating system will provide a sharing or
+          intent system similar to Web Share. In these cases, the user agent
+          may simply forward the share data to the operating system and not
+          talk directly to native applications.
+        </p>
+        <p>
+          Mapping the <a>ShareData</a> to the share target (or operating
+          system)'s native format can be tricky as some platforms will not have
+          an equivalent set of fields. For example, if the target has a "text"
+          field but not a "URL" field, it may be necessary to concatenate both
+          the <a for="ShareData">text</a> and <a for="ShareData">url</a> fields
+          of <a>ShareData</a> and pass the result in the "text" field of the
+          target.
+        </p>
+      </section>
+    </section>
+    <section class="informative">
+      <h2>
+        Security and privacy considerations
+      </h2>
+      <p>
+        Implementations should observe the following security and privacy
+        advice.
+      </p>
+      <p>
+        Web Share enables data to be sent from websites to native applications.
+        While this ability is not unique to Web Share, it does come with a
+        number of potential security issues that may vary in severity
+        (depending on the underlying platform).
+      </p>
+      <ul>
+        <li>User agents MUST NOT allow the website to learn which apps are
+        installed, or which app was chosen from
+        <a><code>navigator.share</code></a>. This information could be used for
+        fingerprinting, as well as leaking details about the user's device.
+        </li>
+        <li>On every call to <a><code>navigator.share</code></a>, the user MUST
+        be presented with a dialog asking them to select a target application
+        (even if there is only one possible target). This surface serves as a
+        security confirmation, ensuring that websites cannot silently send data
+        to native applications.
+        </li>
+        <li>Due to the capabilities of the API surface,
+        <a><code>navigator.share</code></a> is <a data-cite=
+        "WEBIDL#dfn-available-only-in-secure-contexts">available only in secure
+        contexts</a> (such as <code>https://</code> schemes).
+        </li>
+        <li>Use of <a><code>navigator.share</code></a> from a <a href=
+        "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
+        may leak private data to a third-party application that does not
+        respect the user's privacy setting. User agents should consider
+        presenting additional warnings or disabling the feature entirely when
+        in a private browsing mode.
+        </li>
+        <li>The data passed to <a><code>navigator.share</code></a> may be used
+        to exploit buffer overflow or other remote code execution
+        vulnerabilities in native applications that receive shares. There is no
+        general way to guard against this, but implementors should be aware
+        that it is a possibility.
+        </li>
+      </ul>
+    </section>
+    <section class="appendix">
+      <h2>
+        Acknowledgements
+      </h2>
+      <p>
+        Thanks to the <a href="https://www.w3.org/TR/web-intents">Web
+        Intents</a> team, who laid the groundwork for the web app
+        interoperability use cases. In particular, <a href=
+        "https://paul.kinlan.me/">Paul Kinlan</a>, who did a lot of early
+        advocation for Web Share.
       </p>
     </section>
   </body>
