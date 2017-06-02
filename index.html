@@ -140,8 +140,7 @@
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
-                or if the target <a>declines to receive the data</a>, reject
-                <var>p</var> with <a data-cite=
+                reject <var>p</var> with <a data-cite=
                 "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
                 these steps.
                 </li>
@@ -236,22 +235,14 @@
         <a>ShareData</a> payload delivered to the <a for="Navigator">share</a>
         method.
       </p>
-      <p>
-        Upon receiving a <a>ShareData</a> payload, the share target may
-        <dfn data-lt="declines to receive the data">decline to receive the
-        data</dfn>, which results in a share failure. The user agent MUST
-        determine whether the share target has accepted or declined the data
-        immediately, without waiting for user action.
-      </p>
       <div class="note">
-        This means that share targets should decide to accept or decline based
-        only on the data they receive, so that the promise on the sending side
-        resolves right away. For example, if the target is an email client, the
-        user agent should reject the promise if the fields are in some way
-        invalid, or pre-fill a mail draft and resolve the promise immediately.
-        It should not wait and see if the user sends the mail or discards the
-        draft before resolving or rejecting the promise. In other words, the
-        <a for="Navigator">share</a> method is "fire and forget", not modal.
+        Once a share target has been given the payload, the share is considered
+        successful. If the target considers the data unacceptable or an error
+        occurs, the target should either recover gracefully, or show an error
+        message to the end-user, because the sender is not going to know that
+        an error occurred. In other words, the <a for="Navigator">share</a>
+        method is "fire and forget"; it does not wait for the target to approve
+        or reject the payload.
       </div>
       <section class="informative">
         <h3>
