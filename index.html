@@ -161,13 +161,6 @@
             perform any kind of "always use this target" to bypass the UI in
             subsequent share operations.
           </div>
-          <div class="note">
-            The user agent MAY differentiate between the three different causes
-            of <a data-cite="!WEBIDL#aborterror"><code>AbortError</code></a>
-            failure (e.g., with a different error string in each case).
-            However, it MUST NOT expose the identity of the target chosen by
-            the user, or reveal the identity of any of the available targets.
-          </div>
         </section>
       </section>
       <section data-dfn-for="ShareData">
@@ -306,6 +299,12 @@
         installed, or which app was chosen from
         <a><code>navigator.share</code></a>. This information could be used for
         fingerprinting, as well as leaking details about the user's device.
+        </li>
+        <li>Implementors should carefully consider what information is revealed
+        in the error message when <a><code>navigator.share</code></a> is
+        rejected. Even distinguishing between the case where no targets are
+        available and user cancellation may reveal information about which apps
+        are installed on the user's device.
         </li>
         <li>On every call to <a><code>navigator.share</code></a>, the user MUST
         be presented with a dialog asking them to select a target application
