@@ -61,14 +61,19 @@
       </p>
       <pre class="example javascript" title="Basic usage">
         shareButton.addEventListener('click', () =&gt; {
-          navigator.share({title: 'Example Page', url: window.location.href})
+          navigator.share({title: 'Example Page', url: ''})
               .then(console.log('Share successful'));
         });
       </pre>
       <p>
+        Note that a <a for="ShareData"><code>url</code></a> of <code>''</code>
+        refers to the current page URL, just as it would in a link. Any other
+        absolute or relative URL can also be used.
+      </p>
+      <p>
         In response to this call to <a><code>navigator.share</code></a>, the
         user agent would display a picker or chooser dialog, allowing the user
-        to select a target to share this title and URL to.
+        to select a target to share this title and the page URL to.
       </p>
     </section>
     <section>
