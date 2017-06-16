@@ -112,6 +112,17 @@
           <ol>
             <li>Let <var>p</var> be a newly created promise.
             </li>
+            <li>Let <var>url</var> be the result of running the <a data-cite=
+            "!URL#concept-url-parser">URL parser</a> on <var>data</var>'s
+            <a for="ShareData">url</a>, with the document's <a data-cite=
+            "!HTML#document-base-url">base URL</a>, and no <var>encoding
+            override</var>.
+            </li>
+            <li>Set <var>data</var> to a copy of <var>data</var>, with its
+            <a for="ShareData">url</a> field set to the result of running the
+            <a data-cite="!URL#concept-url-serializer">URL serializer</a> on
+            <var>url</var>.
+            </li>
             <li>If the method call was not <a data-cite=
             "!HTML#triggered-by-user-activation">triggered by user
             activation</a>, reject <var>p</var> with <a data-cite=
@@ -200,6 +211,15 @@
           "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
           is free to re-encode them in any Unicode encoding (e.g.,
           <a data-cite="rfc3629#section-3">UTF-8</a>).
+        </div>
+        <div class="note">
+          The <a for="ShareData">url</a> field may contain a <a data-cite=
+          "!URL#relative-url-with-fragment-string">relative URL</a>. In this
+          case, it will be automatically resolved relative to the current page
+          location, just like a <a data-cite=
+          "!HTML#attr-hyperlink-href"><code>href</code></a> on an <a data-cite=
+          "!HTML#the-a-element"><code>a</code></a> element, before being given
+          to the share target.
         </div>
       </section>
     </section>
