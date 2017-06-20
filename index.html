@@ -61,14 +61,19 @@
       </p>
       <pre class="example javascript" title="Basic usage">
         shareButton.addEventListener('click', () =&gt; {
-          navigator.share({title: 'Example Page', url: window.location.href})
+          navigator.share({title: 'Example Page', url: ''})
               .then(console.log('Share successful'));
         });
       </pre>
       <p>
-        In response to this call to <code>navigator.share</code>, the user
-        agent would display a picker or chooser dialog, allowing the user to
-        select a target to share this title and URL to.
+        Note that a <a for="ShareData"><code>url</code></a> of <code>''</code>
+        refers to the current page URL, just as it would in a link. Any other
+        absolute or relative URL can also be used.
+      </p>
+      <p>
+        In response to this call to <a><code>navigator.share</code></a>, the
+        user agent would display a picker or chooser dialog, allowing the user
+        to select a target to share this title and the page URL to.
       </p>
     </section>
     <section>
@@ -111,6 +116,22 @@
           </p>
           <ol>
             <li>Let <var>p</var> be a newly created promise.
+            </li>
+            <li>Let <var>url</var> be the result of running the <a data-cite=
+            "!URL#concept-url-parser">URL parser</a> on <var>data</var>'s
+            <a for="ShareData">url</a>, with the document's <a data-cite=
+            "!HTML#document-base-url">base URL</a>, and no <var>encoding
+            override</var>.
+            </li>
+            <li>If <var>url</var> is failure, reject <var>p</var> with
+            <a data-cite=
+            "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>, and
+            abort these steps.
+            </li>
+            <li>Set <var>data</var> to a copy of <var>data</var>, with its
+            <a for="ShareData">url</a> field set to the result of running the
+            <a data-cite="!URL#concept-url-serializer">URL serializer</a> on
+            <var>url</var>.
             </li>
             <li>If the method call was not <a data-cite=
             "!HTML#triggered-by-user-activation">triggered by user
@@ -200,6 +221,15 @@
           "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
           is free to re-encode them in any Unicode encoding (e.g.,
           <a data-cite="rfc3629#section-3">UTF-8</a>).
+        </div>
+        <div class="note">
+          The <a for="ShareData">url</a> field may contain a <a data-cite=
+          "!URL#relative-url-with-fragment-string">relative URL</a>. In this
+          case, it will be automatically resolved relative to the current page
+          location, just like a <a data-cite=
+          "!HTML#attr-hyperlink-href"><code>href</code></a> on an <a data-cite=
+          "!HTML#the-a-element"><code>a</code></a> element, before being given
+          to the share target.
         </div>
       </section>
     </section>
