@@ -187,10 +187,10 @@
             <a for="Navigator"><code>share</code></a> always shows some form of
             UI, to give the user a choice of application and get their approval
             to invoke and send data to a potentially native application (which
-            carries a security risk). For this reason, user agents MUST still
-            show UI even if there is only a single share target, and MUST NOT
-            perform any kind of "always use this target" to bypass the UI in
-            subsequent share operations.
+            carries a security risk). For this reason, user agents are
+            prohibited from showing any kind of "always use this target in the
+            future" option, or bypassing the UI if there is only a single share
+            target.
           </div>
         </section>
       </section>
@@ -335,10 +335,11 @@
         (depending on the underlying platform).
       </p>
       <ul>
-        <li>User agents MUST NOT allow the website to learn which apps are
-        installed, or which app was chosen from
-        <a><code>navigator.share</code></a>. This information could be used for
-        fingerprinting, as well as leaking details about the user's device.
+        <li>There is a requirement to not allow the website to learn which apps
+        are installed, or which app was chosen from
+        <a><code>navigator.share</code></a>, because this information could be
+        used for fingerprinting, as well as leaking details about the user's
+        device.
         </li>
         <li>Implementors should carefully consider what information is revealed
         in the error message when <a><code>navigator.share</code></a> is
@@ -346,11 +347,11 @@
         available and user cancellation may reveal information about which apps
         are installed on the user's device.
         </li>
-        <li>On every call to <a><code>navigator.share</code></a>, the user MUST
-        be presented with a dialog asking them to select a target application
-        (even if there is only one possible target). This surface serves as a
-        security confirmation, ensuring that websites cannot silently send data
-        to native applications.
+        <li>There is a requirement that <a><code>navigator.share</code></a>
+        presents the user with a dialog asking them to select a target
+        application (even if there is only one possible target). This surface
+        serves as a security confirmation, ensuring that websites cannot
+        silently send data to native applications.
         </li>
         <li>Due to the capabilities of the API surface,
         <a><code>navigator.share</code></a> is <a data-cite=
