@@ -117,21 +117,26 @@
           <ol>
             <li>Let <var>p</var> be a newly created promise.
             </li>
-            <li>Let <var>url</var> be the result of running the <a data-cite=
-            "!URL#concept-url-parser">URL parser</a> on <var>data</var>'s
-            <a for="ShareData">url</a>, with the document's <a data-cite=
-            "!HTML#document-base-url">base URL</a>, and no <var>encoding
-            override</var>.
-            </li>
-            <li>If <var>url</var> is failure, reject <var>p</var> with
-            <a data-cite=
-            "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>, and
-            abort these steps.
-            </li>
-            <li>Set <var>data</var> to a copy of <var>data</var>, with its
-            <a for="ShareData">url</a> field set to the result of running the
-            <a data-cite="!URL#concept-url-serializer">URL serializer</a> on
-            <var>url</var>.
+            <li>If <var>data</var>'s <a for="ShareData">url</a> member is
+            <a data-cite="!WEBIDL#dfn-present">present</a>:
+              <ol>
+                <li>Let <var>url</var> be the result of running the
+                <a data-cite="!URL#concept-url-parser">URL parser</a> on <var>
+                  data</var>'s <a for="ShareData">url</a>, with the document's
+                  <a data-cite="!HTML#document-base-url">base URL</a>, and no
+                  <var>encoding override</var>.
+                </li>
+                <li>If <var>url</var> is failure, reject <var>p</var> with
+                <a data-cite=
+                "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>,
+                and abort these steps.
+                </li>
+                <li>Set <var>data</var> to a copy of <var>data</var>, with its
+                <a for="ShareData">url</a> field set to the result of running
+                the <a data-cite="!URL#concept-url-serializer">URL
+                serializer</a> on <var>url</var>.
+                </li>
+              </ol>
             </li>
             <li>If the method call was not <a data-cite=
             "!HTML#triggered-by-user-activation">triggered by user
