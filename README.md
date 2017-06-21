@@ -8,7 +8,7 @@ images to an arbitrary destination of the user's choice:
 ```js
 navigator.share({title: 'Example Page', url: 'https://example.com'});
 ```
-
+* [Specification](https://wicg.github.io/web-share/)
 * [Explainer document](docs/explainer.md), a high-level overview of the proposal.
 * [Interface document](docs/interface.md), an informal spec.
 * [Native integration survey](docs/native.md), for platform-specific matters.
