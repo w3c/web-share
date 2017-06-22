@@ -127,7 +127,8 @@
                   <a data-cite="!HTML#document-base-url">base URL</a>, and no
                   <var>encoding override</var>.
                 </li>
-                <li>If <var>url</var> is failure, reject <var>p</var> with
+                <li>If <var>url</var> is failure, <a data-cite=
+                "!promises-guide#reject-promise">reject</a> <var>p</var> with
                 <a data-cite=
                 "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>,
                 and abort these steps.
@@ -141,38 +142,45 @@
             </li>
             <li>If the method call was not <a data-cite=
             "!HTML#triggered-by-user-activation">triggered by user
-            activation</a>, reject <var>p</var> with <a data-cite=
+            activation</a>, <a data-cite=
+            "!promises-guide#reject-promise">reject</a> <var>p</var> with
+            <a data-cite=
             "!WEBIDL#securityerror"><code>SecurityError</code></a>, and abort
             these steps.
             </li>
             <li>
               <a data-cite="!HTML#in-parallel">In parallel</a>:
               <ol>
-                <li>If there are no <a>share targets</a> available, reject
-                <var>p</var> with <a data-cite=
-                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                these steps.
+                <li>If there are no <a>share targets</a> available,
+                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                  p</var> with <a data-cite=
+                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                  these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
                 MUST be given the option to cancel rather than choosing any of
                 the share targets. Wait for the user's choice.
                 </li>
-                <li>If the user chose to cancel the share operation, reject
-                <var>p</var> with <a data-cite=
-                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                these steps.
+                <li>If the user chose to cancel the share operation,
+                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                  p</var> with <a data-cite=
+                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                  these steps.
                 </li>
                 <li>Activate the chosen <a>share target</a>, <a>convert
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
-                reject <var>p</var> with <a data-cite=
-                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                these steps.
+                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                  p</var> with <a data-cite=
+                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                  these steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
-                target, resolve <var>p</var> with <b>undefined</b>.
+                target, <a data-cite=
+                "!promises-guide#resolve-promise">resolve</a> <var>p</var> with
+                <b>undefined</b>.
                 </li>
               </ol>
             </li>
