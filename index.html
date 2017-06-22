@@ -121,11 +121,15 @@
             <li>If <var>data</var>'s <a for="ShareData">url</a> member is
             <a data-cite="!WEBIDL#dfn-present">present</a>:
               <ol>
+                <li>Let <var>base</var> be the <b>this</b> value's
+                  <a data-cite="!HTML#relevant-settings-object">relevant
+                  settings object</a>'s <a data-cite="!HTML#api-base-url">API
+                  base URL</a>.
+                </li>
                 <li>Let <var>url</var> be the result of running the
                 <a data-cite="!URL#concept-url-parser">URL parser</a> on <var>
-                  data</var>'s <a for="ShareData">url</a>, with the document's
-                  <a data-cite="!HTML#document-base-url">base URL</a>, and no
-                  <var>encoding override</var>.
+                  data</var>'s <a for="ShareData">url</a>, with
+                  <var>base</var>, and no <var>encoding override</var>.
                 </li>
                 <li>If <var>url</var> is failure, <a data-cite=
                 "!promises-guide#reject-promise">reject</a> <var>p</var> with
