@@ -1,6 +1,6 @@
 # Web Share API: Native Integration Survey
 
-**Date**: 2016-06-06
+**Date**: 2016-06-06 (authored), 2017-06-22 (updated)
 
 This document is an informal and incomplete survey of various operating systems'
 sharing systems, for exploring how a user agent might automatically map the
@@ -36,27 +36,29 @@ APIs. I would appreciate being informed of any errors.
   [UIActivityItemSource](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIActivityItemSource_protocol/index.html)
   protocol.
 
-## Windows (Universal Windows Platform)
+## macOS
 
-* [Universal Windows Platform
-  (UWP)](https://msdn.microsoft.com/en-us/windows/uwp/get-started/whats-a-uwp)
-  is supported on Windows 10 mobile, desktop, Xbox, etc.
-  * UWP APIs are not available to normal Win32 .exe applications. This will only
-    be available for user agents that are UWP apps (e.g., Microsoft Edge is,
-    Google Chrome isn't).
-  * Windows 8, 8.1 have similar share APIs but unclear whether compatible with
-    the Windows 10 ones.
-* UWP apps can initiate a "Share contract" to share to another UWP app. UX:
-  Shows a modal share target picker on the right hand side of the screen (at
-  least on desktop Windows 10).
+* [NSSharingService](https://developer.apple.com/documentation/appkit/nssharingservice)
+  allows apps to trigger a share dialog, with a similar API to iOS.
+* Available in macOS 10.8 and up.
+
+## Windows
+
+* Apps can initiate a "Share contract" to share to another Windows app. UX:
+  Shows a modal share target picker on the right hand side of the screen.
 * [Share
   API](https://msdn.microsoft.com/en-us/windows/uwp/app-to-app/share-data):
   Create a DataRequest object and put data into it (multiple data types can be
   placed into the request object). Can optionally negotiate with the receiver
   about which data to send (Share API implementations would likely ignore this
   and just put all the data from the requester into the object).
+* Available in Windows 10 and up.
+* Available only to [Universal Windows Platform
+  (UWP)](https://msdn.microsoft.com/en-us/windows/uwp/get-started/whats-a-uwp)
+  apps. This API is **not** available to normal Win32 .exe applications. This
+  will only be available to user agents that are UWP apps (e.g., Microsoft Edge
+  is, Google Chrome isn't).
 
 ## Others
 
-* No known native share mechanism on Windows (<=7), Mac, Linux (Desktop), Chrome
-  OS.
+* No known native share mechanism on Linux (Desktop), Chrome OS.
