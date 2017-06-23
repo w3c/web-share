@@ -102,9 +102,9 @@
           The above statement is designed to permit feature detection. If
           <a for="Navigator"><code>share</code></a> is present, there is a
           reasonable expectation that it will work and present the user with at
-          least one <a>share target</a>. Clients should be able to use the
-          presence or absence of this method to determine whether to show UI
-          that triggers its use.
+          least one <a>share target</a>. Clients can use the presence or
+          absence of this method to determine whether to show UI that triggers
+          its use.
         </div>
         <section>
           <h4>
@@ -115,18 +115,24 @@
             <var>data</var>, run the following steps:
           </p>
           <ol>
-            <li>Let <var>p</var> be a newly created promise.
+            <li>Let <var>p</var> be <a data-cite=
+            "!promises-guide#a-new-promise">a new promise</a>.
             </li>
             <li>If <var>data</var>'s <a for="ShareData">url</a> member is
             <a data-cite="!WEBIDL#dfn-present">present</a>:
               <ol>
+                <li>Let <var>base</var> be the <b>this</b> value's
+                  <a data-cite="!HTML#relevant-settings-object">relevant
+                  settings object</a>'s <a data-cite="!HTML#api-base-url">API
+                  base URL</a>.
+                </li>
                 <li>Let <var>url</var> be the result of running the
                 <a data-cite="!URL#concept-url-parser">URL parser</a> on <var>
-                  data</var>'s <a for="ShareData">url</a>, with the document's
-                  <a data-cite="!HTML#document-base-url">base URL</a>, and no
-                  <var>encoding override</var>.
+                  data</var>'s <a for="ShareData">url</a>, with
+                  <var>base</var>, and no <var>encoding override</var>.
                 </li>
-                <li>If <var>url</var> is failure, reject <var>p</var> with
+                <li>If <var>url</var> is failure, <a data-cite=
+                "!promises-guide#reject-promise">reject</a> <var>p</var> with
                 <a data-cite=
                 "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>,
                 and abort these steps.
@@ -140,52 +146,63 @@
             </li>
             <li>If the method call was not <a data-cite=
             "!HTML#triggered-by-user-activation">triggered by user
-            activation</a>, reject <var>p</var> with <a data-cite=
+            activation</a>, <a data-cite=
+            "!promises-guide#reject-promise">reject</a> <var>p</var> with
+            <a data-cite=
             "!WEBIDL#securityerror"><code>SecurityError</code></a>, and abort
             these steps.
             </li>
             <li>
               <a data-cite="!HTML#in-parallel">In parallel</a>:
               <ol>
-                <li>If there are no <a>share targets</a> available, reject
-                <var>p</var> with <a data-cite=
-                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                these steps.
+                <li>If there are no <a>share targets</a> available,
+                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                  p</var> with <a data-cite=
+                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                  these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
                 MUST be given the option to cancel rather than choosing any of
                 the share targets. Wait for the user's choice.
                 </li>
-                <li>If the user chose to cancel the share operation, reject
-                <var>p</var> with <a data-cite=
-                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                these steps.
+                <li>If the user chose to cancel the share operation,
+                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                  p</var> with <a data-cite=
+                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                  these steps.
                 </li>
                 <li>Activate the chosen <a>share target</a>, <a>convert
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
-                reject <var>p</var> with <a data-cite=
-                "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                these steps.
+                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                  p</var> with <a data-cite=
+                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
+                  these steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
-                target, resolve <var>p</var>.
+                target, <a data-cite=
+                "!promises-guide#resolve-promise">resolve</a> <var>p</var> with
+                <b>undefined</b>.
                 </li>
               </ol>
             </li>
             <li>Return <var>p</var>.
             </li>
           </ol>
+          <p>
+            The user agent MUST NOT allow the website to learn which share
+            targets are available, or the identity of the chosen target.
+          </p>
           <div class="note">
             <a for="Navigator"><code>share</code></a> always shows some form of
             UI, to give the user a choice of application and get their approval
             to invoke and send data to a potentially native application (which
-            carries a security risk). For this reason, user agents MUST still
-            show UI even if there is only a single share target, and MUST NOT
-            perform any kind of "always use this target" to bypass the UI in
-            subsequent share operations.
+            carries a security risk). For this reason, user agents are
+            prohibited from showing any kind of "always use this target in the
+            future" option, or bypassing the UI if there is only a single share
+            target.
           </div>
         </section>
       </section>
@@ -222,13 +239,13 @@
           These fields are <a data-cite=
           "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
           <a data-cite="!WEBIDL#idl-DOMString"><code>DOMString</code></a>)
-          because they must not contain invalid <a data-cite=
+          because they are not allowed to contain invalid <a data-cite=
           "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
           is free to re-encode them in any Unicode encoding (e.g.,
           <a data-cite="rfc3629#section-3">UTF-8</a>).
         </div>
         <div class="note">
-          The <a for="ShareData">url</a> field may contain a <a data-cite=
+          The <a for="ShareData">url</a> field can contain a <a data-cite=
           "!URL#relative-url-with-fragment-string">relative URL</a>. In this
           case, it will be automatically resolved relative to the current page
           location, just like a <a data-cite=
@@ -249,7 +266,7 @@
         user agent.
       </p>
       <p>
-        A share target may not be directly able to accept a <a>ShareData</a>
+        A share target might not be directly able to accept a <a>ShareData</a>
         (due to not having been written with this API in mind). However, it
         MUST have the ability to receive data that matches some or all of the
         concepts exposed in <a>ShareData</a>. To <dfn>convert data to a format
@@ -259,18 +276,17 @@
         payload is at the discretion of the share target.
       </p>
       <p>
-        Each share target may be made conditionally available depending on the
+        Each share target MAY be made conditionally available depending on the
         <a>ShareData</a> payload delivered to the <a for="Navigator">share</a>
         method.
       </p>
       <div class="note">
         Once a share target has been given the payload, the share is considered
         successful. If the target considers the data unacceptable or an error
-        occurs, the target should either recover gracefully, or show an error
-        message to the end-user, because the sender is not going to know that
-        an error occurred. In other words, the <a for="Navigator">share</a>
-        method is "fire and forget"; it does not wait for the target to approve
-        or reject the payload.
+        occurs, it can either recover gracefully, or show an error message to
+        the end-user; it cannot rely on the sender to handle errors. In other
+        words, the <a for="Navigator">share</a> method is "fire and forget"; it
+        does not wait for the target to approve or reject the payload.
       </div>
       <section class="informative">
         <h3>
@@ -301,16 +317,16 @@
         <p>
           In some cases, the host operating system will provide a sharing or
           intent system similar to Web Share. In these cases, the user agent
-          may simply forward the share data to the operating system and not
+          can simply forward the share data to the operating system and not
           talk directly to native applications.
         </p>
         <p>
           Mapping the <a>ShareData</a> to the share target (or operating
           system)'s native format can be tricky as some platforms will not have
           an equivalent set of fields. For example, if the target has a "text"
-          field but not a "URL" field, it may be necessary to concatenate both
-          the <a for="ShareData">text</a> and <a for="ShareData">url</a> fields
-          of <a>ShareData</a> and pass the result in the "text" field of the
+          field but not a "URL" field, one solution is to concatenate both the
+          <a for="ShareData">text</a> and <a for="ShareData">url</a> fields of
+          <a>ShareData</a> and pass the result in the "text" field of the
           target.
         </p>
       </section>
@@ -320,32 +336,29 @@
         Security and privacy considerations
       </h2>
       <p>
-        Implementations should observe the following security and privacy
-        advice.
-      </p>
-      <p>
         Web Share enables data to be sent from websites to native applications.
         While this ability is not unique to Web Share, it does come with a
-        number of potential security issues that may vary in severity
+        number of potential security issues that can vary in severity
         (depending on the underlying platform).
       </p>
       <ul>
-        <li>User agents MUST NOT allow the website to learn which apps are
-        installed, or which app was chosen from
-        <a><code>navigator.share</code></a>. This information could be used for
-        fingerprinting, as well as leaking details about the user's device.
+        <li>There is a requirement to not allow the website to learn which apps
+        are installed, or which app was chosen from
+        <a><code>navigator.share</code></a>, because this information could be
+        used for fingerprinting, as well as leaking details about the user's
+        device.
         </li>
-        <li>Implementors should carefully consider what information is revealed
-        in the error message when <a><code>navigator.share</code></a> is
-        rejected. Even distinguishing between the case where no targets are
-        available and user cancellation may reveal information about which apps
-        are installed on the user's device.
+        <li>Implementors will want to carefully consider what information is
+        revealed in the error message when <a><code>navigator.share</code></a>
+        is rejected. Even distinguishing between the case where no targets are
+        available and user cancellation could reveal information about which
+        apps are installed on the user's device.
         </li>
-        <li>On every call to <a><code>navigator.share</code></a>, the user MUST
-        be presented with a dialog asking them to select a target application
-        (even if there is only one possible target). This surface serves as a
-        security confirmation, ensuring that websites cannot silently send data
-        to native applications.
+        <li>There is a requirement that <a><code>navigator.share</code></a>
+        presents the user with a dialog asking them to select a target
+        application (even if there is only one possible target). This surface
+        serves as a security confirmation, ensuring that websites cannot
+        silently send data to native applications.
         </li>
         <li>Due to the capabilities of the API surface,
         <a><code>navigator.share</code></a> is <a data-cite=
@@ -354,16 +367,17 @@
         </li>
         <li>Use of <a><code>navigator.share</code></a> from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
-        may leak private data to a third-party application that does not
-        respect the user's privacy setting. User agents should consider
-        presenting additional warnings or disabling the feature entirely when
-        in a private browsing mode.
+        might leak private data to a third-party application that does not
+        respect the user's privacy setting. User agents could present
+        additional warnings or disable the feature entirely when in a private
+        browsing mode, but this is not mandated as the chooser UI could be
+        considered sufficient warning.
         </li>
-        <li>The data passed to <a><code>navigator.share</code></a> may be used
-        to exploit buffer overflow or other remote code execution
+        <li>The data passed to <a><code>navigator.share</code></a> might be
+        used to exploit buffer overflow or other remote code execution
         vulnerabilities in native applications that receive shares. There is no
-        general way to guard against this, but implementors should be aware
-        that it is a possibility.
+        general way to guard against this, but implementors will want to be
+        aware that it is a possibility.
         </li>
       </ul>
     </section>
