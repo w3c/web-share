@@ -118,6 +118,13 @@
             <li>Let <var>p</var> be <a data-cite=
             "!promises-guide#a-new-promise">a new promise</a>.
             </li>
+            <li>If none of <var>data</var>'s members <a for=
+            "ShareData">title</a>, <a for="ShareData">text</a>, or <a for=
+            "ShareData">url</a> are present, reject <var>p</var> with
+            <a data-cite=
+            "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>, and
+            abort these steps.
+            </li>
             <li>If <var>data</var>'s <a for="ShareData">url</a> member is
             <a data-cite="!WEBIDL#dfn-present">present</a>:
               <ol>
