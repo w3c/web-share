@@ -90,9 +90,19 @@
         </p>
         <pre class="idl">
           partial interface Navigator {
-            [SecureContext] Promise&lt;void&gt; share(ShareData data);
+            [SecureContext] Promise&lt;void&gt; share(optional ShareData data);
           };
         </pre>
+        <div class="note">
+          The <var>data</var> argument is marked as "optional", but it is
+          effectively required; <a for="Navigator"><code>share</code></a> will
+          throw a <a data-cite=
+          "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a> if called
+          with no arguments. WebIDL <a data-cite=
+          "!WEBIDL#idl-operations">mandates that it be optional</a> because the
+          dictionary members are all optional. See WebIDL <a href=
+          "https://github.com/heycam/webidl/issues/130">Issue #130</a>.
+        </div>
         <p>
           User agents that do not support sharing SHOULD NOT expose <a for=
           "Navigator"><code>share</code></a> on the
