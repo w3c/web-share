@@ -13,9 +13,18 @@
 <body>
   <h1>Web Share Test</h1>
   <table>
-    <tr><td>Title:</td><td><input id="title" value="The Title" size="40" /></td></tr>
-    <tr><td>Text:</td><td><input id="text" value="The message" size="40"/></td></tr>
-    <tr><td>URL:</td><td><input id="url" value="https://example.com" size="40"/></td></tr>
+    <tr><td>Title:</td>
+        <td><input type="checkbox" id="title_checkbox" checked/></td>
+        <td><input id="title" value="The Title" size="40" /></td>
+    </tr>
+    <tr><td>Text:</td>
+        <td><input type="checkbox" id="text_checkbox" checked/></td>
+        <td><input id="text" value="The message" size="40"/></td>
+    </tr>
+    <tr><td>URL:</td>
+        <td><input type="checkbox" id="url_checkbox" checked/></td>
+        <td><input id="url" value="https://example.com" size="40"/></td>
+    </tr>
   </table>
   <p><input id="share" type="button" value="Share" />
      <input id="share-no-gesture" type="button" value="Share without user gesture" /></p>
@@ -58,15 +67,28 @@
       logText(message, true);
     }
 
+    function checkboxChanged(e) {
+      const checkbox = e.target;
+      const textfield = document.querySelector('#' + checkbox.id.split('_')[0]);
+
+      textfield.disabled = !checkbox.checked;
+      if (!checkbox.checked)
+        textfield.value = '';
+    }
+
     async function testWebShare() {
       if (navigator.share === undefined) {
         logError('Error: Unsupported feature: navigator.share');
         return;
       }
 
-      const title = document.querySelector('#title').value;
-      const text = document.querySelector('#text').value;
-      const url = document.querySelector('#url').value;
+      const title_input = document.querySelector('#title');
+      const text_input = document.querySelector('#text');
+      const url_input = document.querySelector('#url');
+
+      const title = title_input.disabled ? undefined : title_input.value;
+      const text = text_input.disabled ? undefined : text_input.value;
+      const url = url_input.disabled ? undefined : url_input.value;
       try {
         await navigator.share({title, text, url});
       } catch (error) {
@@ -83,6 +105,14 @@
     }
 
     function onLoad() {
+      // Checkboxes disable and delete textfields.
+      document.querySelector('#title_checkbox').addEventListener('click',
+          checkboxChanged);
+      document.querySelector('#text_checkbox').addEventListener('click',
+          checkboxChanged);
+      document.querySelector('#url_checkbox').addEventListener('click',
+          checkboxChanged);
+
       document.querySelector('#share').addEventListener('click', testWebShare);
       document.querySelector('#share-no-gesture').addEventListener('click',
           testWebShareDelay);
