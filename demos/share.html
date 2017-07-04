@@ -35,6 +35,12 @@
   <script>
     'use strict';
 
+    function sleep(delay) {
+      return new Promise(resolve => {
+        setTimeout(resolve, delay);
+      });
+    }
+
     function logText(message, isError) {
       if (isError)
         console.error(message);
@@ -52,7 +58,7 @@
       logText(message, true);
     }
 
-    function testWebShare() {
+    async function testWebShare() {
       if (navigator.share === undefined) {
         logError('Error: Unsupported feature: navigator.share');
         return;
@@ -61,13 +67,19 @@
       const title = document.querySelector('#title').value;
       const text = document.querySelector('#text').value;
       const url = document.querySelector('#url').value;
-      navigator.share({title, text, url})
-        .then(() => logText('Successfully sent share'),
-              error => logError('Error sharing: ' + error));
+      try {
+        await navigator.share({title, text, url});
+      } catch (error) {
+        logError('Error sharing: ' + error);
+        return;
+      }
+
+      logText('Successfully sent share');
     }
 
-    function testWebShareDelay() {
-      setTimeout(testWebShare, 2000);
+    async function testWebShareDelay() {
+      await sleep(2000);
+      testWebShare();
     }
 
     function onLoad() {
