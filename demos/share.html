@@ -41,7 +41,7 @@
       else
         console.log(message);
 
-      var p = document.createElement('p');
+      const p = document.createElement('p');
       if (isError)
         p.setAttribute('class', 'error');
       document.querySelector('#output').appendChild(p);
@@ -58,9 +58,9 @@
         return;
       }
 
-      var title = document.querySelector('#title').value;
-      var text = document.querySelector('#text').value;
-      var url = document.querySelector('#url').value;
+      const title = document.querySelector('#title').value;
+      const text = document.querySelector('#text').value;
+      const url = document.querySelector('#url').value;
       navigator.share({title: title, text: text, url: url})
         .then(() => logText('Successfully sent share'),
               error => logError('Error sharing: ' + error));
