@@ -1,6 +1,6 @@
 # Web Share API Explained
 
-**Date**: 2016-05-30
+**Written**: 2016-05-30, **Updated**: 2017-07-04
 
 **Web Share** is a proposed web API to enable a site to share data (text, URLs,
 images, etc) to an arbitrary destination of the user's choice. It could be a
@@ -13,7 +13,7 @@ project](https://github.com/chromium/ballista), which aims to explore
 website-to-website and website-to-native interoperability.
 
 See also:
-* [Interface document](interface.md), an informal spec.
+* [Specification](https://wicg.github.io/web-share/), the formal draft spec.
 * [Native integration survey](native.md), for platform-specific matters.
 
 ## User flow
@@ -29,15 +29,15 @@ we're designing with general desktop and mobile operating systems in mind.
 1. User is browsing a website containing a gallery of photos. User clicks a
    "share" link (denoted by the [generic share
    icon](https://design.google.com/icons/#ic_share)) for a specific photo. The
-   website calls `navigator.actions.performAction('share')` (see
-   [code](explainer.md#sharing-requester)) with a custom Subject and Message (in
-   the common case, the message is a URL pointing at the selected photo).
+   website calls `navigator.share` (see [code](explainer.md#sample-code)) with a
+   custom title, text and/or URL (in the common case, just share a URL pointing
+   at the selected photo).
 2. A modal picker dialog is shown to the user, with a set of native applications
    and system actions (e.g., "Gmail", "Facebook", "Copy to clipboard"). On
    Android, this is the system intent picker, but the implementation may differ
    between browsers and operating systems. The user picks "Gmail".
-3. The Gmail native app opens, and is pre-populated with the Subject and
-   Message.
+3. The Gmail native app opens, and is pre-populated with the title, text and
+   URL.
 
 ## Sample code
 
