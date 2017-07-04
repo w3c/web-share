@@ -61,7 +61,7 @@
       const title = document.querySelector('#title').value;
       const text = document.querySelector('#text').value;
       const url = document.querySelector('#url').value;
-      navigator.share({title: title, text: text, url: url})
+      navigator.share({title, text, url})
         .then(() => logText('Successfully sent share'),
               error => logError('Error sharing: ' + error));
     }
