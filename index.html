@@ -85,8 +85,8 @@
           <code>Navigator</code> interface
         </h3>
         <p>
-          The <dfn data-cite="!HTML#navigator">Navigator</dfn> interface is
-          defined in [[!HTML]].
+          The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
+          interface is defined in [[!HTML]].
         </p>
         <pre class="idl">
           partial interface Navigator {
@@ -119,20 +119,19 @@
           </h4>
           <p>
             When the <a>share()</a> method is called with argument
-            <var>data</var>, run the following steps:
+            <a>ShareData</a> <var>data</var>, run the following steps:
           </p>
-          <ol>
+          <ol data-link-for="ShareData">
             <li>Let <var>p</var> be <a data-cite=
             "!promises-guide#a-new-promise">a new promise</a>.
             </li>
-            <li data-link-for="ShareData">If none of <var>data</var>'s members
-            <a>title</a>, <a>text</a>, or <a>url</a> are present, reject <var>
-              p</var> with <a data-cite=
-              "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>, and
-              abort these steps.
+            <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
+            or <a>url</a> are present, reject <var>p</var> with <a data-cite=
+            "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>, and
+            abort these steps.
             </li>
-            <li data-link-for="ShareData">If <var>data</var>'s <a>url</a>
-            member is <a data-cite="!WEBIDL#dfn-present">present</a>:
+            <li>If <var>data</var>'s <a>url</a> member is <a data-cite=
+            "!WEBIDL#dfn-present">present</a>:
               <ol>
                 <li>Let <var>base</var> be the <b>this</b> value's
                   <a data-cite="!HTML#relevant-settings-object">relevant
@@ -224,8 +223,8 @@
         </h3>
         <pre class="idl">
           dictionary ShareData {
-            USVString title;
             USVString text;
+            USVString title;
             USVString url;
           };
         </pre>
@@ -233,20 +232,28 @@
           The <dfn>ShareData</dfn> dictionary consists of several optional
           members:
         </p>
-        <ul>
-          <li>
-            <dfn>title</dfn>: The title of the document being shared. May be
-            ignored by the target.
-          </li>
-          <li>
-            <dfn>text</dfn>: Arbitrary text that forms the body of the message
-            being shared.
-          </li>
-          <li>
-            <dfn>url</dfn>: A <a data-cite="!URL#valid-url-string">valid URL
-            string</a> referring to a resource being shared.
-          </li>
-        </ul>
+        <dl data-sor="">
+          <dt>
+            <dfn>title</dfn> member
+          </dt>
+          <dd>
+            The title of the document being shared. May be ignored by the
+            target.
+          </dd>
+          <dt>
+            <dfn>text</dfn> member
+          </dt>
+          <dd>
+            Arbitrary text that forms the body of the message being shared.
+          </dd>
+          <dt>
+            <dfn>url</dfn> member
+          </dt>
+          <dd>
+            A <a data-cite="!URL#valid-url-string">valid URL string</a>
+            referring to a resource being shared.
+          </dd>
+        </dl>
         <div class="note">
           These fields are <a data-cite=
           "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
@@ -358,23 +365,23 @@
         leaking details about the user's device.
         </li>
         <li>Implementors will want to carefully consider what information is
-        revealed in the error message when <a><code>navigator.share</code></a>
-        is rejected. Even distinguishing between the case where no targets are
+        revealed in the error message when <a>navigator.share()</a> is
+        rejected. Even distinguishing between the case where no targets are
         available and user cancellation could reveal information about which
         apps are installed on the user's device.
         </li>
-        <li>There is a requirement that <a><code>navigator.share</code></a>
-        presents the user with a dialog asking them to select a target
-        application (even if there is only one possible target). This surface
-        serves as a security confirmation, ensuring that websites cannot
-        silently send data to native applications.
+        <li>There is a requirement that <a>navigator.share()</a> presents the
+        user with a dialog asking them to select a target application (even if
+        there is only one possible target). This surface serves as a security
+        confirmation, ensuring that websites cannot silently send data to
+        native applications.
         </li>
         <li>Due to the capabilities of the API surface,
-        <a><code>navigator.share</code></a> is <a data-cite=
+        <a>navigator.share()</a> is <a data-cite=
         "WEBIDL#dfn-available-only-in-secure-contexts">available only in secure
         contexts</a> (such as <code>https://</code> schemes).
         </li>
-        <li>Use of <a><code>navigator.share</code></a> from a <a href=
+        <li>Use of <a>navigator.share()</a> from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
         might leak private data to a third-party application that does not
         respect the user's privacy setting. User agents could present
@@ -382,11 +389,11 @@
         browsing mode, but this is not mandated as the chooser UI could be
         considered sufficient warning.
         </li>
-        <li>The data passed to <a><code>navigator.share</code></a> might be
-        used to exploit buffer overflow or other remote code execution
-        vulnerabilities in native applications that receive shares. There is no
-        general way to guard against this, but implementors will want to be
-        aware that it is a possibility.
+        <li>The data passed to <a>navigator.share()</a> might be used to
+        exploit buffer overflow or other remote code execution vulnerabilities
+        in native applications that receive shares. There is no general way to
+        guard against this, but implementors will want to be aware that it is a
+        possibility.
         </li>
       </ul>
     </section>
@@ -411,7 +418,7 @@
         <a>navigator.share()</a> need to accept all three. Any new members that
         are added in the future will be <em>individually
         feature-detectable</em>, to allow for backwards-compatibility with
-        older implementations that don't recognise those members. These new
+        older implementations that don't recognize those members. These new
         members might also be added as optional "MAY" requirements.
       </p>
       <div class="note">
@@ -423,7 +430,7 @@
         The <a>share()</a> method throws a <a data-cite=
         "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a> if none of
         the specified members are present. The intention is that when a new
-        member is added, it will also be added to this list of recognised
+        member is added, it will also be added to this list of recognized
         members (so as to not throw an error). This is for future-proofing
         implementations: if a web site written against a future version of this
         spec uses <em>only</em> new members (<i>e.g.</i>,
