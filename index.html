@@ -95,9 +95,8 @@
         </pre>
         <div class="note">
           The <var>data</var> argument is marked as "optional", but it is
-          effectively required; <a>share()</a> will throw a <a data-cite=
-          "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a> if called
-          with no arguments. WebIDL <a data-cite=
+          effectively required; <a>share()</a> will throw a <a>TypeError</a> if
+          called with no arguments. WebIDL <a data-cite=
           "!WEBIDL#idl-operations">mandates that it be optional</a> because the
           dictionary members are all optional. See WebIDL <a href=
           "https://github.com/heycam/webidl/issues/130">Issue #130</a>.
@@ -126,9 +125,8 @@
             "!promises-guide#a-new-promise">a new promise</a>.
             </li>
             <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
-            or <a>url</a> are present, reject <var>p</var> with <a data-cite=
-            "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>, and
-            abort these steps.
+            or <a>url</a> are present, reject <var>p</var> with
+            <a>TypeError</a>, and abort these steps.
             </li>
             <li>If <var>data</var>'s <a>url</a> member is <a data-cite=
             "!WEBIDL#dfn-present">present</a>:
@@ -145,9 +143,7 @@
                 </li>
                 <li>If <var>url</var> is failure, <a data-cite=
                 "!promises-guide#reject-promise">reject</a> <var>p</var> with
-                <a data-cite=
-                "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a>,
-                and abort these steps.
+                <a>TypeError</a>, and abort these steps.
                 </li>
                 <li>Set <var>data</var> to a copy of <var>data</var>, with its
                 <a>url</a> field set to the result of running the
@@ -159,19 +155,16 @@
             <li>If the method call was not <a data-cite=
             "!HTML#triggered-by-user-activation">triggered by user
             activation</a>, <a data-cite=
-            "!promises-guide#reject-promise">reject</a> <var>p</var> with
-            <a data-cite=
-            "!WEBIDL#notallowederror"><code>NotAllowedError</code></a>, and
-            abort these steps.
+            "!promises-guide#reject-promise">reject</a> <var>p</var> with a
+              "<a>NotAllowedError</a>" <a>DOMException</a>, and abort these steps.
             </li>
             <li>
               <a data-cite="!HTML#in-parallel">In parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
-                  p</var> with <a data-cite=
-                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                  these steps.
+                  p</var> with "<a>AbortError</a>" <a>DOMException</a>, and
+                  abort these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
@@ -180,18 +173,16 @@
                 </li>
                 <li>If the user chose to cancel the share operation,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
-                  p</var> with <a data-cite=
-                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                  these steps.
+                  p</var> with "<a>AbortError</a>" <a>DOMException</a>, and
+                  abort these steps.
                 </li>
                 <li>Activate the chosen <a>share target</a>, <a>convert
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
-                  p</var> with <a data-cite=
-                  "!WEBIDL#aborterror"><code>AbortError</code></a>, and abort
-                  these steps.
+                  p</var> with "<a>AbortError</a>" <a>DOMException</a>, and
+                  abort these steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
                 target, <a data-cite=
@@ -348,6 +339,31 @@
         </p>
       </section>
     </section>
+    <section>
+      <h2>
+        Dependencies
+      </h2>
+      <p>
+        The following are defined in [[!WEBIDL]]:
+      </p>
+      <ul data-sort="">
+        <li>
+          <code><dfn data-cite=
+          "!WEBIDL#exceptiondef-typeerror">TypeError</dfn></code>
+        </li>
+        <li>
+          <code><dfn data-cite=
+          "WEBIDL#dfn-DOMException">DOMException</dfn></code>
+        </li>
+        <li>
+          <code><dfn data-cite="!WEBIDL#aborterror">AbortError</dfn></code>
+        </li>
+        <li>
+          <code><dfn data-cite=
+          "!WEBIDL#notallowederror">NotAllowedError</dfn></code>.
+        </li>
+      </ul>
+    </section>
     <section class="informative">
       <h2>
         Security and privacy considerations
@@ -427,19 +443,16 @@
         members. Web Share will use the mechanism produced by that discussion.
       </div>
       <p data-link-for="Navigator">
-        The <a>share()</a> method throws a <a data-cite=
-        "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a> if none of
-        the specified members are present. The intention is that when a new
-        member is added, it will also be added to this list of recognized
-        members (so as to not throw an error). This is for future-proofing
-        implementations: if a web site written against a future version of this
-        spec uses <em>only</em> new members (<i>e.g.</i>,
-        <code>navigator.share({image: x})</code>), it will be valid in future
-        user agents, but a <a data-cite=
-        "!WEBIDL#exceptiondef-typeerror"><code>TypeError</code></a> on user
-        agents implementing an older version of the spec. Developers will be
-        asked to feature-detect any new fields they rely on, to avoid having
-        errors surface in their program.
+        The <a>share()</a> method throws a <a>TypeError</a> if none of the
+        specified members are present. The intention is that when a new member
+        is added, it will also be added to this list of recognized members (so
+        as to not throw an error). This is for future-proofing implementations:
+        if a web site written against a future version of this spec uses
+        <em>only</em> new members (<i>e.g.</i>, <code>navigator.share({image:
+        x})</code>), it will be valid in future user agents, but a
+        <a>TypeError</a> on user agents implementing an older version of the
+        spec. Developers will be asked to feature-detect any new fields they
+        rely on, to avoid having errors surface in their program.
       </p>
       <p>
         Editors of this spec will want to carefully consider the genericity of
