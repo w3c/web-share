@@ -156,14 +156,15 @@
             "!HTML#triggered-by-user-activation">triggered by user
             activation</a>, <a data-cite=
             "!promises-guide#reject-promise">reject</a> <var>p</var> with a
-              "<a>NotAllowedError</a>" <a>DOMException</a>, and abort these steps.
+            "<a>NotAllowedError</a>" <a>DOMException</a>, and abort these
+            steps.
             </li>
             <li>
               <a data-cite="!HTML#in-parallel">In parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
-                  p</var> with "<a>AbortError</a>" <a>DOMException</a>, and
+                  p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
                   abort these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
@@ -173,7 +174,7 @@
                 </li>
                 <li>If the user chose to cancel the share operation,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
-                  p</var> with "<a>AbortError</a>" <a>DOMException</a>, and
+                  p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
                   abort these steps.
                 </li>
                 <li>Activate the chosen <a>share target</a>, <a>convert
@@ -181,7 +182,7 @@
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
-                  p</var> with "<a>AbortError</a>" <a>DOMException</a>, and
+                  p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
                   abort these steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
@@ -349,10 +350,6 @@
       <ul data-sort="">
         <li>
           <code><dfn data-cite=
-          "!WEBIDL#exceptiondef-typeerror">TypeError</dfn></code>
-        </li>
-        <li>
-          <code><dfn data-cite=
           "WEBIDL#dfn-DOMException">DOMException</dfn></code>
         </li>
         <li>
@@ -360,9 +357,14 @@
         </li>
         <li>
           <code><dfn data-cite=
-          "!WEBIDL#notallowederror">NotAllowedError</dfn></code>.
+          "!WEBIDL#notallowederror">NotAllowedError</dfn></code>
         </li>
       </ul>
+      <p>
+        <code><dfn data-cite=
+        "!ecma262!#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>
+        is defined by [[!ECMA-262]].
+      </p>
     </section>
     <section class="informative">
       <h2>
