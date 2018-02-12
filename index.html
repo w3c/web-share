@@ -60,12 +60,12 @@
         click, this JavaScript code shares the current page's URL.
       </p>
       <pre class="example javascript" title="Basic usage">
-        shareButton.addEventListener('click', async () =&gt; {
+        shareButton.addEventListener("click", async () => {
           try {
-            await navigator.share({title: 'Example Page', url: ''});
-            console.log('Share successful');
+            await navigator.share({ title: "Example Page", url: "" });
+            console.log("Share successful");
           } catch (err) {
-            console.error('Oh no! couldn't share. ' + err.message);
+            console.error("Oh no! couldn't share.", err.message);
           }
         });
       </pre>
