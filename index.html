@@ -65,7 +65,7 @@
             await navigator.share({ title: "Example Page", url: "" });
             console.log("Share successful");
           } catch (err) {
-            console.error("Oh no! couldn't share.", err.message);
+            console.error("Share failed:", err.message);
           }
         });
       </pre>
