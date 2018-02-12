@@ -61,9 +61,13 @@
         click, this JavaScript code shares the current page's URL.
       </p>
       <pre class="example javascript" title="Basic usage">
-        shareButton.addEventListener('click', () =&gt; {
-          navigator.share({title: 'Example Page', url: ''})
-              .then(console.log('Share successful'));
+        shareButton.addEventListener("click", async () => {
+          try {
+            await navigator.share({ title: "Example Page", url: "" });
+            console.log("Share successful");
+          } catch (err) {
+            console.error("Share failed:", err.message);
+          }
         });
       </pre>
       <p data-link-for="ShareData">
