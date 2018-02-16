@@ -45,9 +45,13 @@ To let the user share the current page's URL with an app or website of their
 choosing, just attach this JavaScript code to a "share" button.
 
 ```js
-shareButton.addEventListener('click', () => {
-  navigator.share({title: 'Example Page', url: window.location.href})
-      .then(console.log('Share successful'));
+shareButton.addEventListener("click", async () => {
+  try {
+    await navigator.share({ title: "Example Page", url: "" });
+    console.log("Share successful");
+  } catch (err) {
+    console.error("Share failed:", err.message);
+  }
 });
 ```
 
