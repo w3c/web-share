@@ -100,7 +100,8 @@
         </pre>
         <div class="note">
           The <var>data</var> argument is marked as "optional", but it is
-          effectively required; <a>share()</a> will throw a <a>TypeError</a> if
+          effectively required; <a>share()</a> will return a
+          rejected promise with a <a>TypeError</a> if
           called with no arguments. WebIDL <a data-cite=
           "!WEBIDL#idl-operations">mandates that it be optional</a> because the
           dictionary members are all optional. See WebIDL <a href=
@@ -450,10 +451,11 @@
         members. Web Share will use the mechanism produced by that discussion.
       </div>
       <p data-link-for="Navigator">
-        The <a>share()</a> method throws a <a>TypeError</a> if none of the
+        The <a>share()</a> method returns a rejected promise
+        with a <a>TypeError</a> if none of the
         specified members are present. The intention is that when a new member
-        is added, it will also be added to this list of recognized members (so
-        as to not throw an error). This is for future-proofing implementations:
+        is added, it will also be added to this list of recognized members.
+        This is for future-proofing implementations:
         if a web site written against a future version of this spec uses
         <em>only</em> new members (<i>e.g.</i>, <code>navigator.share({image:
         x})</code>), it will be valid in future user agents, but a
