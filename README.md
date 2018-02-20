@@ -21,6 +21,7 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 * [Web platform
   tests](https://github.com/w3c/web-platform-tests/tree/master/web-share), for
   automatic and manual testing against an implementation.
+* [Extensibility of the Web Share API](https://wicg.github.io/web-share/extending.html).
 
 This is a product of the [Ballista
 project](https://github.com/chromium/ballista), which aims to explore

@@ -421,56 +421,6 @@
         </li>
       </ul>
     </section>
-    <section class="appendix informative">
-      <h2>
-        Extensibility of this API
-      </h2>
-      <p>
-        The Web Share API is designed to be extended in the future by way of
-        new members added to the <a>ShareData</a> dictionary, to allow both
-        sharing of new types of data (<i>e.g.</i>, <a href=
-        "https://github.com/WICG/web-share/issues/12">images</a>) and strings
-        with new semantics (<i>e.g.</i> author).
-      </p>
-      <div class="warning">
-        This doesn't mean user agents can add whatever members they like. It
-        means that new members can be added to the standard in the future.
-      </div>
-      <p data-link-for="ShareData">
-        The three members <a>title</a>, <a>text</a>, and <a>url</a>, are part
-        of the base feature set, and implementations that provide
-        <a>navigator.share()</a> need to accept all three. Any new members that
-        are added in the future will be <em>individually
-        feature-detectable</em>, to allow for backwards-compatibility with
-        older implementations that don't recognize those members. These new
-        members might also be added as optional "MAY" requirements.
-      </p>
-      <div class="note">
-        There is <a href="https://github.com/heycam/webidl/issues/107">an open
-        discussion</a> about how to provide feature-detection for dictionary
-        members. Web Share will use the mechanism produced by that discussion.
-      </div>
-      <p data-link-for="Navigator">
-        The <a>share()</a> method returns a rejected promise
-        with a <a>TypeError</a> if none of the
-        specified members are present. The intention is that when a new member
-        is added, it will also be added to this list of recognized members.
-        This is for future-proofing implementations:
-        if a web site written against a future version of this spec uses
-        <em>only</em> new members (<i>e.g.</i>, <code>navigator.share({image:
-        x})</code>), it will be valid in future user agents, but a
-        <a>TypeError</a> on user agents implementing an older version of the
-        spec. Developers will be asked to feature-detect any new fields they
-        rely on, to avoid having errors surface in their program.
-      </p>
-      <p>
-        Editors of this spec will want to carefully consider the genericity of
-        any new members being added, avoiding fields that are closely
-        associated with a particular service, user agent or operating system,
-        in favour of fields that can potentially be applied to a wide range of
-        platforms and targets.
-      </p>
-    </section>
     <section class="appendix">
       <h2>
         Acknowledgments
