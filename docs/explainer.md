@@ -47,7 +47,7 @@ choosing, just attach this JavaScript code to a "share" button.
 ```js
 shareButton.addEventListener('click', () => {
   navigator.share({title: 'Example Page', url: window.location.href})
-      .then(console.log('Share successful'));
+      .then(console.log('Data was shared successfully'));
 });
 ```
 
