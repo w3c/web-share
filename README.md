@@ -19,7 +19,7 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 * [Specification](https://wicg.github.io/web-share/).
 * [Native integration survey](docs/native.md), for platform-specific matters.
 * [Web platform
-  tests](https://github.com/w3c/web-platform-tests/tree/master/web-share), for
+  tests](https://github.com/web-platform-tests/wpt/tree/master/web-share), for
   automatic and manual testing against an implementation.
 
 This is a product of the [Ballista
