@@ -61,7 +61,7 @@
         click, this JavaScript code shares the current page's URL.
       </p>
       <pre class="example javascript" title="Basic usage">
-        shareButton.addEventListener("click", async () => {
+        shareButton.addEventListener("click", async () =&gt; {
           try {
             await navigator.share({ title: "Example Page", url: "" });
             console.log("Data was shared successfully");
@@ -100,12 +100,12 @@
         </pre>
         <div class="note">
           The <var>data</var> argument is marked as "optional", but it is
-          effectively required; <a>share()</a> will return a
-          rejected promise with a <a>TypeError</a> if
-          called with no arguments. WebIDL <a data-cite=
-          "!WEBIDL#idl-operations">mandates that it be optional</a> because the
-          dictionary members are all optional. See WebIDL <a href=
-          "https://github.com/heycam/webidl/issues/130">Issue #130</a>.
+          effectively required; <a>share()</a> will return a rejected promise
+          with a <a>TypeError</a> if called with no arguments. WebIDL
+          <a data-cite="!WEBIDL#idl-operations">mandates that it be
+          optional</a> because the dictionary members are all optional. See
+          WebIDL <a href="https://github.com/heycam/webidl/issues/130">Issue
+          #130</a>.
         </div>
         <p>
           User agents that do not support sharing SHOULD NOT expose
@@ -339,9 +339,9 @@
           Mapping the <a>ShareData</a> to the share target (or operating
           system)'s native format can be tricky as some platforms will not have
           an equivalent set of members. For example, if the target has a "text"
-          member but not a "URL" member, one solution is to concatenate both the
-          <a>text</a> and <a>url</a> members of <a>ShareData</a> and pass the
-          result in the "text" member of the target.
+          member but not a "URL" member, one solution is to concatenate both
+          the <a>text</a> and <a>url</a> members of <a>ShareData</a> and pass
+          the result in the "text" member of the target.
         </p>
       </section>
     </section>
@@ -450,17 +450,17 @@
         members. Web Share will use the mechanism produced by that discussion.
       </div>
       <p data-link-for="Navigator">
-        The <a>share()</a> method returns a rejected promise
-        with a <a>TypeError</a> if none of the
-        specified members are present. The intention is that when a new member
-        is added, it will also be added to this list of recognized members.
-        This is for future-proofing implementations:
-        if a web site written against a future version of this spec uses
-        <em>only</em> new members (<i>e.g.</i>, <code>navigator.share({image:
-        x})</code>), it will be valid in future user agents, but a
-        <a>TypeError</a> on user agents implementing an older version of the
-        spec. Developers will be asked to feature-detect any new members they
-        rely on, to avoid having errors surface in their program.
+        The <a>share()</a> method returns a rejected promise with a
+        <a>TypeError</a> if none of the specified members are present. The
+        intention is that when a new member is added, it will also be added to
+        this list of recognized members. This is for future-proofing
+        implementations: if a web site written against a future version of this
+        spec uses <em>only</em> new members (<i>e.g.</i>,
+        <code>navigator.share({image: x})</code>), it will be valid in future
+        user agents, but a <a>TypeError</a> on user agents implementing an
+        older version of the spec. Developers will be asked to feature-detect
+        any new members they rely on, to avoid having errors surface in their
+        program.
       </p>
       <p>
         Editors of this spec will want to carefully consider the genericity of
