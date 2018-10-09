@@ -16,7 +16,8 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 ## Links
 
 * [Explainer document](docs/explainer.md), a high-level overview of the proposal.
-* [Specification](https://wicg.github.io/web-share/).
+* [Specification - Level 1](https://wicg.github.io/web-share/).
+* [Specification - Level 2](https://wicg.github.io/web-share/level-2/).
 * [Native integration survey](docs/native.md), for platform-specific matters.
 * [Web platform
   tests](https://github.com/web-platform-tests/wpt/tree/master/web-share), for
