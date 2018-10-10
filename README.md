@@ -11,7 +11,10 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 
 ## Implementation status
 
-* The API is shipping in Google Chrome 61 on Android (images are not supported).
+* The Level 1 API (images/files not supported) is shipping in:
+  * Google Chrome 61 on Android.
+  * [Safari 66](https://developer.apple.com/safari/technology-preview/release-notes/#r66).
+* The Level 2 API is a work in progress and should not be implemented.
 
 ## Links
 
