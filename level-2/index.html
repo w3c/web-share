@@ -101,6 +101,7 @@
         </p>
         <pre class="idl">
           partial interface Navigator {
+            [SecureContext] boolean canShare(optional ShareData data);
             [SecureContext] Promise&lt;void&gt; share(optional ShareData data);
           };
         </pre>
@@ -126,6 +127,17 @@
         </div>
         <section>
           <h4>
+            <dfn>canShare()</dfn> method
+          </h4>
+          <p>
+            <code>canShare(</code><var>data</var><code>)</code> MUST return
+            <code>true</code> unless
+            <code>share(</code><var>data</var><code>)</code> would reject with
+            <a>TypeError</a>, in which case it MUST return <code>false</code>.
+          </p>
+        </section>
+        <section>
+          <h4>
             <dfn>share()</dfn> method
           </h4>
           <p>
@@ -137,7 +149,8 @@
             "!promises-guide#a-new-promise">a new promise</a>.
             </li>
             <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
-            or <a>url</a> are present, reject <var>p</var> with
+            <a>url</a> or (if the implementation supports file sharing)
+            <a>files</a> are present, reject <var>p</var> with
             <a>TypeError</a>, and abort these steps.
             </li>
             <li>If <var>data</var>'s <a>url</a> member is <a data-cite=
@@ -219,6 +232,11 @@
             kind of "always use this target in the future" option, or bypassing
             the UI if there is only a single share target.
           </div>
+          <div class="note">
+            To determine if file sharing is supported by an implementation,
+            <a>canShare()</a> can be called with a dictionary containing only
+            <code>files</code>.
+          </div>
         </section>
       </section>
       <section data-dfn-for="ShareData" data-link-for="ShareData">
@@ -230,6 +248,7 @@
             USVString title;
             USVString text;
             USVString url;
+            FileList files;
           };
         </pre>
         <p>
@@ -256,9 +275,17 @@
           <dd>
             A URL string referring to a resource being shared.
           </dd>
+          <dt>
+            <dfn>files</dfn> member
+          </dt>
+          <dd>
+            A <code><dfn data-cite=
+            "!FILE-API#filelist-section">FileList</dfn></code> referring to one
+            or more files being shared.
+          </dd>
         </dl>
         <div class="note">
-          These members are <a data-cite=
+          The string members are <a data-cite=
           "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
           <a data-cite="!WEBIDL#idl-DOMString"><code>DOMString</code></a>)
           because they are not allowed to contain invalid <a data-cite=
