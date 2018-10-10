@@ -66,10 +66,10 @@
         click, this JavaScript code shares the current page's URL.
       </p>
       <pre class="example javascript" title="Basic usage">
-        shareButton.addEventListener("click", async () => {
+        shareButton.addEventListener("click", async () =&gt; {
           try {
             await navigator.share({ title: "Example Page", url: "" });
-            console.log("Share successful");
+            console.log("Data was shared successfully");
           } catch (err) {
             console.error("Share failed:", err.message);
           }
@@ -105,11 +105,12 @@
         </pre>
         <div class="note">
           The <var>data</var> argument is marked as "optional", but it is
-          effectively required; <a>share()</a> will throw a <a>TypeError</a> if
-          called with no arguments. WebIDL <a data-cite=
-          "!WEBIDL#idl-operations">mandates that it be optional</a> because the
-          dictionary members are all optional. See WebIDL <a href=
-          "https://github.com/heycam/webidl/issues/130">Issue #130</a>.
+          effectively required; <a>share()</a> will return a rejected promise
+          with a <a>TypeError</a> if called with no arguments. WebIDL
+          <a data-cite="!WEBIDL#idl-operations">mandates that it be
+          optional</a> because the dictionary members are all optional. See
+          WebIDL <a href="https://github.com/heycam/webidl/issues/130">Issue
+          #130</a>.
         </div>
         <p>
           User agents that do not support sharing SHOULD NOT expose
@@ -156,7 +157,7 @@
                 <a>TypeError</a>, and abort these steps.
                 </li>
                 <li>Set <var>data</var> to a copy of <var>data</var>, with its
-                <a>url</a> field set to the result of running the
+                <a>url</a> member set to the result of running the
                   <a data-cite="!URL#concept-url-serializer">URL serializer</a>
                   on <var>url</var>.
                 </li>
@@ -252,12 +253,11 @@
             <dfn>url</dfn> member
           </dt>
           <dd>
-            A <a data-cite="!URL#valid-url-string">valid URL string</a>
-            referring to a resource being shared.
+            A URL string referring to a resource being shared.
           </dd>
         </dl>
         <div class="note">
-          These fields are <a data-cite=
+          These members are <a data-cite=
           "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
           <a data-cite="!WEBIDL#idl-DOMString"><code>DOMString</code></a>)
           because they are not allowed to contain invalid <a data-cite=
@@ -266,7 +266,7 @@
           <a data-cite="rfc3629#section-3">UTF-8</a>).
         </div>
         <div class="note">
-          The <a>url</a> field can contain a <a data-cite=
+          The <a>url</a> member can contain a <a data-cite=
           "!URL#relative-url-with-fragment-string">relative URL</a>. In this
           case, it will be automatically resolved relative to the current page
           location, just like a <a data-cite=
@@ -281,10 +281,10 @@
         Share targets
       </h2>
       <p>
-        A <dfn data-lt="share targets">share target</dfn> is the abstract
-        concept of a destination that the user agent will transmit the share
-        data to. What constitutes a share target is at the discretion of the
-        user agent.
+        A <dfn data-lt="share target|share targets">share target</dfn> is the
+        abstract concept of a destination that the user agent will transmit the
+        share data to. What constitutes a share target is at the discretion of
+        the user agent.
       </p>
       <p>
         A share target might not be directly able to accept a <a>ShareData</a>
@@ -292,8 +292,8 @@
         MUST have the ability to receive data that matches some or all of the
         concepts exposed in <a>ShareData</a>. To <dfn>convert data to a format
         suitable for ingestion into the target</dfn>, the user agent SHOULD map
-        the fields of <a>ShareData</a> onto equivalent concepts in the target.
-        It MAY discard fields if necessary. The meaning of each field of the
+        the members of <a>ShareData</a> onto equivalent concepts in the target.
+        It MAY discard members if necessary. The meaning of each member of the
         payload is at the discretion of the share target.
       </p>
       <p>
@@ -325,7 +325,7 @@
           the user's address book, using a specific app).
           </li>
           <li>Websites (e.g., the user agent fills in a template URL with the
-          fields of the <a>ShareData</a>, then navigates to that URL in a new
+          members of the <a>ShareData</a>, then navigates to that URL in a new
           browsing context).
           </li>
         </ul>
@@ -343,10 +343,10 @@
         <p data-link-for="ShareData">
           Mapping the <a>ShareData</a> to the share target (or operating
           system)'s native format can be tricky as some platforms will not have
-          an equivalent set of fields. For example, if the target has a "text"
-          field but not a "URL" field, one solution is to concatenate both the
-          <a>text</a> and <a>url</a> fields of <a>ShareData</a> and pass the
-          result in the "text" field of the target.
+          an equivalent set of members. For example, if the target has a "text"
+          member but not a "URL" member, one solution is to concatenate both
+          the <a>text</a> and <a>url</a> members of <a>ShareData</a> and pass
+          the result in the "text" member of the target.
         </p>
       </section>
     </section>
@@ -455,22 +455,23 @@
         members. Web Share will use the mechanism produced by that discussion.
       </div>
       <p data-link-for="Navigator">
-        The <a>share()</a> method throws a <a>TypeError</a> if none of the
-        specified members are present. The intention is that when a new member
-        is added, it will also be added to this list of recognized members (so
-        as to not throw an error). This is for future-proofing implementations:
-        if a web site written against a future version of this spec uses
-        <em>only</em> new members (<i>e.g.</i>, <code>navigator.share({image:
-        x})</code>), it will be valid in future user agents, but a
-        <a>TypeError</a> on user agents implementing an older version of the
-        spec. Developers will be asked to feature-detect any new fields they
-        rely on, to avoid having errors surface in their program.
+        The <a>share()</a> method returns a rejected promise with a
+        <a>TypeError</a> if none of the specified members are present. The
+        intention is that when a new member is added, it will also be added to
+        this list of recognized members. This is for future-proofing
+        implementations: if a web site written against a future version of this
+        spec uses <em>only</em> new members (<i>e.g.</i>,
+        <code>navigator.share({image: x})</code>), it will be valid in future
+        user agents, but a <a>TypeError</a> on user agents implementing an
+        older version of the spec. Developers will be asked to feature-detect
+        any new members they rely on, to avoid having errors surface in their
+        program.
       </p>
       <p>
         Editors of this spec will want to carefully consider the genericity of
-        any new members being added, avoiding fields that are closely
+        any new members being added, avoiding members that are closely
         associated with a particular service, user agent or operating system,
-        in favour of fields that can potentially be applied to a wide range of
+        in favour of members that can potentially be applied to a wide range of
         platforms and targets.
       </p>
     </section>
