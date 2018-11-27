@@ -248,7 +248,7 @@
             USVString title;
             USVString text;
             USVString url;
-            FileList files;
+            FrozenArray&lt;File&gt; files;
           };
         </pre>
         <p>
@@ -279,9 +279,8 @@
             <dfn>files</dfn> member
           </dt>
           <dd>
-            A <code><dfn data-cite=
-            "!FILE-API#filelist-section">FileList</dfn></code> referring to one
-            or more files being shared.
+            A <code><dfn data-cite="!FILE-API#file-section">File</dfn></code>
+            array referring to files being shared.
           </dd>
         </dl>
         <div class="note">
