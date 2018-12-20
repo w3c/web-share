@@ -101,8 +101,8 @@
         </p>
         <pre class="idl">
           partial interface Navigator {
-            [SecureContext] boolean canShare(optional ShareData data);
-            [SecureContext] Promise&lt;void&gt; share(optional ShareData data);
+            [SecureContext] boolean canShare(optional ShareData data, optional ShareOptions options);
+            [SecureContext] Promise&lt;void&gt; share(optional ShareData data, optional ShareOptions options);
           };
         </pre>
         <div class="note">
@@ -130,9 +130,10 @@
             <dfn>canShare()</dfn> method
           </h4>
           <p>
-            <code>canShare(</code><var>data</var><code>)</code> MUST return
-            <code>true</code> unless
-            <code>share(</code><var>data</var><code>)</code> would reject with
+            <code>canShare(</code><var>data</var><code>,</code>
+            <var>options</var><code>)</code> MUST return <code>true</code>
+            unless <code>share(</code><var>data</var><code>,</code>
+            <var>options</var><code>)</code> would reject with
             <a>TypeError</a>, in which case it MUST return <code>false</code>.
           </p>
         </section>
@@ -141,8 +142,8 @@
             <dfn>share()</dfn> method
           </h4>
           <p>
-            When the <a>share()</a> method is called with argument
-            <var>data</var>, run the following steps:
+            When the <a>share()</a> method is called with arguments
+            <var>data</var> and <var>options</var>, run the following steps:
           </p>
           <ol data-link-for="ShareData">
             <li>Let <var>p</var> be <a data-cite=
@@ -301,6 +302,28 @@
           "!HTML#the-a-element"><code>a</code></a> element, before being given
           to the share target.
         </div>
+      </section>
+      <section data-dfn-for="ShareOptions" data-link-for="ShareOptions">
+        <h3>
+          <code>ShareOptions</code> dictionary
+        </h3>
+        <pre class="idl">
+          dictionary ShareOptions {
+            USVString message;
+          };
+        </pre>
+        <p>
+          The <dfn>ShareOptions</dfn> dictionary currently contains one member:
+        </p>
+        <dl data-sort="">
+          <dt>
+            <dfn>message</dfn> member
+          </dt>
+          <dd>
+            A message for the user agent to display when inviting the user to
+            select a share target.
+          </dd>
+        </dl>
       </section>
     </section>
     <section data-link-for="Navigator">
@@ -470,11 +493,12 @@
       <p data-link-for="ShareData">
         The three members <a>title</a>, <a>text</a>, and <a>url</a>, are part
         of the base feature set, and implementations that provide
-        <a>navigator.share()</a> need to accept all three. Any new members that
-        are added in the future will be <em>individually
-        feature-detectable</em>, to allow for backwards-compatibility with
-        older implementations that don't recognize those members. These new
-        members might also be added as optional "MAY" requirements.
+        <a>navigator.share()</a> need to accept all three. Any new
+        <a>ShareData</a> members that are added in the future will be
+        <em>individually feature-detectable</em>, to allow for
+        backwards-compatibility with older implementations that don't recognize
+        those members. These new members might also be added as optional "MAY"
+        requirements.
       </p>
       <div class="note">
         There is <a href="https://github.com/heycam/webidl/issues/107">an open
