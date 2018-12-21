@@ -101,7 +101,7 @@
         </p>
         <pre class="idl">
           partial interface Navigator {
-            [SecureContext] boolean canShare(optional ShareData data, optional ShareOptions options);
+            [SecureContext] boolean canShare(optional ShareData data);
             [SecureContext] Promise&lt;void&gt; share(optional ShareData data, optional ShareOptions options);
           };
         </pre>
@@ -130,10 +130,9 @@
             <dfn>canShare()</dfn> method
           </h4>
           <p>
-            <code>canShare(</code><var>data</var><code>,</code>
-            <var>options</var><code>)</code> MUST return <code>true</code>
-            unless <code>share(</code><var>data</var><code>,</code>
-            <var>options</var><code>)</code> would reject with
+            <code>canShare(</code><var>data</var><code>)</code> MUST return
+            <code>true</code> unless
+            <code>share(</code><var>data</var><code>)</code> would reject with
             <a>TypeError</a>, in which case it MUST return <code>false</code>.
           </p>
         </section>
@@ -195,8 +194,9 @@
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
-                MUST be given the option to cancel rather than choosing any of
-                the share targets. Wait for the user's choice.
+                agent MAY display options's message to the user. The user MUST
+                be given the latitude to cancel rather than choosing any of the
+                share targets. Wait for the user's choice.
                 </li>
                 <li>If the user chose to cancel the share operation,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
