@@ -148,10 +148,15 @@
             <li>Let <var>p</var> be <a data-cite=
             "!promises-guide#a-new-promise">a new promise</a>.
             </li>
-            <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
-            <a>url</a> or (if the implementation supports file sharing)
-            <a>files</a> are present, reject <var>p</var> with
-            <a>TypeError</a>, and abort these steps.
+            <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>
+            or <a>url</a> are present:
+              <ol>
+                <li>If <var>data</var>'s member <a>files</a> is not present or
+                is empty, or if the implementation does not support file
+                sharing, reject <var>p</var> with <a>TypeError</a>, and abort
+                these steps.
+                </li>
+              </ol>
             </li>
             <li>If <var>data</var>'s <a>url</a> member is <a data-cite=
             "!WEBIDL#dfn-present">present</a>:
