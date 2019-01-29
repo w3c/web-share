@@ -455,6 +455,10 @@
         guard against this, but implementors will want to be aware that it is a
         possibility.
         </li>
+        <li>To protect users from unsandboxed code execution, user agents may
+        want to block executable files from being shared if share targets on a
+        given platform are known to execute the shared files.
+        </li>
       </ul>
     </section>
     <section class="appendix informative">
@@ -524,9 +528,11 @@
         Changes since Level 1
       </h2>
       <ul>
-        <li data-link-for="Navigator">The feature detection method <a>canShare()</a> has been added.
+        <li data-link-for="Navigator">The feature detection method
+        <a>canShare()</a> has been added.
         </li>
-        <li data-link-for="ShareData">The <a>ShareData</a> dictionary now has a <a>files</a> member for sharing files.
+        <li data-link-for="ShareData">The <a>ShareData</a> dictionary now has a
+        <a>files</a> member for sharing files.
         </li>
       </ul>
     </section>
