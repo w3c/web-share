@@ -17,7 +17,6 @@
         },
         testSuiteURI: "https://w3c-test.org/web-share/",
         shortName: "web-share",
-        processVersion: 2017,
         wg: "Web Incubator Community Group",
         wgURI: "https://wicg.io",
         editors: [{
@@ -96,8 +95,8 @@
           <code>Navigator</code> interface
         </h3>
         <p>
-          The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
-          interface is defined in [[!HTML]].
+          The <code><dfn data-cite="HTML#navigator">Navigator</dfn></code>
+          interface is defined in [[HTML]].
         </p>
         <pre class="idl">
           partial interface Navigator {
@@ -109,7 +108,7 @@
           The <var>data</var> argument is marked as "optional", but it is
           effectively required; <a>share()</a> will return a rejected promise
           with a <a>TypeError</a> if called with no arguments. WebIDL
-          <a data-cite="!WEBIDL#idl-operations">mandates that it be
+          <a data-cite="WEBIDL#idl-operations">mandates that it be
           optional</a> because the dictionary members are all optional. See
           WebIDL <a href="https://github.com/heycam/webidl/issues/130">Issue
           #130</a>.
@@ -162,8 +161,8 @@
             "!WEBIDL#dfn-present">present</a>:
               <ol>
                 <li>Let <var>base</var> be the <b>this</b> value's
-                  <a data-cite="!HTML#relevant-settings-object">relevant
-                  settings object</a>'s <a data-cite="!HTML#api-base-url">API
+                  <a data-cite="HTML#relevant-settings-object">relevant
+                  settings object</a>'s <a data-cite="HTML#api-base-url">API
                   base URL</a>.
                 </li>
                 <li>Let <var>url</var> be the result of running the
@@ -191,7 +190,7 @@
             steps.
             </li>
             <li>
-              <a data-cite="!HTML#in-parallel">In parallel</a>:
+              <a data-cite="HTML#in-parallel">In parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
                 <a data-cite="!promises-guide#reject-promise">reject</a> <var>
@@ -388,7 +387,7 @@
         Dependencies
       </h2>
       <p>
-        The following are defined in [[!WEBIDL]]:
+        The following are defined in [[WEBIDL]]:
       </p>
       <ul data-sort="">
         <li>
@@ -396,17 +395,17 @@
           "WEBIDL#dfn-DOMException">DOMException</dfn></code>
         </li>
         <li>
-          <code><dfn data-cite="!WEBIDL#aborterror">AbortError</dfn></code>
+          <code><dfn data-cite="WEBIDL#aborterror">AbortError</dfn></code>
         </li>
         <li>
           <code><dfn data-cite=
-          "!WEBIDL#notallowederror">NotAllowedError</dfn></code>
+          "WEBIDL#notallowederror">NotAllowedError</dfn></code>
         </li>
       </ul>
       <p>
         <code><dfn data-cite=
-        "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>
-        is defined by [[!ECMASCRIPT]].
+        "ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>
+        is defined by [[ECMASCRIPT]].
       </p>
     </section>
     <section class="informative">
@@ -512,6 +511,7 @@
         platforms and targets.
       </p>
     </section>
+    <section id="conformance"></section>
     <section class="appendix">
       <h2>
         Acknowledgments
