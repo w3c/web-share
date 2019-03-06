@@ -17,7 +17,6 @@
         },
         testSuiteURI: "https://w3c-test.org/web-share/",
         shortName: "web-share",
-        processVersion: 2017,
         wg: "Web Incubator Community Group",
         wgURI: "https://wicg.io",
         editors: [{
@@ -25,13 +24,7 @@
           company: "Google Inc.",
           companyURL: "https://google.com"
         }],
-        otherLinks: [{
-          key: "Implementation status",
-          data: [{
-            value: "Chromium",
-            href: "https://www.chromestatus.com/features/5668769141620736"
-          }]
-        }]
+        caniuse: "web-share",
       };
     </script>
   </head>
@@ -92,8 +85,8 @@
           <code>Navigator</code> interface
         </h3>
         <p>
-          The <code><dfn data-cite="!HTML#navigator">Navigator</dfn></code>
-          interface is defined in [[!HTML]].
+          The <code><dfn data-cite="HTML#navigator">Navigator</dfn></code>
+          interface is defined in [[HTML]].
         </p>
         <pre class="idl">
           partial interface Navigator {
@@ -104,7 +97,7 @@
           The <var>data</var> argument is marked as "optional", but it is
           effectively required; <a>share()</a> will return a rejected promise
           with a <a>TypeError</a> if called with no arguments. WebIDL
-          <a data-cite="!WEBIDL#idl-operations">mandates that it be
+          <a data-cite="WEBIDL#idl-operations">mandates that it be
           optional</a> because the dictionary members are all optional. See
           WebIDL <a href="https://github.com/heycam/webidl/issues/130">Issue
           #130</a>.
@@ -140,12 +133,12 @@
             "!WEBIDL#dfn-present">present</a>:
               <ol>
                 <li>Let <var>base</var> be the <b>this</b> value's
-                  <a data-cite="!HTML#relevant-settings-object">relevant
-                  settings object</a>'s <a data-cite="!HTML#api-base-url">API
+                  <a data-cite="HTML#relevant-settings-object">relevant
+                  settings object</a>'s <a data-cite="HTML#api-base-url">API
                   base URL</a>.
                 </li>
                 <li>Let <var>url</var> be the result of running the
-                <a data-cite="!URL#concept-url-parser">URL parser</a> on <var>
+                <a data-cite="URL#concept-url-parser">URL parser</a> on <var>
                   data</var>'s <a>url</a>, with <var>base</var>, and no
                   <var>encoding override</var>.
                 </li>
@@ -155,7 +148,7 @@
                 </li>
                 <li>Set <var>data</var> to a copy of <var>data</var>, with its
                 <a>url</a> member set to the result of running the
-                  <a data-cite="!URL#concept-url-serializer">URL serializer</a>
+                  <a data-cite="URL#concept-url-serializer">URL serializer</a>
                   on <var>url</var>.
                 </li>
               </ol>
@@ -168,10 +161,10 @@
             steps.
             </li>
             <li>
-              <a data-cite="!HTML#in-parallel">In parallel</a>:
+              <a data-cite="HTML#in-parallel">In parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
-                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                <a data-cite="promises-guide#reject-promise">reject</a> <var>
                   p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
                   abort these steps.
                 </li>
@@ -181,7 +174,7 @@
                 the share targets. Wait for the user's choice.
                 </li>
                 <li>If the user chose to cancel the share operation,
-                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                <a data-cite="promises-guide#reject-promise">reject</a> <var>
                   p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
                   abort these steps.
                 </li>
@@ -189,7 +182,7 @@
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
-                <a data-cite="!promises-guide#reject-promise">reject</a> <var>
+                <a data-cite="promises-guide#reject-promise">reject</a> <var>
                   p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
                   abort these steps.
                 </li>
@@ -256,7 +249,7 @@
         <div class="note">
           These members are <a data-cite=
           "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
-          <a data-cite="!WEBIDL#idl-DOMString"><code>DOMString</code></a>)
+          <a data-cite="WEBIDL#idl-DOMString"><code>DOMString</code></a>)
           because they are not allowed to contain invalid <a data-cite=
           "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
           is free to re-encode them in any Unicode encoding (e.g.,
@@ -352,7 +345,7 @@
         Dependencies
       </h2>
       <p>
-        The following are defined in [[!WEBIDL]]:
+        The following are defined in [[WEBIDL]]:
       </p>
       <ul data-sort="">
         <li>
@@ -360,7 +353,7 @@
           "WEBIDL#dfn-DOMException">DOMException</dfn></code>
         </li>
         <li>
-          <code><dfn data-cite="!WEBIDL#aborterror">AbortError</dfn></code>
+          <code><dfn data-cite="WEBIDL#aborterror">AbortError</dfn></code>
         </li>
         <li>
           <code><dfn data-cite=
@@ -370,7 +363,7 @@
       <p>
         <code><dfn data-cite=
         "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>
-        is defined by [[!ECMASCRIPT]].
+        is defined by [[ECMASCRIPT]].
       </p>
     </section>
     <section class="informative">
@@ -472,6 +465,7 @@
         platforms and targets.
       </p>
     </section>
+    <section id="conformance"></section>
     <section class="appendix">
       <h2>
         Acknowledgments
