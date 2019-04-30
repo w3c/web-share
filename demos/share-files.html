@@ -1,0 +1,144 @@
+<!-- This work is licensed under the W3C Software and Document License
+     (http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document).
+  -->
+<html>
+<head>
+  <title>Web Share Test</title>
+  <meta name="viewport" content="width=device-width">
+  <style>
+    .error {
+      color: #d22;
+    }
+    input[type="button"] {
+        height: 30px
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Share Test</h1>
+  <table>
+    <tr><td>Title:</td>
+        <td><input type="checkbox" id="title_checkbox" checked/></td>
+        <td><input id="title" value="The Title" size="40" /></td>
+    </tr>
+    <tr><td>Text:</td>
+        <td><input type="checkbox" id="text_checkbox" checked/></td>
+        <td><input id="text" value="The message" size="40"/></td>
+    </tr>
+    <tr><td>URL:</td>
+        <td><input type="checkbox" id="url_checkbox" checked/></td>
+        <td><input id="url" value="https://example.com" size="40"/></td>
+    </tr>
+    <tr><td>Files:</td>
+        <td><!--Without column 2, the whole table is small on mobile.--></td>
+        <td><input id="files" type="file" multiple></td>
+    </tr>
+  </table>
+  <p><input id="share" type="button" value="Share" />
+     <input id="share-no-gesture" type="button" value="Share without user gesture" /></p>
+  <div id="output"></div>
+  <p>This is a test page for the <a href="https://github.com/WICG/web-share">Web
+  Share API</a>. It will only work in browsers that have implemented the draft
+  proposal. At the time of writing, this works with:</p>
+  <ul>
+    <li>Google Chrome for Android 61 or higher (older versions can enable
+    chrome://flags#enable-experimental-web-platform-features).</li>
+    <li>Google Chrome for Chrome OS, Windows, or Linux, with
+    chrome://flags#enable-experimental-web-platform-features enabled, in
+    conjunction with a supported
+    <a href="https://github.com/WICG/web-share-target">web share target</a>
+    (<a href="https://wicg.github.io/web-share-target/demos/sharetarget.html">demo app</a>).</li>
+  </ul>
+  <script>
+    'use strict';
+
+    function sleep(delay) {
+      return new Promise(resolve => {
+        setTimeout(resolve, delay);
+      });
+    }
+
+    function logText(message, isError) {
+      if (isError)
+        console.error(message);
+      else
+        console.log(message);
+
+      const p = document.createElement('p');
+      if (isError)
+        p.setAttribute('class', 'error');
+      document.querySelector('#output').appendChild(p);
+      p.appendChild(document.createTextNode(message));
+    }
+
+    function logError(message) {
+      logText(message, true);
+    }
+
+    function checkboxChanged(e) {
+      const checkbox = e.target;
+      const textfield = document.querySelector('#' + checkbox.id.split('_')[0]);
+
+      textfield.disabled = !checkbox.checked;
+      if (!checkbox.checked)
+        textfield.value = '';
+    }
+
+    async function testWebShare() {
+      if (navigator.share === undefined) {
+        logError('Error: Unsupported feature: navigator.share()');
+        return;
+      }
+
+      const title_input = document.querySelector('#title');
+      const text_input = document.querySelector('#text');
+      const url_input = document.querySelector('#url');
+      const file_input = document.querySelector('#files');
+
+      const title = title_input.disabled ? undefined : title_input.value;
+      const text = text_input.disabled ? undefined : text_input.value;
+      const url = url_input.disabled ? undefined : url_input.value;
+      const files = file_input.disabled ? undefined : file_input.files;
+      if (!navigator.canShare || !navigator.canShare({files})) {
+        logError('Error: Unsupported feature: navigator.canShare()');
+        return;
+      }
+
+      try {
+        await navigator.share({files, title, text, url});
+      } catch (error) {
+        logError('Error sharing: ' + error);
+        return;
+      }
+
+      logText('Successfully sent share');
+    }
+
+    async function testWebShareDelay() {
+      await sleep(2000);
+      testWebShare();
+    }
+
+    function onLoad() {
+      // Checkboxes disable and delete textfields.
+      document.querySelector('#title_checkbox').addEventListener('click',
+          checkboxChanged);
+      document.querySelector('#text_checkbox').addEventListener('click',
+          checkboxChanged);
+      document.querySelector('#url_checkbox').addEventListener('click',
+          checkboxChanged);
+
+      document.querySelector('#share').addEventListener('click', testWebShare);
+      document.querySelector('#share-no-gesture').addEventListener('click',
+          testWebShareDelay);
+
+      if (navigator.share === undefined) {
+        logError('Error: You need to use a browser that supports this draft ' +
+                 'proposal.');
+      }
+    }
+
+    window.addEventListener('load', onLoad);
+  </script>
+</body>
+</html>
