@@ -99,23 +99,24 @@
       const text = text_input.disabled ? undefined : text_input.value;
       const url = url_input.disabled ? undefined : url_input.value;
       const files = file_input.disabled ? undefined : file_input.files;
-      if (!navigator.canShare || !navigator.canShare({files})) {
-        logError('Error: Unsupported feature: navigator.canShare()');
-        return;
+
+      if (files && files.length > 0) {
+        if (!navigator.canShare || !navigator.canShare({files})) {
+          logError('Error: Unsupported feature: navigator.canShare()');
+          return;
+        }
       }
 
       try {
         await navigator.share({files, title, text, url});
+        logText('Successfully sent share');
       } catch (error) {
         logError('Error sharing: ' + error);
-        return;
       }
-
-      logText('Successfully sent share');
     }
 
     async function testWebShareDelay() {
-      await sleep(2000);
+      await sleep(6000);
       testWebShare();
     }
 
