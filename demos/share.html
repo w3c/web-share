@@ -33,11 +33,11 @@
   <p><input id="share" type="button" value="Share" />
      <input id="share-no-gesture" type="button" value="Share without user gesture" /></p>
   <div id="output"></div>
-  <p>This is a test page for the <a href="https://github.com/WICG/web-share/tree/master/level-2">Web
-  Share API - Level 2, demonstrating file sharing</a>. It only works in browsers that have implemented the draft
+  <p>This is a test page for the <a href="https://github.com/WICG/web-share">Web
+  Share API</a>. It will only work in browsers that have implemented the draft
   proposal. At the time of writing, this works with:</p>
   <ul>
-    <li>Google Chrome for Android 75 or higher.</li>
+    <li>Google Chrome for Android 61 or higher.</li>
   </ul>
   <script>
     'use strict';
@@ -89,16 +89,14 @@
       const url = url_input.disabled ? undefined : url_input.value;
       try {
         await navigator.share({title, text, url});
+        logText('Successfully sent share');
       } catch (error) {
         logError('Error sharing: ' + error);
-        return;
       }
-
-      logText('Successfully sent share');
     }
 
     async function testWebShareDelay() {
-      await sleep(2000);
+      await sleep(6000);
       testWebShare();
     }
 
