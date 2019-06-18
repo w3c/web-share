@@ -115,11 +115,8 @@
 
       if (navigator.share === undefined) {
         if (window.location.protocol === 'http:') {
-          logError('navigator.share() is only available in secure contexts.');
-          setTimeout(() => {
-            window.location.replace(window.location.href.replace(/^http:/, 'https:'));
-          }, 4000);
-          return;
+          // navigator.share() is only available in secure contexts.
+          window.location.replace(window.location.href.replace(/^http:/, 'https:'));
         } else {
           logError('Error: You need to use a browser that supports this draft ' +
                    'proposal.');
