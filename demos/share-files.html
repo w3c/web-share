@@ -128,8 +128,13 @@
           testWebShareDelay);
 
       if (navigator.share === undefined) {
-        logError('Error: You need to use a browser that supports this draft ' +
-                 'proposal.');
+        if (window.location.protocol === 'http:') {
+          // navigator.share() is only available in secure contexts.
+          window.location.replace(window.location.href.replace(/^http:/, 'https:'));
+        } else {
+          logError('Error: You need to use a browser that supports this draft ' +
+                   'proposal.');
+        }
       }
     }
 
