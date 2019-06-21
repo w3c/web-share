@@ -121,11 +121,9 @@
             <var>data</var>, run the following steps:
           </p>
           <ol data-link-for="ShareData">
-            <li>Let <var>p</var> be <a>a new promise</a>.
-            </li>
             <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
-            or <a>url</a> are present, reject <var>p</var> with {{TypeError}},
-            and abort these steps.
+            or <a>url</a> are present, return <a>a promise rejected with</a> a
+            {{TypeError}}.
             </li>
             <li>If <var>data</var>'s <a>url</a> member is <a>present</a>:
               <ol>
@@ -136,8 +134,8 @@
                 parser</a> on <var>data</var>'s <a>url</a>, with
                 <var>base</var>, and no <var>encoding override</var>.
                 </li>
-                <li>If <var>url</var> is failure, <a>reject</a> <var>p</var>
-                with {{TypeError}}, and abort these steps.
+                <li>If <var>url</var> is failure, return <a>a promise
+                rejected with</a>  {{TypeError}}.
                 </li>
                 <li>Set <var>data</var> to a copy of <var>data</var>, with its
                 <a>url</a> member set to the result of running the <a>URL
@@ -146,11 +144,12 @@
               </ol>
             </li>
             <li>If the method call was not <a>triggered by user activation</a>,
-            <a>reject</a> <var>p</var> with a "{{NotAllowedError}}"
-            {{DOMException}}, and abort these steps.
+            return <a>a promise rejected with</a> with a "{{NotAllowedError}}"
+            {{DOMException}}.
             </li>
-            <li>
-              <a>In parallel</a>:
+            <li>Let <var>p</var> be <a>a new promise</a>.
+            </li>
+            <li>Return <var>p</var> and <a>in parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
                 <a>reject</a> <var>p</var> with an "{{AbortError}}"
@@ -176,8 +175,6 @@
                 target, <a>resolve</a> <var>p</var> with <b>undefined</b>.
                 </li>
               </ol>
-            </li>
-            <li>Return <var>p</var>.
             </li>
           </ol>
           <p>
