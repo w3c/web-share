@@ -5,7 +5,7 @@
     <title>
       Web Share API - Level 1
     </title>
-    <script src="https://www.w3.org/Tools/respec/respec-w3c-common" class=
+    <script src="https://www.w3.org/Tools/respec/respec-w3c" class=
     "remove"></script>
     <script class='remove'>
       var respecConfig = {
@@ -28,10 +28,11 @@
           feature: "web-share",
           browsers: ["chrome", "firefox", "safari", "edge", "and_chr", "and_ff", "ios_saf"],
         },
+        xref: "web-platform",
       };
     </script>
   </head>
-  <body>
+  <body data-cite="promises-guide">
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -69,9 +70,9 @@
         });
       </pre>
       <p data-link-for="ShareData">
-        Note that a <a>url</a> of <code>''</code> refers to the current page
-        URL, just as it would in a link. Any other absolute or relative URL can
-        also be used.
+        Note that a <a>url</a> of `''` refers to the current page URL, just as
+        it would in a link. Any other absolute or relative URL can also be
+        used.
       </p>
       <p>
         In response to this call to <a>navigator.share()</a>, the user agent
@@ -85,12 +86,8 @@
       </h2>
       <section data-dfn-for="Navigator" data-link-for="Navigator">
         <h3>
-          <code>Navigator</code> interface
+          `Navigator` interface
         </h3>
-        <p>
-          The <code><dfn data-cite="HTML#navigator">Navigator</dfn></code>
-          interface is defined in [[HTML]].
-        </p>
         <pre class="idl">
           partial interface Navigator {
             [SecureContext] Promise&lt;void&gt; share(optional ShareData data);
@@ -99,11 +96,10 @@
         <div class="note">
           The <var>data</var> argument is marked as "optional", but it is
           effectively required; <a>share()</a> will return a rejected promise
-          with a <a>TypeError</a> if called with no arguments. WebIDL
-          <a data-cite="WEBIDL#idl-operations">mandates that it be
-          optional</a> because the dictionary members are all optional. See
-          WebIDL <a href="https://github.com/heycam/webidl/issues/130">Issue
-          #130</a>.
+          with a {{TypeError}} if called with no arguments. WebIDL
+          <a data-cite="WEBIDL#idl-operations">mandates that it be optional</a>
+          because the dictionary members are all optional. See WebIDL <a href=
+          "https://github.com/heycam/webidl/issues/130">Issue #130</a>.
         </div>
         <p>
           User agents that do not support sharing SHOULD NOT expose
@@ -125,51 +121,40 @@
             <var>data</var>, run the following steps:
           </p>
           <ol data-link-for="ShareData">
-            <li>Let <var>p</var> be <a data-cite=
-            "!promises-guide#a-new-promise">a new promise</a>.
+            <li>Let <var>p</var> be <a>a new promise</a>.
             </li>
             <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
-            or <a>url</a> are present, reject <var>p</var> with
-            <a>TypeError</a>, and abort these steps.
+            or <a>url</a> are present, reject <var>p</var> with {{TypeError}},
+            and abort these steps.
             </li>
-            <li>If <var>data</var>'s <a>url</a> member is <a data-cite=
-            "!WEBIDL#dfn-present">present</a>:
+            <li>If <var>data</var>'s <a>url</a> member is <a>present</a>:
               <ol>
-                <li>Let <var>base</var> be the <b>this</b> value's
-                  <a data-cite="HTML#relevant-settings-object">relevant
-                  settings object</a>'s <a data-cite="HTML#api-base-url">API
-                  base URL</a>.
+                <li>Let <var>base</var> be the <b>this</b> value's <a>relevant
+                settings object</a>'s <a>API base URL</a>.
                 </li>
-                <li>Let <var>url</var> be the result of running the
-                <a data-cite="URL#concept-url-parser">URL parser</a> on <var>
-                  data</var>'s <a>url</a>, with <var>base</var>, and no
-                  <var>encoding override</var>.
+                <li>Let <var>url</var> be the result of running the <a>URL
+                parser</a> on <var>data</var>'s <a>url</a>, with
+                <var>base</var>, and no <var>encoding override</var>.
                 </li>
-                <li>If <var>url</var> is failure, <a data-cite=
-                "!promises-guide#reject-promise">reject</a> <var>p</var> with
-                <a>TypeError</a>, and abort these steps.
+                <li>If <var>url</var> is failure, <a>reject</a> <var>p</var>
+                with {{TypeError}}, and abort these steps.
                 </li>
                 <li>Set <var>data</var> to a copy of <var>data</var>, with its
-                <a>url</a> member set to the result of running the
-                  <a data-cite="URL#concept-url-serializer">URL serializer</a>
-                  on <var>url</var>.
+                <a>url</a> member set to the result of running the <a>URL
+                serializer</a> on <var>url</var>.
                 </li>
               </ol>
             </li>
-            <li>If the method call was not <a data-cite=
-            "!HTML#triggered-by-user-activation">triggered by user
-            activation</a>, <a data-cite=
-            "!promises-guide#reject-promise">reject</a> <var>p</var> with a
-            "<a>NotAllowedError</a>" <a>DOMException</a>, and abort these
-            steps.
+            <li>If the method call was not <a>triggered by user activation</a>,
+            <a>reject</a> <var>p</var> with a "{{NotAllowedError}}"
+            {{DOMException}}, and abort these steps.
             </li>
             <li>
-              <a data-cite="HTML#in-parallel">In parallel</a>:
+              <a>In parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
-                <a data-cite="promises-guide#reject-promise">reject</a> <var>
-                  p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
-                  abort these steps.
+                <a>reject</a> <var>p</var> with an "{{AbortError}}"
+                {{DOMException}}, and abort these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
@@ -177,22 +162,18 @@
                 the share targets. Wait for the user's choice.
                 </li>
                 <li>If the user chose to cancel the share operation,
-                <a data-cite="promises-guide#reject-promise">reject</a> <var>
-                  p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
-                  abort these steps.
+                <a>reject</a> <var>p</var> with an "{{AbortError}}"
+                {{DOMException}}, and abort these steps.
                 </li>
                 <li>Activate the chosen <a>share target</a>, <a>convert
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
-                <a data-cite="promises-guide#reject-promise">reject</a> <var>
-                  p</var> with an "<a>AbortError</a>" <a>DOMException</a>, and
-                  abort these steps.
+                <a>reject</a> <var>p</var> with an "{{AbortError}}"
+                {{DOMException}}, and abort these steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
-                target, <a data-cite=
-                "!promises-guide#resolve-promise">resolve</a> <var>p</var> with
-                <b>undefined</b>.
+                target, <a>resolve</a> <var>p</var> with <b>undefined</b>.
                 </li>
               </ol>
             </li>
@@ -215,7 +196,7 @@
       </section>
       <section data-dfn-for="ShareData" data-link-for="ShareData">
         <h3>
-          <code>ShareData</code> dictionary
+          `ShareData` dictionary
         </h3>
         <pre class="idl">
           dictionary ShareData {
@@ -250,22 +231,19 @@
           </dd>
         </dl>
         <div class="note">
-          These members are <a data-cite=
-          "!WEBIDL#idl-USVString"><code>USVString</code></a> (as opposed to
-          <a data-cite="WEBIDL#idl-DOMString"><code>DOMString</code></a>)
-          because they are not allowed to contain invalid <a data-cite=
+          These members are {{USVString}} (as opposed to {{DOMString}}) because
+          they are not allowed to contain invalid <a data-cite=
           "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
           is free to re-encode them in any Unicode encoding (e.g.,
           <a data-cite="rfc3629#section-3">UTF-8</a>).
         </div>
         <div class="note">
-          The <a>url</a> member can contain a <a data-cite=
-          "!URL#relative-url-with-fragment-string">relative URL</a>. In this
-          case, it will be automatically resolved relative to the current page
-          location, just like a <a data-cite=
-          "!HTML#attr-hyperlink-href"><code>href</code></a> on an <a data-cite=
-          "!HTML#the-a-element"><code>a</code></a> element, before being given
-          to the share target.
+          The <a>url</a> member can contain a <a>relative-URL string</a>. In
+          this case, it will be automatically resolved relative to the current
+          page location, just like a <a data-cite=
+          "HTML#attr-hyperlink-href">`href`</a> on an <a data-cite=
+          "HTML#the-a-element">`a`</a> element, before being given to the share
+          target.
         </div>
       </section>
     </section>
@@ -274,10 +252,9 @@
         Share targets
       </h2>
       <p>
-        A <dfn data-lt="share target|share targets">share target</dfn> is the
-        abstract concept of a destination that the user agent will transmit the
-        share data to. What constitutes a share target is at the discretion of
-        the user agent.
+        A <dfn>share target</dfn> is the abstract concept of a destination that
+        the user agent will transmit the share data to. What constitutes a
+        share target is at the discretion of the user agent.
       </p>
       <p>
         A share target might not be directly able to accept a <a>ShareData</a>
@@ -343,32 +320,6 @@
         </p>
       </section>
     </section>
-    <section>
-      <h2>
-        Dependencies
-      </h2>
-      <p>
-        The following are defined in [[WEBIDL]]:
-      </p>
-      <ul data-sort="">
-        <li>
-          <code><dfn data-cite=
-          "WEBIDL#dfn-DOMException">DOMException</dfn></code>
-        </li>
-        <li>
-          <code><dfn data-cite="WEBIDL#aborterror">AbortError</dfn></code>
-        </li>
-        <li>
-          <code><dfn data-cite=
-          "!WEBIDL#notallowederror">NotAllowedError</dfn></code>
-        </li>
-      </ul>
-      <p>
-        <code><dfn data-cite=
-        "!ECMASCRIPT#sec-native-error-types-used-in-this-standard-typeerror">TypeError</dfn></code>
-        is defined by [[ECMASCRIPT]].
-      </p>
-    </section>
     <section class="informative">
       <h2>
         Security and privacy considerations
@@ -398,9 +349,8 @@
         native applications.
         </li>
         <li>Due to the capabilities of the API surface,
-        <a>navigator.share()</a> is <a data-cite=
-        "WEBIDL#dfn-available-only-in-secure-contexts">available only in secure
-        contexts</a> (such as <code>https://</code> schemes).
+        <a>navigator.share()</a> is <a>available only in secure contexts</a>
+        (such as `https://` schemes).
         </li>
         <li>Use of <a>navigator.share()</a> from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
@@ -449,16 +399,15 @@
       </div>
       <p data-link-for="Navigator">
         The <a>share()</a> method returns a rejected promise with a
-        <a>TypeError</a> if none of the specified members are present. The
+        {{TypeError}} if none of the specified members are present. The
         intention is that when a new member is added, it will also be added to
         this list of recognized members. This is for future-proofing
         implementations: if a web site written against a future version of this
         spec uses <em>only</em> new members (<i>e.g.</i>,
-        <code>navigator.share({image: x})</code>), it will be valid in future
-        user agents, but a <a>TypeError</a> on user agents implementing an
-        older version of the spec. Developers will be asked to feature-detect
-        any new members they rely on, to avoid having errors surface in their
-        program.
+        `navigator.share({image: x})`), it will be valid in future user agents,
+        but a {{TypeError}} on user agents implementing an older version of the
+        spec. Developers will be asked to feature-detect any new members they
+        rely on, to avoid having errors surface in their program.
       </p>
       <p>
         Editors of this spec will want to carefully consider the genericity of
@@ -469,6 +418,7 @@
       </p>
     </section>
     <section id="conformance"></section>
+    <section id="idl-index"></section>
     <section class="appendix">
       <h2>
         Acknowledgments
