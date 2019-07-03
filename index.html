@@ -90,7 +90,7 @@
         </h3>
         <pre class="idl">
           partial interface Navigator {
-            [SecureContext] Promise&lt;void&gt; share(optional ShareData data);
+            [SecureContext] Promise&lt;void&gt; share(optional ShareData data = {});
           };
         </pre>
         <div class="note">
