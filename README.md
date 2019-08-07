@@ -1,8 +1,6 @@
 # Web Share API
 
-**Written**: 2016-06-08, **Updated**: 2017-07-13
-
-**Web Share** is a Web platform API for sharing text, URLs and images to an
+**[Web Share](https://w3c.github.io/web-share/)** is a Web platform API for sharing text, URLs and images to an
 arbitrary destination of the user's choice:
 
 ```js
@@ -19,8 +17,8 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 ## Links
 
 * [Explainer document](docs/explainer.md), a high-level overview of the proposal.
-* [Specification - Level 1](https://wicg.github.io/web-share/).
-* [Specification - Level 2](https://wicg.github.io/web-share/level-2/).
+* [Specification - Level 1](https://w3c.github.io/web-share/).
+* [Specification - Level 2](https://w3c.github.io/web-share/level-2/).
 * [Native integration survey](docs/native.md), for platform-specific matters.
 * [Web platform
   tests](https://github.com/web-platform-tests/wpt/tree/master/web-share), for
