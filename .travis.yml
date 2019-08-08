@@ -1,0 +1,18 @@
+dist: trusty
+language: node_js
+node_js:
+  - lts/*
+
+branches:
+  only:
+    - master
+
+install:
+  - npm install respec-validator
+
+script:
+  - npx respec-validator --no-links --gh-user=$GH_USER --gh-token=$GH_TOKEN index.html
+
+cache:
+  directories:
+    - node_modules
