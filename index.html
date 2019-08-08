@@ -117,17 +117,19 @@
             or <a>url</a> are present, return <a>a promise rejected with</a> a
             {{TypeError}}.
             </li>
-            <li>If <var>data</var>'s <a>url</a> member is <a>present</a>:
+            <li>If <var>data</var>'s <a>url</a> member is [=dictionary
+            member/present=]:
               <ol>
                 <li>Let <var>base</var> be the <b>this</b> value's <a>relevant
-                settings object</a>'s <a>API base URL</a>.
+                settings object</a>'s [=environment settings object/api base
+                URL=].
                 </li>
                 <li>Let <var>url</var> be the result of running the <a>URL
                 parser</a> on <var>data</var>'s <a>url</a>, with
                 <var>base</var>, and no <var>encoding override</var>.
                 </li>
-                <li>If <var>url</var> is failure, return <a>a promise
-                rejected with</a>  {{TypeError}}.
+                <li>If <var>url</var> is failure, return <a>a promise rejected
+                with</a> {{TypeError}}.
                 </li>
                 <li>Set <var>data</var> to a copy of <var>data</var>, with its
                 <a>url</a> member set to the result of running the <a>URL
@@ -136,7 +138,7 @@
               </ol>
             </li>
             <li>If the method call was not <a>triggered by user activation</a>,
-            return <a>a promise rejected with</a> with a "{{NotAllowedError}}"
+            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
             <li>Let <var>p</var> be <a>a new promise</a>.
@@ -144,7 +146,7 @@
             <li>Return <var>p</var> and <a>in parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
-                <a>reject</a> <var>p</var> with an "{{AbortError}}"
+                <a>reject</a> <var>p</var> with an {{"AbortError"}}
                 {{DOMException}}, and abort these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
@@ -153,14 +155,14 @@
                 the share targets. Wait for the user's choice.
                 </li>
                 <li>If the user chose to cancel the share operation,
-                <a>reject</a> <var>p</var> with an "{{AbortError}}"
+                <a>reject</a> <var>p</var> with an {{"AbortError"}}
                 {{DOMException}}, and abort these steps.
                 </li>
                 <li>Activate the chosen <a>share target</a>, <a>convert
                 <var>data</var> to a format suitable for ingestion into the
                 target</a>, and transmit the converted data to the target. If
                 an error occurs starting the target or transmitting the data,
-                <a>reject</a> <var>p</var> with an "{{AbortError}}"
+                <a>reject</a> <var>p</var> with an {{"AbortError"}}
                 {{DOMException}}, and abort these steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
