@@ -96,8 +96,8 @@
         </p>
         <pre class="idl">
           partial interface Navigator {
-            [SecureContext] boolean canShare(optional ShareData data);
-            [SecureContext] Promise&lt;void&gt; share(optional ShareData data);
+            [SecureContext] boolean canShare(optional ShareData data = {});
+            [SecureContext] Promise&lt;void&gt; share(optional ShareData data = {});
           };
         </pre>
         <div class="note">
