@@ -113,6 +113,10 @@
             <var>data</var>, run the following steps:
           </p>
           <ol data-link-for="ShareData">
+            <li>If the method call was not <a>triggered by user activation</a>,
+            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            {{DOMException}}.
+            </li>
             <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
             or <a>url</a> are present, return <a>a promise rejected with</a> a
             {{TypeError}}.
@@ -136,10 +140,6 @@
                 serializer</a> on <var>url</var>.
                 </li>
               </ol>
-            </li>
-            <li>If the method call was not <a>triggered by user activation</a>,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
-            {{DOMException}}.
             </li>
             <li>Let <var>p</var> be <a>a new promise</a>.
             </li>
