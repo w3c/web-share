@@ -32,7 +32,7 @@
       };
     </script>
   </head>
-  <body data-cite="promises-guide">
+  <body>
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -69,7 +69,7 @@
           }
         });
       </pre>
-      <p data-link-for="ShareData">
+      <p>
         Note that a {{ShareData/url}} of `''` refers to the current page URL,
         just as it would in a link. Any other absolute or relative URL can also
         be used.
@@ -84,7 +84,7 @@
       <h2>
         API definition
       </h2>
-      <section data-dfn-for="Navigator" data-link-for="Navigator">
+      <section data-dfn-for="Navigator">
         <h3>
           `Navigator` interface
         </h3>
@@ -112,7 +112,7 @@
             When the {{Navigator/share()}} method is called with argument
             |data:ShareData|, run the following steps:
           </p>
-          <ol data-link-for="ShareData" class="algorithm">
+          <ol class="algorithm">
             <li>If none of |data|'s members {{ShareData/title}},
             {{ShareData/text}}, or {{ShareData/url}} are present, return <a>a
             promise rejected with</a> a {{TypeError}}.
@@ -185,7 +185,7 @@
           </div>
         </section>
       </section>
-      <section data-dfn-for="ShareData" data-link-for="ShareData">
+      <section data-dfn-for="ShareData">
         <h3>
           `ShareData` dictionary
         </h3>
@@ -238,7 +238,7 @@
         </div>
       </section>
     </section>
-    <section data-link-for="Navigator">
+    <section>
       <h2>
         Share targets
       </h2>
@@ -374,7 +374,7 @@
         This doesn't mean user agents can add whatever members they like. It
         means that new members can be added to the standard in the future.
       </div>
-      <p data-link-for="ShareData">
+      <p>
         The three members {{ShareData/title}}, {{ShareData/text}}, and
         {{ShareData/url}}, are part of the base feature set, and
         implementations that provide {{Navigator/share()}} need to accept all
