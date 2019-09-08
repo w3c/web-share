@@ -32,7 +32,7 @@
       };
     </script>
   </head>
-  <body data-cite="promises-guide">
+  <body>
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -69,14 +69,14 @@
           }
         });
       </pre>
-      <p data-link-for="ShareData">
-        Note that a <a>url</a> of `''` refers to the current page URL, just as
-        it would in a link. Any other absolute or relative URL can also be
-        used.
+      <p>
+        Note that a {{ShareData/url}} of `''` refers to the current page URL,
+        just as it would in a link. Any other absolute or relative URL can also
+        be used.
       </p>
       <p>
-        In response to this call to <a>navigator.share()</a>, the user agent
-        would display a picker or chooser dialog, allowing the user to select a
+        In response to this call to {{Navigator/share()}}, the user agent would
+        display a picker or chooser dialog, allowing the user to select a
         target to share this title and the page URL to.
       </p>
     </section>
@@ -84,7 +84,7 @@
       <h2>
         API definition
       </h2>
-      <section data-dfn-for="Navigator" data-link-for="Navigator">
+      <section data-dfn-for="Navigator">
         <h3>
           `Navigator` interface
         </h3>
@@ -95,59 +95,58 @@
         </pre>
         <p>
           User agents that do not support sharing SHOULD NOT expose
-          <a>share()</a> on the <a>Navigator</a> interface.
+          {{Navigator/share()}} on the <a>Navigator</a> interface.
         </p>
         <div class="note">
           The above statement is designed to permit feature detection. If
-          <a>share()</a> is present, there is a reasonable expectation that it
-          will work and present the user with at least one <a>share target</a>.
-          Clients can use the presence or absence of this method to determine
-          whether to show UI that triggers its use.
+          {{Navigator/share()}} is present, there is a reasonable expectation
+          that it will work and present the user with at least one <a>share
+          target</a>. Clients can use the presence or absence of this method to
+          determine whether to show UI that triggers its use.
         </div>
         <section>
           <h4>
             <dfn>share()</dfn> method
           </h4>
           <p>
-            When the <a>share()</a> method is called with argument
-            <var>data</var>, run the following steps:
+            When the {{Navigator/share()}} method is called with argument
+            |data:ShareData|, run the following steps:
           </p>
-          <ol data-link-for="ShareData">
+          <ol class="algorithm">
             <li>If the method call was not <a>triggered by user activation</a>,
             return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
-            <li>If none of <var>data</var>'s members <a>title</a>, <a>text</a>,
-            or <a>url</a> are present, return <a>a promise rejected with</a> a
-            {{TypeError}}.
+            <li>If none of |data|'s members {{ShareData/title}},
+            {{ShareData/text}}, or {{ShareData/url}} are present, return <a>a
+            promise rejected with</a> a {{TypeError}}.
             </li>
-            <li>If <var>data</var>'s <a>url</a> member is [=dictionary
+            <li>If |data|'s {{ShareData/url}} member is [=dictionary
             member/present=]:
               <ol>
-                <li>Let <var>base</var> be the <b>this</b> value's <a>relevant
+                <li>Let |base:URL| be the <b>this</b> value's <a>relevant
                 settings object</a>'s [=environment settings object/api base
                 URL=].
                 </li>
-                <li>Let <var>url</var> be the result of running the <a>URL
-                parser</a> on <var>data</var>'s <a>url</a>, with
-                <var>base</var>, and no <var>encoding override</var>.
+                <li>Let |url:URL| be the result of running the <a>URL
+                parser</a> on |data|'s {{ShareData/url}} with |base|.
                 </li>
-                <li>If <var>url</var> is failure, return <a>a promise rejected
-                with</a> {{TypeError}}.
+                <li>If |url| is failure, return <a>a promise rejected with</a>
+                {{TypeError}}.
                 </li>
-                <li>Set <var>data</var> to a copy of <var>data</var>, with its
-                <a>url</a> member set to the result of running the <a>URL
-                serializer</a> on <var>url</var>.
+                <li>Set |data| to a copy of |data|, with its {{ShareData/url}}
+                member set to the result of running the <a>URL serializer</a>
+                on |url|.
                 </li>
               </ol>
             </li>
-            <li>Let <var>p</var> be <a>a new promise</a>.
+            <li>Let |p:Promise| be <a>a new promise</a>.
             </li>
-            <li>Return <var>p</var> and <a>in parallel</a>:
+            <li>Return |p| and <a>in parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available,
-                <a>reject</a> <var>p</var> with an {{"AbortError"}}
-                {{DOMException}}, and abort these steps.
+                <a>reject</a> |p| with an {{"AbortError"}} {{DOMException}},
+                and abort these steps.
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
@@ -155,18 +154,18 @@
                 the share targets. Wait for the user's choice.
                 </li>
                 <li>If the user chose to cancel the share operation,
-                <a>reject</a> <var>p</var> with an {{"AbortError"}}
-                {{DOMException}}, and abort these steps.
+                <a>reject</a> |p| with an {{"AbortError"}} {{DOMException}},
+                and abort these steps.
                 </li>
-                <li>Activate the chosen <a>share target</a>, <a>convert
-                <var>data</var> to a format suitable for ingestion into the
-                target</a>, and transmit the converted data to the target. If
-                an error occurs starting the target or transmitting the data,
-                <a>reject</a> <var>p</var> with an {{"AbortError"}}
-                {{DOMException}}, and abort these steps.
+                <li>Activate the chosen <a>share target</a>, <a>convert |data|
+                to a format suitable for ingestion into the target</a>, and
+                transmit the converted data to the target. If an error occurs
+                starting the target or transmitting the data, <a>reject</a> |p|
+                with an {{"AbortError"}} {{DOMException}}, and abort these
+                steps.
                 </li>
                 <li>Once the data has been successfully transmitted to the
-                target, <a>resolve</a> <var>p</var> with <b>undefined</b>.
+                target, <a>resolve</a> |p| with <b>undefined</b>.
                 </li>
               </ol>
             </li>
@@ -176,16 +175,16 @@
             targets are available, or the identity of the chosen target.
           </p>
           <div class="note">
-            <a>share()</a> always shows some form of UI, to give the user a
-            choice of application and get their approval to invoke and send
-            data to a potentially native application (which carries a security
-            risk). For this reason, user agents are prohibited from showing any
-            kind of "always use this target in the future" option, or bypassing
-            the UI if there is only a single share target.
+            {{Navigator/share()}} always shows some form of UI, to give the
+            user a choice of application and get their approval to invoke and
+            send data to a potentially native application (which carries a
+            security risk). For this reason, user agents are prohibited from
+            showing any kind of "always use this target in the future" option,
+            or bypassing the UI if there is only a single share target.
           </div>
         </section>
       </section>
-      <section data-dfn-for="ShareData" data-link-for="ShareData">
+      <section data-dfn-for="ShareData">
         <h3>
           `ShareData` dictionary
         </h3>
@@ -229,16 +228,14 @@
           <a data-cite="rfc3629#section-3">UTF-8</a>).
         </div>
         <div class="note">
-          The <a>url</a> member can contain a <a>relative-URL string</a>. In
-          this case, it will be automatically resolved relative to the current
-          page location, just like a <a data-cite=
-          "HTML#attr-hyperlink-href">`href`</a> on an <a data-cite=
-          "HTML#the-a-element">`a`</a> element, before being given to the share
-          target.
+          The {{ShareData/url}} member can contain a <a>relative-URL
+          string</a>. In this case, it will be automatically resolved relative
+          to the current page location, just like a {{HTMLBaseElement/href}} on
+          an [^a^] element, before being given to the share target.
         </div>
       </section>
     </section>
-    <section data-link-for="Navigator">
+    <section>
       <h2>
         Share targets
       </h2>
@@ -248,26 +245,26 @@
         share target is at the discretion of the user agent.
       </p>
       <p>
-        A share target might not be directly able to accept a <a>ShareData</a>
+        A share target might not be directly able to accept a {{ShareData}}
         (due to not having been written with this API in mind). However, it
         MUST have the ability to receive data that matches some or all of the
-        concepts exposed in <a>ShareData</a>. To <dfn>convert data to a format
+        concepts exposed in {{ShareData}}. To <dfn>convert data to a format
         suitable for ingestion into the target</dfn>, the user agent SHOULD map
-        the members of <a>ShareData</a> onto equivalent concepts in the target.
-        It MAY discard members if necessary. The meaning of each member of the
+        the members of {{ShareData}} onto equivalent concepts in the target. It
+        MAY discard members if necessary. The meaning of each member of the
         payload is at the discretion of the share target.
       </p>
       <p>
         Each share target MAY be made conditionally available depending on the
-        <a>ShareData</a> payload delivered to the <a>share()</a> method.
+        {{ShareData}} payload delivered to the {{Navigator/share()}} method.
       </p>
       <div class="note">
         Once a share target has been given the payload, the share is considered
         successful. If the target considers the data unacceptable or an error
         occurs, it can either recover gracefully, or show an error message to
         the end-user; it cannot rely on the sender to handle errors. In other
-        words, the <a>share()</a> method is "fire and forget"; it does not wait
-        for the target to approve or reject the payload.
+        words, the {{Navigator/share()}} method is "fire and forget"; it does
+        not wait for the target to approve or reject the payload.
       </div>
       <section class="informative">
         <h3>
@@ -286,7 +283,7 @@
           the user's address book, using a specific app).
           </li>
           <li>Websites (e.g., the user agent fills in a template URL with the
-          members of the <a>ShareData</a>, then navigates to that URL in a new
+          members of the {{ShareData}}, then navigates to that URL in a new
           browsing context).
           </li>
         </ul>
@@ -301,13 +298,13 @@
           can simply forward the share data to the operating system and not
           talk directly to native applications.
         </p>
-        <p data-link-for="ShareData">
-          Mapping the <a>ShareData</a> to the share target (or operating
-          system)'s native format can be tricky as some platforms will not have
-          an equivalent set of members. For example, if the target has a "text"
+        <p>
+          Mapping the {{ShareData}} to the share target (or operating system)'s
+          native format can be tricky as some platforms will not have an
+          equivalent set of members. For example, if the target has a "text"
           member but not a "URL" member, one solution is to concatenate both
-          the <a>text</a> and <a>url</a> members of <a>ShareData</a> and pass
-          the result in the "text" member of the target.
+          the {{ShareData/text}} and {{ShareData/url}} members of {{ShareData}}
+          and pass the result in the "text" member of the target.
         </p>
       </section>
     </section>
@@ -323,27 +320,27 @@
       </p>
       <ul>
         <li>There is a requirement to not allow the website to learn which apps
-        are installed, or which app was chosen from <a>navigator.share()</a>,
+        are installed, or which app was chosen from {{Navigator/share()}},
         because this information could be used for fingerprinting, as well as
         leaking details about the user's device.
         </li>
         <li>Implementors will want to carefully consider what information is
-        revealed in the error message when <a>navigator.share()</a> is
-        rejected. Even distinguishing between the case where no targets are
-        available and user cancellation could reveal information about which
-        apps are installed on the user's device.
+        revealed in the error message when {{Navigator/share()}} is rejected.
+        Even distinguishing between the case where no targets are available and
+        user cancellation could reveal information about which apps are
+        installed on the user's device.
         </li>
-        <li>There is a requirement that <a>navigator.share()</a> presents the
-        user with a dialog asking them to select a target application (even if
-        there is only one possible target). This surface serves as a security
+        <li>There is a requirement that {{Navigator/share()}} presents the user
+        with a dialog asking them to select a target application (even if there
+        is only one possible target). This surface serves as a security
         confirmation, ensuring that websites cannot silently send data to
         native applications.
         </li>
-        <li>Due to the capabilities of the API surface,
-        <a>navigator.share()</a> is <a>available only in secure contexts</a>
-        (such as `https://` schemes).
+        <li>Due to the capabilities of the API surface, {{Navigator/share()}}
+        is <a>available only in secure contexts</a> (such as `https://`
+        schemes).
         </li>
-        <li>Use of <a>navigator.share()</a> from a <a href=
+        <li>Use of {{Navigator/share()}} from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
         might leak private data to a third-party application that does not
         respect the user's privacy setting. User agents could present
@@ -351,9 +348,9 @@
         browsing mode, but this is not mandated as the chooser UI could be
         considered sufficient warning.
         </li>
-        <li>The data passed to <a>navigator.share()</a> might be used to
-        exploit buffer overflow or other remote code execution vulnerabilities
-        in native applications that receive shares. There is no general way to
+        <li>The data passed to {{Navigator/share()}} might be used to exploit
+        buffer overflow or other remote code execution vulnerabilities in
+        native applications that receive shares. There is no general way to
         guard against this, but implementors will want to be aware that it is a
         possibility.
         </li>
@@ -365,7 +362,7 @@
       </h2>
       <p>
         The Web Share API is designed to be extended in the future by way of
-        new members added to the <a>ShareData</a> dictionary, to allow both
+        new members added to the {{ShareData}} dictionary, to allow both
         sharing of new types of data (<i>e.g.</i>, <a href=
         "https://github.com/w3c/web-share/issues/12">images</a>) and strings
         with new semantics (<i>e.g.</i> author).
@@ -374,22 +371,23 @@
         This doesn't mean user agents can add whatever members they like. It
         means that new members can be added to the standard in the future.
       </div>
-      <p data-link-for="ShareData">
-        The three members <a>title</a>, <a>text</a>, and <a>url</a>, are part
-        of the base feature set, and implementations that provide
-        <a>navigator.share()</a> need to accept all three. Any new members that
-        are added in the future will be <em>individually
-        feature-detectable</em>, to allow for backwards-compatibility with
-        older implementations that don't recognize those members. These new
-        members might also be added as optional "MAY" requirements.
+      <p>
+        The three members {{ShareData/title}}, {{ShareData/text}}, and
+        {{ShareData/url}}, are part of the base feature set, and
+        implementations that provide {{Navigator/share()}} need to accept all
+        three. Any new members that are added in the future will be
+        <em>individually feature-detectable</em>, to allow for
+        backwards-compatibility with older implementations that don't recognize
+        those members. These new members might also be added as optional "MAY"
+        requirements.
       </p>
       <div class="note">
         There is <a href="https://github.com/heycam/webidl/issues/107">an open
         discussion</a> about how to provide feature-detection for dictionary
         members. Web Share will use the mechanism produced by that discussion.
       </div>
-      <p data-link-for="Navigator">
-        The <a>share()</a> method returns a rejected promise with a
+      <p>
+        The {{Navigator/share()}} method returns a rejected promise with a
         {{TypeError}} if none of the specified members are present. The
         intention is that when a new member is added, it will also be added to
         this list of recognized members. This is for future-proofing
