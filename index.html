@@ -301,9 +301,18 @@
         concepts exposed in {{ShareData}}. To <dfn>convert data to a format
         suitable for ingestion into the target</dfn>, the user agent SHOULD map
         the members of {{ShareData}} onto equivalent concepts in the target. It
-        MAY discard members if necessary. The meaning of each member of the
-        payload is at the discretion of the share target.
+        MAY discard or combine members if necessary. The meaning of each member
+        of the payload is at the discretion of the share target.
       </p>
+      <div class="note">
+        Mapping the {{ShareData}} to the share target (or operating system)'s
+        native format can be tricky as some platforms will not have an
+        equivalent set of members. For example, if the target has a "text"
+        member but not a "URL" member (as is the case on Android), one solution
+        is to concatenate both the {{ShareData/text}} and {{ShareData/url}}
+        members of {{ShareData}} and pass the result in the "text" member of
+        the target.
+      </div>
       <p>
         Each share target MAY be made conditionally available depending on the
         {{ShareData}} payload delivered to the {{Navigator/share()}} method.
@@ -347,14 +356,6 @@
           intent system similar to Web Share. In these cases, the user agent
           can simply forward the share data to the operating system and not
           talk directly to native applications.
-        </p>
-        <p>
-          Mapping the {{ShareData}} to the share target (or operating system)'s
-          native format can be tricky as some platforms will not have an
-          equivalent set of members. For example, if the target has a "text"
-          member but not a "URL" member, one solution is to concatenate both
-          the {{ShareData/text}} and {{ShareData/url}} members of {{ShareData}}
-          and pass the result in the "text" member of the target.
         </p>
       </section>
     </section>
