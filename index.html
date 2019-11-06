@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Web Share API - Level 1
+      Web Share API
     </title>
     <script src="https://www.w3.org/Tools/respec/respec-w3c" class=
     "remove"></script>
@@ -46,9 +46,7 @@
     </section>
     <section id="sotd">
       <p>
-        This "Level 1" specification is relatively stable, with multiple
-        implementations. Future enhancements will be published as a separate
-        document.
+        This is a work in progress. Wide review and feedback welcome.
       </p>
     </section>
     <section class="informative">
@@ -86,7 +84,7 @@
       </h2>
       <section data-dfn-for="Navigator">
         <h3>
-          `Navigator` interface
+          Extensions to the `Navigator` interface
         </h3>
         <pre class="idl">
           partial interface Navigator {
@@ -170,7 +168,7 @@
                   <ol>
                     <li>
                       <a>Reject</a> {{[[sharePromise]]}} with an
-                      "{{AbortError}}" {{DOMException}}.
+                      {{"AbortError"}} {{DOMException}}.
                     </li>
                     <li>Set {{[[sharePromise]]}} to `null`.
                     </li>
@@ -187,7 +185,7 @@
                   <ol>
                     <li>
                       <a>Reject</a> {{[[sharePromise]]}} with an
-                      "{{AbortError}}" {{DOMException}},
+                      {{"AbortError"}} {{DOMException}},
                     </li>
                     <li>Set {{[[sharePromise]]}} to `null`.
                     </li>
@@ -204,7 +202,7 @@
                   <ol>
                     <li>
                       <a>Reject</a> {{[[sharePromise]]}} with an
-                      "{{DataError}}" {{DOMException}}.
+                      {{"DataError"}} {{DOMException}}.
                     </li>
                     <li>Set {{[[sharePromise]]}} to `null`.
                     </li>

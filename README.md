@@ -9,16 +9,15 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 
 ## Implementation status
 
-* The Level 1 API (images/files not supported) is shipping in:
+* The API is shipping in:
   * Google Chrome 61 on Android.
   * [Safari 66](https://developer.apple.com/safari/technology-preview/release-notes/#r66).
-* The Level 2 API is currently [being implemented](https://www.chromestatus.com/feature/4777349178458112) in Chrome.
+  * Firefox Android coming soon.
 
 ## Links
 
 * [Explainer document](docs/explainer.md), a high-level overview of the proposal.
-* [Specification - Level 1](https://w3c.github.io/web-share/).
-* [Specification - Level 2](https://w3c.github.io/web-share/level-2/).
+* [Specification](https://w3c.github.io/web-share/).
 * [Native integration survey](docs/native.md), for platform-specific matters.
 * [Web platform
   tests](https://github.com/web-platform-tests/wpt/tree/master/web-share), for
