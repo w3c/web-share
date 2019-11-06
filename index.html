@@ -32,7 +32,7 @@
       };
     </script>
   </head>
-  <body>
+  <body data-cite="FILEAPI">
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -134,8 +134,17 @@
             rejected with</a> {{InvalidStateError}}.
             </li>
             <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} are present, return <a>a
-            promise rejected with</a> a {{TypeError}}.
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/file}} are
+            present, return <a>a promise rejected with</a> a {{TypeError}}.
+            </li>
+            <li>If |data|'s {{ShareData/files}} member is present:
+              <ol>
+                <li>If |data|'s {{ShareData/files}} member is empty, or if the
+                implementation does not support file sharing, return <a>a
+                promise rejected with</a> a {{TypeError}}, and abort these
+                steps.
+                </li>
+              </ol>
             </li>
             <li>If |data|'s {{ShareData/url}} member is [=dictionary
             member/present=]:
@@ -157,6 +166,7 @@
               </ol>
             </li>
             <li>If the method call was not <a>triggered by user activation</a>,
+            or a file type is being blocked due to security considerations,
             return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
@@ -238,6 +248,7 @@
         </h3>
         <pre class="idl">
           dictionary ShareData {
+            FrozenArray&lt;File&gt; files;
             USVString title;
             USVString text;
             USVString url;
@@ -248,6 +259,12 @@
           members:
         </p>
         <dl data-sort="">
+          <dt>
+            <dfn>files</dfn> member
+          </dt>
+          <dd>
+            Files to be shared.
+          </dd>
           <dt>
             <dfn>title</dfn> member
           </dt>
