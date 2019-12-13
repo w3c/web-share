@@ -156,9 +156,9 @@
                 </li>
               </ol>
             </li>
-            <li>If the method call was not <a>triggered by user activation</a>,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
-            {{DOMException}}.
+            <li>If the [=relevant global object=] of [=this=] does not have
+            [=transient activation=], return <a>a promise rejected with</a>
+            with a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
