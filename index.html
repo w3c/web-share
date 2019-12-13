@@ -137,6 +137,14 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
+            <li>Let |window| be [=relevant global object=] of [=this=].
+            </li>
+            <li>If |window| does not have [=transient activation=], return [=a
+            promise rejected with=] with a {{"NotAllowedError"}}
+            {{DOMException}}.
+            </li>
+            <li>[=Consume user activation=] of |window|.
+            </li>
             <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
             rejected with</a> {{InvalidStateError}}.
             </li>
@@ -434,6 +442,11 @@
         native applications that receive shares. There is no general way to
         guard against this, but implementors will want to be aware that it is a
         possibility.
+        </li>
+        <li>To prevent multiple share UIs from being displayed simultaneously,
+        as well as to mitigate some other behavior that could confuse end
+        users, calling {{Navigator/share()}} [=consume user activation|consumes
+        the user activation=] of the relevant {{Window}}.
         </li>
       </ul>
     </section>
