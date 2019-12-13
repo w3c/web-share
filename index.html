@@ -170,10 +170,9 @@
                 </li>
               </ol>
             </li>
-            <li>If the [=relevant global object=] of [=this=] does not have
-            [=transient activation=], or a file type is being blocked due to
-            security considerations, return <a>a promise rejected with</a> with
-            a {{"NotAllowedError"}} {{DOMException}}.
+            <li>If a file type is being blocked due to security considerations,
+            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
