@@ -11,15 +11,17 @@ The API returns a rejected promise if no share targets are available, but also r
 
 ## 2.2 Is this specification exposing the minimum amount of information necessary to power the feature?
 
-The API returns three states: no sharing was attempted (via `AbortError`), sharing was attempted but failed (via `DataError`) or sharing was successful (no error). All three states seem necessary to inform the user of the result of the action.
+The API allows testing whether content can be shared via `canShare()`; although this reveals information, it is important to users because it allow developers to not present a sharing option if the operation would immediately fail.
 
-Implementors will want to carefully consider what information is revealed in the error message when `share()` is rejected. Even distinguishing between the case where no targets are available and user cancellation could reveal information about which apps are installed on the user's device.
+The `share()` API returns three states: content type(s) not supported (via `TypeError`), no sharing was attempted (via `AbortError`), sharing was attempted but failed (also via `AbortError`) or sharing was successful (no error). The first state reveals no more information than `canShare()`; the remaining states are necessary to inform the user of the result of the action.
+
+Implementors will want to carefully consider what information is revealed in the error message when `share()` is rejected. Even distinguishing between the case where no targets are available and user cancellation could reveal information about which apps are installed on the user's device. The previous version of the specification distinguished when sharing failed via `DataError` instead, which may have exposed unnecessary information.
 
 ## 2.3 How does this specification deal with personal information or personally-identifiable information or information derived thereof?
 
 Any information shared was already exposed to the web site; no further personal information is revealed by the API to the web site.
 
-The receiving share target selected by the user can be given arbitrary information by the web site via the `ShareData`'s `title`, `text` and/or `url` properties. In most expected user interfaces, the user is not made aware of what data is being shared by the web site with the target. This could lead to a web site in posession of personal information sharing it with a target without the user's knowledge. One mitigation would be to have the user interface allow inspection of the data.
+The receiving share target selected by the user can be given arbitrary information by the web site via the `ShareData`'s properties. In most expected user interfaces, the user is not made aware of what data is being shared by the web site with the target. This could lead to a web site in posession of personal information sharing it with a target without the user's knowledge. One mitigation would be to have the user interface allow inspection of the data.
 
 ## 2.4 How does this specification deal with sensitive information?
 
@@ -33,13 +35,16 @@ No.
 
 The presence of the API may reveal characteristics of the user's device beyond the user agent. For example, the user agent may only expose the `navigator.share()` API on "mobile" devices, revealing the type of device the user agent is executing on.
 
+Revealing content types supported via `files` should be done carefully, as `canShare()` does not require
+[transient activation](https://html.spec.whatwg.org/multipage/interaction.html#transient-activation). For example, if the `canShare()` API response was conditional on what native applications were installed on the device, this could be used to fingerprint the user.
+
 ## 2.7 Does this specification allow an origin access to sensors on a user’s device
 
 No.
 
 ## 2.8 What data does this specification expose to an origin? Please also document what data is identical to data exposed by other features, in the same or different contexts.
 
-The data exposed to an origin is the presence of the API itself, and (per above) the results of interacting with the API (error or success).
+The data exposed to an origin is the presence of the API itself, whether certain content types are supported, and the results of interacting with the API (error or success).
 
 ## 2.9 Does this specification enable new script execution/loading mechanisms?
 
@@ -59,9 +64,9 @@ None.
 
 ## 2.13 How does this specification distinguish between behavior in first-party and third-party contexts?
 
-The contexts are not distingushed.
+First-party and third-party contexts are not distingushed.
 
-The use of the feature is gated on [transient activation](https://html.spec.whatwg.org/multipage/interaction.html#transient-activation) and thus requires user interaction (or the equivalent) within a third-party context to be used.
+The use of the `share()` API is gated on [transient activation](https://html.spec.whatwg.org/multipage/interaction.html#transient-activation) and thus requires user interaction (or the equivalent) within a third-party context to be used.
 
 ## 2.14 How does this specification work in the context of a user agent’s Private Browsing or "incognito" mode?
 
