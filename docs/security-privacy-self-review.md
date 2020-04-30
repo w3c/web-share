@@ -5,7 +5,7 @@ Responses to the [Self-Review Questionnaire: Security and Privacy](https://w3cta
 
 ## 2.1 What information might this feature expose to Web sites or other parties, and for what purposes is that exposure necessary?
 
-Web Share enables data to be sent from web sites to native applications. It explicitly does not allow the web site to learn which share targets are available.
+Web Share enables data to be sent from web sites to native applications or potentially other installed web applications. It explicitly does not allow the web site to learn which share targets are available.
 
 The API returns a rejected promise if no share targets are available, but also returns a rejected promise of the same type if the user cancels the share action. This intentionally does not reveal the state where no share targets are available.
 
