@@ -56,7 +56,7 @@ No.
 
 ## 2.11 Does this specification allow an origin some measure of control over a user agent’s native UI?
 
-The API provides for showing a target selection user interface, for example as a modal dialog. The presence and presentation of the interface remains entirely under the control of the user agent.
+The API provides for showing a target selection user interface, for example as a modal dialog on some platforms, or a context menu in other platforms. The presence and presentation of the interface remains entirely under the control of the user agent.
 
 ## 2.12 What temporary identifiers might this this specification create or expose to the web?
 
