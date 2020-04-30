@@ -21,7 +21,7 @@ Implementors will want to carefully consider what information is revealed in the
 
 Any information shared was already exposed to the web site; no further personal information is revealed by the API to the web site.
 
-The receiving share target selected by the user can be given arbitrary information by the web site via the `ShareData`'s properties. In most expected user interfaces, the user is not made aware of what data is being shared by the web site with the target. This could lead to a web site in posession of personal information sharing it with a target without the user's knowledge. One mitigation would be to have the user interface allow inspection of the data.
+The receiving share target selected by the user can be given arbitrary information by the web site via the `ShareData`'s properties. In some expected user interfaces, the user is not made aware of what data is being shared by the web site with the target. This could lead to a web site in posession of personal information sharing it with a target without the user's knowledge. One mitigation would be to have the user interface allow inspection of the data.
 
 ## 2.4 How does this specification deal with sensitive information?
 
