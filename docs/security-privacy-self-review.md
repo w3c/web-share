@@ -13,7 +13,9 @@ The API returns a rejected promise if no share targets are available, but also r
 
 The API allows testing whether content can be shared via `canShare()`; although this reveals information, it is important to users because it allow developers to not present a sharing option if the operation would immediately fail.
 
-The `share()` API returns three states: content type(s) not supported (via `TypeError`), no sharing was attempted (via `AbortError`), sharing was attempted but failed (also via `AbortError`) or sharing was successful (no error). The first state reveals no more information than `canShare()`; the remaining states are necessary to inform the user of the result of the action.
+The `share()` API returns three states: content not supported (via `TypeError`), no sharing was attempted (via `AbortError`), sharing was attempted but failed (also via `AbortError`) or sharing was successful (no error). The first state reveals no more information than `canShare()`; the remaining states are necessary to inform the user of the result of the action.
+
+For both `canShare()` and `share()`, revealing whether the specified content can be shared must be limited to the broad category of whether files can be shared or not (if specified) and whether the input url is parseable (if specified); implementations must not distinguish support for specific files or file types either by the platform or available share targets.
 
 Implementors will want to carefully consider what information is revealed in the error message when `share()` is rejected. Even distinguishing between the case where no targets are available and user cancellation could reveal information about which apps are installed on the user's device. The previous version of the specification distinguished when sharing failed via `DataError` instead, which may have exposed unnecessary information.
 
@@ -35,7 +37,7 @@ No.
 
 The presence of the API may reveal characteristics of the user's device beyond the user agent. For example, the user agent may only expose the `navigator.share()` API on "mobile" devices, revealing the type of device the user agent is executing on.
 
-Revealing content types supported via `files` should be done carefully, as `canShare()` does not require
+Revealing specific content types supported via `files` must not be done, as `canShare()` does not require
 [transient activation](https://html.spec.whatwg.org/multipage/interaction.html#transient-activation). For example, if the `canShare()` API response was conditional on what native applications were installed on the device, this could be used to fingerprint the user.
 
 ## 2.7 Does this specification allow an origin access to sensors on a user’s device
@@ -44,7 +46,7 @@ No.
 
 ## 2.8 What data does this specification expose to an origin? Please also document what data is identical to data exposed by other features, in the same or different contexts.
 
-The data exposed to an origin is the presence of the API itself, whether certain content types are supported, and the results of interacting with the API (error or success).
+The data exposed to an origin is the presence of the API itself, whether sharing of files in general is supported by the user agent and/or platform, and the results of interacting with the API (error or success).
 
 ## 2.9 Does this specification enable new script execution/loading mechanisms?
 
