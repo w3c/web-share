@@ -66,7 +66,7 @@ None.
 
 ## 2.13 How does this specification distinguish between behavior in first-party and third-party contexts?
 
-First-party and third-party contexts are not distingushed.
+First-party and third-party contexts are not distinguished. However, the working group is exploring limiting this API to first-party contexts and only allow the API to be exposed to third party contexts via feature policy. See [issue 51](https://github.com/w3c/web-share/issues/151) 
 
 The use of the `share()` API is gated on [transient activation](https://html.spec.whatwg.org/multipage/interaction.html#transient-activation) and thus requires user interaction (or the equivalent) within a third-party context to be used.
 
