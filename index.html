@@ -18,11 +18,18 @@
         shortName: "web-share",
         wg: "Web Applications Working Group",
         wgURI: "https://www.w3.org/2019/webapps/",
+        wgPatentURI: "https://www.w3.org/2004/01/pp-impl/114929/status",
         editors: [{
           name: "Matt Giuca",
           company: "Google Inc.",
           companyURL: "https://google.com",
           w3cid: 91260
+        },
+        {
+          name: "Eric Willigers",
+          company: "Google Inc.",
+          companyURL: "https://google.com",
+          w3cid: 67534
         }],
         caniuse: {
           feature: "web-share",
@@ -146,10 +153,9 @@
                 </li>
               </ol>
             </li>
-            <li>If |data|'s {{ShareData/url}} member is [=dictionary
-            member/present=]:
+            <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
-                <li>Let |base:URL| be the <b>this</b> value's <a>relevant
+                <li>Let |base:URL| be the [=this=] value's <a>relevant
                 settings object</a>'s [=environment settings object/api base
                 URL=].
                 </li>
@@ -165,10 +171,10 @@
                 </li>
               </ol>
             </li>
-            <li>If the method call was not <a>triggered by user activation</a>,
-            or a file type is being blocked due to security considerations,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
-            {{DOMException}}.
+            <li>If the [=relevant global object=] of [=this=] does not have
+            [=transient activation=], or a file type is being blocked due to
+            security considerations, return <a>a promise rejected with</a> 
+            with a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
@@ -373,6 +379,16 @@
           talk directly to native applications.
         </p>
       </section>
+    </section>
+    <section class="informative">
+      <h2>
+        Accessibility considerations
+      </h2>
+      <p>
+        When this specification is used to present information in the user
+        interface, implementors will want to follow the OS level accessibility
+        guidelines for the platform.
+      </p>
     </section>
     <section class="informative">
       <h2>
