@@ -155,9 +155,8 @@
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
-                <li>Let |base:URL| be the [=this=] value's <a>relevant
-                settings object</a>'s [=environment settings object/api base
-                URL=].
+                <li>Let |base:URL| be the [=this=] value's <a>relevant settings
+                object</a>'s [=environment settings object/api base URL=].
                 </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
@@ -173,8 +172,8 @@
             </li>
             <li>If the [=relevant global object=] of [=this=] does not have
             [=transient activation=], or a file type is being blocked due to
-            security considerations, return <a>a promise rejected with</a> 
-            with a {{"NotAllowedError"}} {{DOMException}}.
+            security considerations, return <a>a promise rejected with</a> with
+            a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
