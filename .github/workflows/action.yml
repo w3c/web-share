@@ -11,6 +11,10 @@ jobs:
     name: Validate and Publish
     runs-on: ubuntu-latest # only linux supported at present
     steps:
+      - uses: actions/setup-node@v1
+          with:
+            node-version: '14'
+      - run: npm install mkdirp
       - uses: actions/checkout@v2
       - uses: w3c/respec-w3c-auto-publish@v1 # use the action
         with:
