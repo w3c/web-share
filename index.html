@@ -137,6 +137,14 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
+            <li>Let |window| be [=relevant global object=] of [=this=].
+            </li>
+            <li>If |window| does not have [=transient activation=], return [=a
+            promise rejected with=] with a {{"NotAllowedError"}}
+            {{DOMException}}.
+            </li>
+            <li>[=Consume user activation=] of |window|.
+            </li>
             <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
             rejected with</a> {{InvalidStateError}}.
             </li>
@@ -170,10 +178,9 @@
                 </li>
               </ol>
             </li>
-            <li>If the [=relevant global object=] of [=this=] does not have
-            [=transient activation=], or a file type is being blocked due to
-            security considerations, return <a>a promise rejected with</a> with
-            a {{"NotAllowedError"}} {{DOMException}}.
+            <li>If a file type is being blocked due to security considerations,
+            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
