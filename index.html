@@ -137,6 +137,11 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
+            <li>If the current settings object's responsible document is not
+            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
+            permission, return [=a promise rejected with=] with a
+            {{"NotAllowedError"}} {{DOMException}}.
+            </li>
             <li>Let |window| be [=relevant global object=] of [=this=].
             </li>
             <li>If |window| does not have [=transient activation=], return [=a
@@ -386,6 +391,23 @@
           talk directly to native applications.
         </p>
       </section>
+    </section>
+    <section id="feature-policy" data-cite="feature-policy">
+      <h2>
+        Permission Policy integration
+      </h2>
+      <p>
+        This specification defines a policy-controlled permission identified by
+        the string "<code><dfn>web-share</dfn></code>". Its <a>default
+        allowlist</a> is '`self`'.
+      </p>
+      <div class="note">
+        <p>
+          A <a>document</a>’s permission policy determines whether a
+          {{Navigator/share()}} call immediately rejects with a
+          {{"NotAllowedError"}} {{DOMException}}.
+        </p>
+      </div>
     </section>
     <section class="informative">
       <h2>
