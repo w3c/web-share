@@ -18,11 +18,18 @@
         shortName: "web-share",
         wg: "Web Applications Working Group",
         wgURI: "https://www.w3.org/2019/webapps/",
+        wgPatentURI: "https://www.w3.org/2004/01/pp-impl/114929/status",
         editors: [{
           name: "Matt Giuca",
           company: "Google Inc.",
           companyURL: "https://google.com",
           w3cid: 91260
+        },
+        {
+          name: "Eric Willigers",
+          company: "Google Inc.",
+          companyURL: "https://google.com",
+          w3cid: 67534
         }],
         caniuse: {
           feature: "web-share",
@@ -32,7 +39,7 @@
       };
     </script>
   </head>
-  <body>
+  <body data-cite="FILEAPI">
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -93,7 +100,7 @@
         </pre>
         <p>
           User agents that do not support sharing SHOULD NOT expose
-          {{Navigator/share()}} on the <a>Navigator</a> interface.
+          {{Navigator/share()}} on the {{Navigator}} interface.
         </p>
         <div class="note">
           The above statement is designed to permit feature detection. If
@@ -130,19 +137,39 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
+            <li>If the current settings object's responsible document is not
+            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
+            permission, return [=a promise rejected with=] with a
+            {{"NotAllowedError"}} {{DOMException}}.
+            </li>
+            <li>Let |window| be [=relevant global object=] of [=this=].
+            </li>
+            <li>If |window| does not have [=transient activation=], return [=a
+            promise rejected with=] with a {{"NotAllowedError"}}
+            {{DOMException}}.
+            </li>
+            <li>[=Consume user activation=] of |window|.
+            </li>
             <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
             rejected with</a> {{InvalidStateError}}.
             </li>
             <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} are present, return <a>a
-            promise rejected with</a> a {{TypeError}}.
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/file}} are
+            present, return <a>a promise rejected with</a> a {{TypeError}}.
             </li>
-            <li>If |data|'s {{ShareData/url}} member is [=dictionary
-            member/present=]:
+            <li>If |data|'s {{ShareData/files}} member is present:
               <ol>
-                <li>Let |base:URL| be the <b>this</b> value's <a>relevant
-                settings object</a>'s [=environment settings object/api base
-                URL=].
+                <li>If |data|'s {{ShareData/files}} member is empty, or if the
+                implementation does not support file sharing, return <a>a
+                promise rejected with</a> a {{TypeError}}, and abort these
+                steps.
+                </li>
+              </ol>
+            </li>
+            <li>If |data|'s {{ShareData/url}} member is present:
+              <ol>
+                <li>Let |base:URL| be the [=this=] value's <a>relevant settings
+                object</a>'s [=environment settings object/api base URL=].
                 </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
@@ -156,7 +183,7 @@
                 </li>
               </ol>
             </li>
-            <li>If the method call was not <a>triggered by user activation</a>,
+            <li>If a file type is being blocked due to security considerations,
             return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
@@ -238,6 +265,7 @@
         </h3>
         <pre class="idl">
           dictionary ShareData {
+            sequence&lt;File&gt; files;
             USVString title;
             USVString text;
             USVString url;
@@ -248,6 +276,12 @@
           members:
         </p>
         <dl data-sort="">
+          <dt>
+            <dfn>files</dfn> member
+          </dt>
+          <dd>
+            Files to be shared.
+          </dd>
           <dt>
             <dfn>title</dfn> member
           </dt>
@@ -270,10 +304,11 @@
         </dl>
         <div class="note">
           These members are {{USVString}} (as opposed to {{DOMString}}) because
-          they are not allowed to contain invalid <a data-cite=
-          "rfc2781#section-2">UTF-16</a> surrogates. This means the user agent
-          is free to re-encode them in any Unicode encoding (e.g.,
-          <a data-cite="rfc3629#section-3">UTF-8</a>).
+          they are not allowed to contain surrogate code points. Among other
+          things, this means that the user agent can serialize them into any
+          Unicode encoding, such as <a data-cite="rfc3629#section-3">UTF-8</a>,
+          without change or loss of data or the generation of replacement
+          characters.
         </div>
         <div class="note">
           The {{ShareData/url}} member can contain a <a>relative-URL
@@ -288,9 +323,9 @@
         Share targets
       </h2>
       <p>
-        A <dfn>share target</dfn> is the abstract concept of a destination that
-        the user agent will transmit the share data to. What constitutes a
-        share target is at the discretion of the user agent.
+        A <dfn data-export="">share target</dfn> is the abstract concept of a
+        destination that the user agent will transmit the share data to. What
+        constitutes a share target is at the discretion of the user agent.
       </p>
       <p>
         A share target might not be directly able to accept a {{ShareData}}
@@ -356,6 +391,33 @@
           talk directly to native applications.
         </p>
       </section>
+    </section>
+    <section id="permissions-policy" data-cite="permissions-policy">
+      <h2>
+        Permission Policy integration
+      </h2>
+      <p>
+        This specification defines a policy-controlled permission identified by
+        the string "<code><dfn>web-share</dfn></code>". Its <a>default
+        allowlist</a> is '`self`'.
+      </p>
+      <div class="note">
+        <p>
+          A <a>document</a>’s permission policy determines whether a
+          {{Navigator/share()}} call immediately rejects with a
+          {{"NotAllowedError"}} {{DOMException}}.
+        </p>
+      </div>
+    </section>
+    <section class="informative">
+      <h2>
+        Accessibility considerations
+      </h2>
+      <p>
+        When this specification is used to present information in the user
+        interface, implementors will want to follow the OS level accessibility
+        guidelines for the platform.
+      </p>
     </section>
     <section class="informative">
       <h2>
