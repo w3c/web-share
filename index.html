@@ -36,6 +36,14 @@
           browsers: ["chrome", "firefox", "safari", "edge", "and_chr", "and_ff", "ios_saf"],
         },
         xref: "web-platform",
+        localBiblio: {
+          "Wylecial": {
+            "date": "2020-08-25",
+            "title": "Stealing local files using Safari Web Share API",
+            "Author": "Pawel Wylecial",
+            "href": "https://blog.redteam.pl/2020/08/stealing-local-files-using-safari-web.html"
+          }
+        }
       };
     </script>
   </head>
@@ -177,8 +185,8 @@
                 <li>If |url| is failure, return <a>a promise rejected with</a>
                 {{TypeError}}.
                 </li>
-                <li>If |url|'s [=URL/scheme=] is not "http" or "https",
-                return <a>a promise rejected with</a> {{TypeError}}.
+                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
+                <a>a promise rejected with</a> {{TypeError}}.
                 </li>
                 <li>Set |data| to a copy of |data|, with its {{ShareData/url}}
                 member set to the result of running the <a>URL serializer</a>
@@ -467,6 +475,21 @@
         native applications that receive shares. There is no general way to
         guard against this, but implementors will want to be aware that it is a
         possibility.
+        </li>
+        <li>Earlier iterations of this API allowed sharing URLs of any scheme
+        type via {{ShareData}}'s {{ShareData/url}} member. This was shown to be
+        a <a data-cite="Wylecial#">security vulnerability</a> and the
+        {{ShareData/url}} member was restricted to only accepting the "http:"
+        and "https:" URL schemes. However, this mitigation is insufficient to
+        fully protect applications or operating systems that accept URLs as
+        part of a share (i.e, "share targets"). Share targets need to be
+        careful when dereferencing shared URLs for the purposes of, for
+        example, generating user-friendly previews: The risk is that share
+        targets could retrieve content from the URL, and that they might follow
+        redirects (or be subject to DNS tweaking) in order to exploit their
+        position in the network to access information that might otherwise be
+        protected by firewalls and similar. If the application also passes on
+        that information, that leads to an unexpected information leakage.
         </li>
       </ul>
     </section>
