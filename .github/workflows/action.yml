@@ -9,7 +9,7 @@ on:
 jobs:
   validate-and-publish:
     name: Validate and Publish
-    runs-on: ubuntu-latest # only linux supported at present
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: sidvishnoi/spec-prod@v1
