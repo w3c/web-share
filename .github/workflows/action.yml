@@ -9,12 +9,11 @@ on:
 jobs:
   validate-and-publish:
     name: Validate and Publish
-    runs-on: ubuntu-latest # only linux supported at present
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: w3c/respec-w3c-auto-publish@v1 # use the action
+      - uses: sidvishnoi/spec-prod@v1
         with:
-          ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
-          ECHIDNA_MANIFEST_URL: "https://w3c.github.io/web-share/ECHIDNA"
-          WG_DECISION_URL: "https://lists.w3.org/Archives/Public/public-webapps/2014JulSep/0627.html"
-          CC: "${{ secrets.CC }}"
+          W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
+          W3C_WG_DECISION_URL: "https://lists.w3.org/Archives/Public/public-webapps/2014JulSep/0627.html"
+          W3C_NOTIFICATIONS_CC: ${{ secrets.CC }}
