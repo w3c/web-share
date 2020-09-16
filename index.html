@@ -475,20 +475,41 @@
         guard against this, but implementors will want to be aware that it is a
         possibility.
         </li>
-        <li>Earlier iterations of this API allowed sharing URLs of any scheme
-        type via {{ShareData}}'s {{ShareData/url}} member. This was shown to be
-        a <a data-cite="Wylecial#">security vulnerability</a> and the
-        {{ShareData/url}} member was restricted to only accepting the "http:"
-        and "https:" URL schemes. However, this mitigation is insufficient to
-        fully protect applications or operating systems that accept URLs as
-        part of a share (i.e., "share targets"). Share targets need to be
-        careful when dereferencing shared URLs for the purposes of, for
-        example, generating user-friendly previews: The risk is that share
-        targets could retrieve content from the URL, and that they might follow
-        redirects (or be subject to DNS tweaking) in order to exploit their
-        position in the network to access information that might otherwise be
-        protected by firewalls and similar. If the application also passes on
-        that information, that leads to an unexpected information leakage.
+        <li>
+          <p>
+            Share targets that dereference a shared URL and forward that
+            information on might inadvertently forward information that might
+            be otherwise confidential. This can lead to unexpected information
+            leakage if shares reference content that is only accessible by that
+            application, the host on which it runs, or its network location.
+          </p>
+          <p>
+            Malicious sites might exploit share targets that leak information
+            by providing URLs that ultimately resolve to local resources,
+            including, but not limited to, "file:" URLs or local services that
+            might otherwise be inaccessible. Even though this API limits shared
+            URLS to "http:" and "https:", use of redirects to other URLs or
+            tweaks to DNS records for hosts in those URLs might be used to
+            cause applications to acquire content.
+          </p>
+          <p>
+            To avoid being used in these attacks, share targets can consume the
+            URL, retrieve the content, and process that information without
+            sharing it. For instance, a photo editing application might
+            retrieve an image that is "shared" with it. A share target can also
+            share the URL without fetching any of the referenced content.
+          </p>
+          <p>
+            Share targets that fetch content for the purposes of offering a
+            preview or for sharing content risk information leakage. Content
+            that is previewed and authorized by a user might be safe to
+            forward, however it is not always possible for a person to identify
+            when information should be confidential, so forwarding any content
+            presents a risk. In particular, the {{ShareData/title}} might be
+            used by an attacker to trick a user into misinterpreting the nature
+            of the content, as demonstrated in the [[Wylecial]] <a data-cite=
+            "Wylecial#">proof of concept attack</a>.
+          </p>
         </li>
       </ul>
     </section>
