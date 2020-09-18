@@ -103,6 +103,7 @@
         </h3>
         <pre class="idl">
           partial interface Navigator {
+            boolean canShare(optional ShareData data = {});
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
           };
         </pre>
@@ -137,6 +138,23 @@
           </dl>
         </section>
         <section>
+          <h3>
+            <dfn>canShare()</dfn> method
+          </h3>
+          <p>
+            When the {{Navigator/canShare()}} method is called with argument
+            |data:ShareData|, run the following steps:
+          </p>
+          <ol>
+            <li>Let |base| be [=this=]'s [=relevant settings object=]'s
+            [=environment settings object/API base URL=].
+            </li>
+            <li>Return the result of [=validate share data=] with |data| and
+            |base|.
+            </li>
+          </ol>
+        </section>
+        <section>
           <h4>
             <dfn>share()</dfn> method
           </h4>
@@ -161,29 +179,21 @@
             <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
             rejected with</a> {{InvalidStateError}}.
             </li>
-            <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/file}} are
-            present, return <a>a promise rejected with</a> a {{TypeError}}.
+            <li>, return <a>a promise rejected with</a> a {{TypeError}}.
             </li>
-            <li>If |data|'s {{ShareData/files}} member is present:
-              <ol>
-                <li>If |data|'s {{ShareData/files}} member is empty, or if the
-                implementation does not support file sharing, return <a>a
-                promise rejected with</a> a {{TypeError}}, and abort these
-                steps.
-                </li>
-              </ol>
+            <li>Let |base:URL| be the [=this=] value's <a>relevant settings
+            object</a>'s [=environment settings object/api base URL=].
+            </li>
+            <li>If running the steps to [=validate share data=] with |data| and
+            |base| return false, then return a promise rejected with a
+            {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
-                <li>Let |base:URL| be the [=this=] value's <a>relevant settings
-                object</a>'s [=environment settings object/api base URL=].
-                </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
                 </li>
-                <li>If |url| is failure, return <a>a promise rejected with</a>
-                {{TypeError}}.
+                <li>Assert: |url| is {{URL}}.
                 </li>
                 <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
                 <a>a promise rejected with</a> {{TypeError}}.
@@ -268,6 +278,39 @@
             showing any kind of "always use this target in the future" option,
             or bypassing the UI if there is only a single share target.
           </div>
+        </section>
+        <section>
+          <h3>
+            Validate share data
+          </h3>
+          <p>
+            To <dfn>validate share data</dfn> with |data:ShareData| and
+            |base:URL|, run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>If none of |data|'s members {{ShareData/title}},
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
+            present, return false.
+            </li>
+            <li>If |data|'s {{ShareData/files}} member is present:
+              <ol>
+                <li>If |data|'s {{ShareData/files}} member is empty, or if the
+                implementation does not support file sharing, return false.
+                </li>
+              </ol>
+            </li>
+            <li>If |data|'s url member is present:
+              <ol>
+                <li>Let |url:URL| be the result of running the [=URL parser]=
+                on |data|'s url, with |base|, and no encoding override.
+                </li>
+                <li>If |url| is failure, return false.
+                </li>
+              </ol>
+            </li>
+            <li>Return true.
+            </li>
+          </ol>
         </section>
       </section>
       <section data-dfn-for="ShareData">
