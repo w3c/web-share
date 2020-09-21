@@ -201,9 +201,6 @@
                 </li>
                 <li>Assert: |url| is {{URL}}.
                 </li>
-                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
-                <a>a promise rejected with</a> {{TypeError}}.
-                </li>
                 <li>Set |data| to a copy of |data|, with its {{ShareData/url}}
                 member set to the result of running the <a>URL serializer</a>
                 on |url|.
@@ -311,6 +308,9 @@
                 on |data|'s url, with |base|, and no encoding override.
                 </li>
                 <li>If |url| is failure, return false.
+                </li>
+                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
+                return false.
                 </li>
               </ol>
             </li>
