@@ -103,7 +103,7 @@
         </h3>
         <pre class="idl">
           partial interface Navigator {
-            boolean canShare(optional ShareData data = {});
+            [SecureContext] boolean canShare(optional ShareData data = {});
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
           };
         </pre>
@@ -146,6 +146,10 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol>
+            <li>If the current settings object's responsible document is not
+            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
+            permission, return false.
+            </li>
             <li>Let |base| be [=this=]'s [=relevant settings object=]'s
             [=environment settings object/API base URL=].
             </li>
