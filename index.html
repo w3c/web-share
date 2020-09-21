@@ -35,14 +35,15 @@
           browsers: ["chrome", "firefox", "safari", "edge", "and_chr", "and_ff", "ios_saf"],
         },
         xref: "web-platform",
-        localBiblio: {
-          "Wylecial": {
-            "date": "2020-08-25",
-            "title": "Stealing local files using Safari Web Share API",
-            "Author": "Pawel Wylecial",
-            "href": "https://blog.redteam.pl/2020/08/stealing-local-files-using-safari-web.html"
-          }
-        }
+        // The Wylecial breaks the link checker with bad HTTP code response, so disabling this for now.
+        // localBiblio: {
+        //   "Wylecial": {
+        //     "date": "2020-08-25",
+        //     "title": "Stealing local files using Safari Web Share API",
+        //     "Author": "Pawel Wylecial",
+        //     "href": "https://blog.redteam.pl/2020/08/stealing-local-files-using-safari-web.html"
+        //   }
+        // }
       };
     </script>
   </head>
@@ -507,8 +508,11 @@
             when information should be confidential, so forwarding any content
             presents a risk. In particular, the {{ShareData/title}} might be
             used by an attacker to trick a user into misinterpreting the nature
-            of the content, as demonstrated in the [[Wylecial]] <a data-cite=
-            "Wylecial#">proof of concept attack</a>.
+            of the content.
+            <!--
+              , as demonstrated in the [[Wylecial]] <a data-cite=
+              "Wylecial#">proof of concept attack</a>
+            -->
           </p>
         </li>
       </ul>
