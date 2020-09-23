@@ -47,7 +47,7 @@
       };
     </script>
   </head>
-  <body data-cite="FILEAPI">
+  <body data-cite="FILEAPI secure-contexts">
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -291,10 +291,23 @@
             {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
             present, return false.
             </li>
+            <li>Let |titleTextOrUrl:boolean| be true if any of
+            {{ShareData/title}}, or {{ShareData/text}}, or {{ShareData/url}} is
+            present.
+            </li>
             <li>If |data|'s {{ShareData/files}} member is present:
               <ol>
-                <li>If |data|'s {{ShareData/files}} member is empty, or if the
-                implementation does not support file sharing, return false.
+                <li>If |titleTextOrUrl| is false, and if |data|'s
+                {{ShareData/files}} member is empty, or return false.
+                  <p class="note">
+                    This causes a `{ files: [] }` dictionary to be treated as
+                    an empty dictionary. However, passing a dictionary like
+                    `{text: "text" files: []}` is fine, as `files` is just
+                    ignored.
+                  </p>
+                </li>
+                <li>If the implementation does not support file sharing, return
+                false.
                 </li>
               </ol>
             </li>
@@ -504,8 +517,12 @@
         native applications.
         </li>
         <li>Due to the capabilities of the API surface, {{Navigator/share()}}
-        is <a>available only in secure contexts</a> (such as `https://`
-        schemes).
+        and {{Navigator/canShare()}} methods are restricted to [=secure
+        contexts=] (such as `https://` schemes).
+        </li>
+        <li>Third-party contexts require that they be [=allowed to use=] the
+        {{Navigator/share()}} and {{Navigator/canShare()}} methods via one of
+        the mechanisms described in [[[permissions-policy]]].
         </li>
         <li>Use of {{Navigator/share()}} from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
