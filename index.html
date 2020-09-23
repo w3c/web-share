@@ -141,6 +141,28 @@
           <h3>
             <dfn>canShare()</dfn> method
           </h3>
+          <aside class="note" title="When to use canShare()">
+            <p>
+              The {{Navigator/canShare()}} method allows developer to check if
+              a particular member is supported, and if attempting to share is
+              likely to succeed. It also works without requiring a user
+              gesture, so, unlike {{Navigator/share()}}}}, it doesn't [=consume
+              user activation=]. This is useful in deciding wether to show a
+              custom share button at all in a web application.
+            </p>
+            <pre class="example">
+              // Check if files are supported
+              const file = new File([], "empty");
+              if (navigates.canShare({files: [file]})) {
+                // enable file sharing
+              }
+
+              // Check if a URL is ok to share...
+              if (navigates.canShare({ url: someURL })) {
+                // enable basic sharing...
+              }
+            </pre>
+          </aside>
           <p>
             When the {{Navigator/canShare()}} method is called with argument
             |data:ShareData|, run the following steps:
