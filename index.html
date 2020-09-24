@@ -103,15 +103,21 @@
         </h3>
         <pre class="idl">
           partial interface Navigator {
+            [SecureContext] boolean canShareFiles(sequence&lt;USVString&gt; file_types);
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
           };
         </pre>
         <p>
           User agents that do not support sharing SHOULD NOT expose
-          {{Navigator/share()}} on the {{Navigator}} interface.
+          {{Navigator/canShareFiles()}} or {{Navigator/share()}} on the
+          {{Navigator}} interface.
+        </p>
+        <p>
+          User agents that do not support file sharing SHOULD NOT expose
+          {{Navigator/canShareFiles()}} on the {{Navigator}} interface.
         </p>
         <div class="note">
-          The above statement is designed to permit feature detection. If
+          The above statements are designed to permit feature detection. If
           {{Navigator/share()}} is present, there is a reasonable expectation
           that it will work and present the user with at least one <a>share
           target</a>. Clients can use the presence or absence of this method to
@@ -137,6 +143,25 @@
           </dl>
         </section>
         <section>
+          <h4>
+            <dfn>canShareFiles()</dfn> method
+          </h4>
+          <p>
+            Each user agent should have an `allowlist` of permitted MIME types
+            and file extensions or file names. These may contain wildcards, for
+            example `*.txt` or `text/*`.
+          </p>
+          <p>
+            When the {{Navigator/canShareFiles()}} method is called with
+            argument |file_types|, run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>For each |file_type| in |file_types|, if |file_type| does not
+            match any entry in the user agent's `allowlist`, return `false`.
+            </li>
+            <li>Otherwise, return `true`.
+            </li>
+          </ol>
           <h4>
             <dfn>share()</dfn> method
           </h4>
@@ -194,9 +219,10 @@
                 </li>
               </ol>
             </li>
-            <li>If a file type is being blocked due to security considerations,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
-            {{DOMException}}.
+            <li>If |data|'s {{ShareData/files}} member is present and
+            {{Navigator/canShareFiles()}} returns false when called with the
+            files' extensions and content types, return <a>a promise rejected
+            with</a> with a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
@@ -508,8 +534,7 @@
             when information should be confidential, so forwarding any content
             presents a risk. In particular, the {{ShareData/title}} might be
             used by an attacker to trick a user into misinterpreting the nature
-            of the content.
-            <!--
+            of the content. <!--
               , as demonstrated in the [[Wylecial]] <a data-cite=
               "Wylecial#">proof of concept attack</a>
             -->
