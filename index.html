@@ -147,7 +147,7 @@
           <ol class="algorithm">
             <li>If the current settings object's responsible document is not
             <a>allowed to use</a> the "[=web-share-feature|web-share=]"
-            permission, return [=a promise rejected with=] with a
+            permission, return [=a promise rejected with=] a
             {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
@@ -161,14 +161,14 @@
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
-            <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
-            rejected with</a> {{InvalidStateError}}.
+            <li>If {{[[sharePromise]]}} is not `null`, return [=a promise
+            rejected with=] {{InvalidStateError}}.
             </li>
             <li>Let |base:URL| be the [=this=] value's <a>relevant settings
             object</a>'s [=environment settings object/api base URL=].
             </li>
             <li>If running the steps to [=validate share data=] with |data| and
-            |base| return false, then return a promise rejected with a
+            |base| return false, then return [=a promise rejected with=] a
             {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
@@ -185,7 +185,7 @@
               </ol>
             </li>
             <li>If a file type is being blocked due to security considerations,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            return [=a promise rejected with=] with a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
             <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
