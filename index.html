@@ -167,9 +167,8 @@
             <li>Let |base:URL| be the [=this=] value's <a>relevant settings
             object</a>'s [=environment settings object/api base URL=].
             </li>
-            <li>If running the steps to [=validate share data=] with |data| and
-            |base| return false, then return [=a promise rejected with=] a
-            {{TypeError}}.
+            <li>If [=validate share data=] with |data| and |base| returns
+            false, then return [=a promise rejected with=] a {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
