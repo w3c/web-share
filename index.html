@@ -277,12 +277,12 @@
             </li>
             <li>If |data|'s {{ShareData/files}} member is present:
               <ol>
-                <li>If |titleTextOrUrl| is false, and if |data|'s
-                {{ShareData/files}} member is empty, or return false.
+                <li>If |titleTextOrUrl| is false and |data|'s
+                {{ShareData/files}} member is empty, return false.
                   <p class="note">
                     This causes a `{ files: [] }` dictionary to be treated as
                     an empty dictionary. However, passing a dictionary like
-                    `{text: "text" files: []}` is fine, as `files` is just
+                    `{text: "text", files: []}` is fine, as `files` is just
                     ignored.
                   </p>
                 </li>
