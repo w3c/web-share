@@ -568,6 +568,26 @@
     </section>
     <section id="conformance"></section>
     <section id="idl-index"></section>
+    <section class="informative">
+      <h2>
+        Changlog
+      </h2>
+      <script class="remove">
+        const ignoredHashes = [
+          "2ed0b468aacf7a4e3e351f25f114e9cb2fbef009"
+        ];
+        function removeCommits(entry) {
+          const { message, hash } = entry;
+          for (const ignoredHash of ignoredHashes) {
+            if (ignoredHash.startsWith(hash)) {
+              return false;
+            };
+          }
+          return !/^editorial|^chore|^\[chore|^fix|^refactor|^tests?|^docs|^typo|^nit/i.test(message);
+        }
+      </script> <rs-changelog from="1589731080e09b9c7d485e54340ba66bc3ae1be0"
+      filter="removeCommits"></rs-changelog>
+    </section>
     <section class="appendix">
       <h2>
         Acknowledgments
