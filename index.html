@@ -430,7 +430,7 @@
         guidelines for the platform.
       </p>
     </section>
-    <section class="informative">
+    <section class="informative" data-cite="secure-contexts">
       <h2>
         Security and privacy considerations
       </h2>
@@ -459,7 +459,7 @@
         native applications.
         </li>
         <li>Due to the capabilities of the API surface, {{Navigator/share()}}
-        is <a>available only in secure contexts</a> (such as `https://`
+        is only [=exposed=] in [=secure contexts=] (such as `https://`
         schemes).
         </li>
         <li>Use of {{Navigator/share()}} from a <a href=
@@ -508,8 +508,7 @@
             when information should be confidential, so forwarding any content
             presents a risk. In particular, the {{ShareData/title}} might be
             used by an attacker to trick a user into misinterpreting the nature
-            of the content.
-            <!--
+            of the content. <!--
               , as demonstrated in the [[Wylecial]] <a data-cite=
               "Wylecial#">proof of concept attack</a>
             -->
