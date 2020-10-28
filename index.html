@@ -47,7 +47,7 @@
       };
     </script>
   </head>
-  <body data-cite="FILEAPI secure-contexts">
+  <body data-cite="FILEAPI secure-contexts mimesniff">
     <section id="abstract">
       <p>
         This specification defines an API for sharing text, links and other
@@ -93,18 +93,24 @@
         target to share this title and the page URL to.
       </p>
     </section>
-    <section>
+    <section data-dfn-for="Navigator">
       <h2>
         API definition
       </h2>
-      <section data-dfn-for="Navigator">
+      <section>
         <h3>
           Extensions to the `Navigator` interface
         </h3>
         <pre class="idl">
           partial interface Navigator {
-            [SecureContext] boolean canShare(optional ShareData data = {});
-            [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
+            [SecureContext]
+            Promise&lt;undefined&gt; share(optional ShareData data = {});
+
+            [SecureContext]
+            boolean canShare(optional ShareData data = {});
+
+            [SecureContext]
+            boolean canShare(DOMString name, optional CanShareQuery options = {});
           };
         </pre>
         <p>
@@ -138,49 +144,6 @@
           </dl>
         </section>
         <section>
-          <h3>
-            <dfn>canShare()</dfn> method
-          </h3>
-          <aside class="note" title="When to use canShare()">
-            <p>
-              The {{Navigator/canShare()}} method allows developer to check if
-              a particular member is supported, and if attempting to share is
-              likely to succeed. It also works without requiring a user
-              gesture, so, unlike {{Navigator/share()}}}}, it doesn't [=consume
-              user activation=]. This is useful in deciding wether to show a
-              custom share button at all in a web application.
-            </p>
-            <pre class="example">
-              // Check if files are supported
-              const file = new File([], "empty");
-              if (navigates.canShare({files: [file]})) {
-                // enable file sharing
-              }
-
-              // Check if a URL is ok to share...
-              if (navigates.canShare({ url: someURL })) {
-                // enable basic sharing...
-              }
-            </pre>
-          </aside>
-          <p>
-            When the {{Navigator/canShare()}} method is called with argument
-            |data:ShareData|, run the following steps:
-          </p>
-          <ol>
-            <li>If the current settings object's responsible document is not
-            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
-            permission, return false.
-            </li>
-            <li>Let |base| be [=this=]'s [=relevant settings object=]'s
-            [=environment settings object/API base URL=].
-            </li>
-            <li>Return the result of [=validate share data=] with |data| and
-            |base|.
-            </li>
-          </ol>
-        </section>
-        <section>
           <h4>
             <dfn>share()</dfn> method
           </h4>
@@ -189,10 +152,10 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
-            <li>If the current settings object's responsible document is not
-            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
-            permission, return [=a promise rejected with=] with a
-            {{"NotAllowedError"}} {{DOMException}}.
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a> the
+            "[=web-share-feature|web-share=]" permission, return [=a promise
+            rejected with=] with a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
             rejected with</a> {{InvalidStateError}}.
@@ -306,50 +269,105 @@
         </section>
         <section>
           <h3>
-            Validate share data
+            `canShare(data)` method
           </h3>
+          <aside class="note" title="When to use canShare(data)">
+            <p>
+              Calling {{Navigator/canShare()}} method with a {{ShareData}}
+              dictionary [=validate share data|validates=] the shared data. It
+              also works without requiring a user gesture, so, unlike
+              {{Navigator/share()}}, it doesn't [=consume user activation=].
+            </p>
+            <pre class="example">
+              // Check if files are supported
+              const file = new File([], "some.png", { type: "image/png" });
+              if (navigates.canShare({files: [file]})) {
+                // Sharing a png file would probably be ok...
+              }
+
+              // Check if a URL is ok to share...
+              if (navigates.canShare({ url: someURL })) {
+                // The URL is valid and can probably be shared...
+              }
+            </pre>
+          </aside>
           <p>
-            To <dfn>validate share data</dfn> with |data:ShareData| and
-            |base:URL|, run the following steps:
+            When the <dfn data-lt="canShare()">canShare(data)</dfn> method is
+            called with argument {{ShareData}} |data:ShareData|, run the
+            following steps:
           </p>
           <ol class="algorithm">
-            <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
-            present, return false.
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a> the
+            "[=web-share-feature|web-share=]" permission, return false.
             </li>
-            <li>Let |titleTextOrUrl:boolean| be true if any of
-            {{ShareData/title}}, or {{ShareData/text}}, or {{ShareData/url}} is
-            present.
+            <li>Let |base| be [=this=]'s [=relevant settings object=]'s
+            [=environment settings object/API base URL=].
             </li>
-            <li>If |data|'s {{ShareData/files}} member is present:
+            <li>Return the result of [=validate share data=] with |data| and
+            |base|.
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h3>
+            `canShare(name, options)` method
+          </h3>
+          <aside class="note" title="When to use canShare(name, options)">
+            <p>
+              The `canShare(name, options)` method allows developer to check if
+              a particular member is [=supported=]. Further, through the
+              `options` method, it allows a developer check if, for example,
+              the user agent [=supported|supports=] sharing files of a
+              particular [=MIME type=].
+            </p>
+            <pre class="example">
+              // Check if files are supported
+              if (navigates.canShare("files")) {
+                // Enable file sharing...
+              }
+
+              // Alternatively, check if can share jpeg files
+              if (navigates.canShare("files", { type: "image/jpeg" })) {
+                // Enable jpeg image sharing...
+              }
+            </pre>
+          </aside>
+          <p>
+            When the <dfn data-lt="canShare!overload-1">canShare(name,
+            options)</dfn> method is called with arguments {{DOMString}}
+            |name:DOMString| and {{CanShareQuery}} |options:CanShareQuery|, run
+            the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a> the
+            "[=web-share-feature|web-share=]" permission, return false.
+            </li>
+            <li>If |name| is "url", return either `true` or `false` depending
+            on if sharing URLs is [=supported=].
+            </li>
+            <li>If |name| is "text", return either `true` or `false` depending
+            on if sharing text is [=supported=].
+            </li>
+            <li>If |name| is "files":
               <ol>
-                <li>If |titleTextOrUrl| is false, and if |data|'s
-                {{ShareData/files}} member is empty, or return false.
-                  <p class="note">
-                    This causes a `{ files: [] }` dictionary to be treated as
-                    an empty dictionary. However, passing a dictionary like
-                    `{text: "text" files: []}` is fine, as `files` is just
-                    ignored.
-                  </p>
+                <li>If sharing files is not [=supported=], return `false`.
                 </li>
-                <li>If the implementation does not support file sharing, return
-                false.
+                <li>If |options| is doesn't have a {{CanShareQuery/type}}
+                member, return `true`.
+                </li>
+                <li>Let |type| be the result of [=parse a MIME type=] with
+                {{CanShareQuery/type}} as input.
+                </li>
+                <li>If |type| is failure, throw a {{TypeError}}.
+                </li>
+                <li>Return either `true` or `false` depending on if the user
+                agent supports sharing the [=MIME type/essence=] of |type|.
                 </li>
               </ol>
             </li>
-            <li>If |data|'s url member is present:
-              <ol>
-                <li>Let |url:URL| be the result of running the [=URL parser]=
-                on |data|'s url, with |base|, and no encoding override.
-                </li>
-                <li>If |url| is failure, return false.
-                </li>
-                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
-                false.
-                </li>
-              </ol>
-            </li>
-            <li>Return true.
+            <li>|name| is not a [=supported share member=], return `false`.
             </li>
           </ol>
         </section>
@@ -365,7 +383,7 @@
             USVString text;
             USVString url;
           };
-        </pre>
+      </pre>
         <p>
           The <dfn>ShareData</dfn> dictionary consists of several optional
           members:
@@ -397,6 +415,10 @@
             A URL string referring to a resource being shared.
           </dd>
         </dl>
+        <p>
+          A member is <dfn>supported</dfn> if the use agent supports sharing
+          the value of a {{ShareData}} member with [=share targets=].
+        </p>
         <div class="note">
           These members are {{USVString}} (as opposed to {{DOMString}}) because
           they are not allowed to contain surrogate code points. Among other
@@ -411,6 +433,114 @@
           to the current page location, just like a {{HTMLBaseElement/href}} on
           an [^a^] element, before being given to the share target.
         </div>
+      </section>
+      <section>
+        <h3>
+          Validate share data
+        </h3>
+        <p>
+          To <dfn>validate share data</dfn> with |data:ShareData| and
+          |base:URL|, run the following steps:
+        </p>
+        <ol class="algorithm">
+          <li>If none of |data|'s members {{ShareData/title}},
+          {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
+          present, return false.
+          </li>
+          <li>Let |titleTextOrUrl:boolean| be true if any of
+          {{ShareData/title}}, or {{ShareData/text}}, or {{ShareData/url}} is
+          present.
+          </li>
+          <li>If |data|'s {{ShareData/files}} member is present:
+            <ol>
+              <li>If |titleTextOrUrl| is false and |data|'s {{ShareData/files}}
+              member is empty, return false.
+                <p class="note">
+                  This causes a `{ files: [] }` dictionary to be treated as an
+                  empty dictionary. However, passing a dictionary like `{text:
+                  "text", files: []}` is fine, as `files` is just ignored.
+                </p>
+              </li>
+              <li>If the implementation does not support file sharing, return
+              false.
+              </li>
+              <li>If the user agent believes sharing any of the files in
+              `files` would result in a potentially hostile share, return
+              false.
+                <div class="issue" data-number="127"></div>
+              </li>
+            </ol>
+          </li>
+          <li>If |data|'s url member is present:
+            <ol>
+              <li>Let |url:URL| be the result of running the [=URL parser=] on
+              |data|'s url, with |base|, and no encoding override.
+              </li>
+              <li>If |url| is failure, return false.
+              </li>
+              <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
+              false.
+              </li>
+            </ol>
+          </li>
+          <li>Return true.
+          </li>
+        </ol>
+      </section>
+      <section data-dfn-for="CanShareQuery">
+        <h3>
+          `CanShareQuery` dictionary
+        </h3>
+        <pre class="idl">
+            dictionary CanShareQuery {
+              DOMString type;
+            };
+          </pre>
+        <section>
+          <h4>
+            `type` member
+          </h4>
+          <p>
+            The <dfn>type</dfn> member is a [=MIME Type=] that the developer
+            would like to check support for.
+          </p>
+        </section>
+      </section>
+      <section data-dfn-for="SupportedShareMember">
+        <h3>
+          Supported share members
+        </h3>
+        <p>
+          The <dfn>supported share members</dfn> provide a means for developers
+          to check if particular sharing capabilities are supported by the user
+          agent. They are represented by the following string literals:
+        </p>
+        <dl>
+          <dt>
+            "<dfn>files</dfn>"
+          </dt>
+          <dd>
+            Represents support for the {{ShareData/files}} member.
+          </dd>
+          <dt>
+            "<dfn>url</dfn>"
+          </dt>
+          <dd>
+            Represents support for the {{ShareData/url}} member.
+          </dd>
+          <dt>
+            "<dfn>text</dfn>"
+          </dt>
+          <dd>
+            Represents support for the {{ShareData/text}} member.
+          </dd>
+        </dl>
+        <p class="Note" title="Why not an enum?">
+          The choice to use string literals instead of an [=enumeration=] is
+          deliberate. Doing so allows implementers to gracefully support future
+          {{ShareData}} member values, while also giving the user agent the
+          ability to disable sharing those members if needed.
+        </p>
       </section>
     </section>
     <section>
