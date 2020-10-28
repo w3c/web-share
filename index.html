@@ -289,6 +289,11 @@
                 <li>If the implementation does not support file sharing, return
                 false.
                 </li>
+                <li>If the user agent believes sharing any of the files in
+                `files` would result in a potentially hostile share, return
+                false.
+                <div class="issue" data-number="127"></div>
+                </li>
               </ol>
             </li>
             <li>If |data|'s url member is present:
