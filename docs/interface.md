@@ -3,7 +3,7 @@
 **Date**: 2017-05-02
 
 The interface for Web Share is now described at
-[https://wicg.github.io/web-share/](https://wicg.github.io/web-share/).
+[https://w3c.github.io/web-share/](https://w3c.github.io/web-share/).
 
 The basic Share API only allows share requests to be sent (this API does not
 provide the capability to receive share requests). For a follow-up plan to have
