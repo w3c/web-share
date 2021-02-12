@@ -1,45 +1,77 @@
 <!-- This work is licensed under the W3C Software and Document License
      (http://www.w3.org/Consortium/Legal/2015/copyright-software-and-document).
   -->
+<!DOCTYPE html>
 <html>
-<head>
-  <title>Web Share Test</title>
-  <meta name="viewport" content="width=device-width">
-  <style>
+  <head>
+    <title>
+      Web Share Test
+    </title>
+    <meta name="viewport" content="width=device-width">
+    <style>
     .error {
       color: #d22;
     }
     input[type="button"] {
         height: 30px
     }
-  </style>
-</head>
-<body>
-  <h1>Web Share Test</h1>
-  <table>
-    <tr><td>Title:</td>
-        <td><input type="checkbox" id="title_checkbox" checked/></td>
-        <td><input id="title" value="The Title" size="40" /></td>
-    </tr>
-    <tr><td>Text:</td>
-        <td><input type="checkbox" id="text_checkbox" checked/></td>
-        <td><input id="text" value="The message" size="40"/></td>
-    </tr>
-    <tr><td>URL:</td>
-        <td><input type="checkbox" id="url_checkbox" checked/></td>
-        <td><input id="url" value="https://example.com" size="40"/></td>
-    </tr>
-  </table>
-  <p><input id="share" type="button" value="Share" />
-     <input id="share-no-gesture" type="button" value="Share without user gesture" /></p>
-  <div id="output"></div>
-  <p>This is a test page for the <a href="https://github.com/WICG/web-share">Web
-  Share API</a>. It will only work in browsers that have implemented the draft
-  proposal. At the time of writing, this works with:</p>
-  <ul>
-    <li>Google Chrome for Android 61 or higher.</li>
-  </ul>
-  <script>
+    </style>
+  </head>
+  <body>
+    <h1>
+      Web Share Test
+    </h1>
+    <table>
+      <tr>
+        <td>
+          Title:
+        </td>
+        <td>
+          <input type="checkbox" id="title_checkbox" checked>
+        </td>
+        <td>
+          <input id="title" value="The Title" size="40">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Text:
+        </td>
+        <td>
+          <input type="checkbox" id="text_checkbox" checked>
+        </td>
+        <td>
+          <input id="text" value="The message" size="40">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          URL:
+        </td>
+        <td>
+          <input type="checkbox" id="url_checkbox" checked>
+        </td>
+        <td>
+          <input id="url" value="https://example.com" size="40">
+        </td>
+      </tr>
+    </table>
+    <p>
+      <input id="share" type="button" value="Share"> <input id=
+      "share-no-gesture" type="button" value="Share without user gesture">
+    </p>
+    <div id="output"></div>
+    <p>
+      This is a test page for the <a href=
+      "https://github.com/WICG/web-share">Web Share API</a>. It will only work
+      in browsers that have implemented the draft proposal. At the time of
+      writing, this works with:
+    </p>
+    <ul>
+      <li>Google Chrome for Android 61 or higher.
+      </li>
+    </ul>
+    <script>
     'use strict';
 
     function sleep(delay) {
@@ -129,6 +161,6 @@
     }
 
     window.addEventListener('load', onLoad);
-  </script>
-</body>
+    </script>
+  </body>
 </html>
