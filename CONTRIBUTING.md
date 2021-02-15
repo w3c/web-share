@@ -29,7 +29,7 @@ in designing the feature, you can remove yourself with the above syntax.
 # Style guide to contributors
 
 - the spec uses [ReSpec](https://www.w3.org/respec/)
-- the spec is tidied using [HTML5 Tidy](https://github.com/w3c/tidy-html5). For
+- the spec is tidied using [HTML5 Tidy](https://github.com/htacg/tidy-html5). For
   instructions on running HTML5 tidy, see below.
 - put comments in front of sections, for better readability with
   syntax coloring editors.
