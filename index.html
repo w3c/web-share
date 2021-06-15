@@ -13,8 +13,8 @@
         previousMaturity: "FPWD",
         previousPublishDate: "2019-12-17",
         github: {
-          repoURL: "https://github.com/w3c/web-share/",
-          branch: "master"
+          repoURL: "w3c/web-share",
+          branch: "main"
         },
         testSuiteURI: "https://w3c-test.org/web-share/",
         group: "webapps",
@@ -169,7 +169,7 @@
             <li>[=Consume user activation=] of |window|.
             </li>
             <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/file}} are
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
             present, return <a>a promise rejected with</a> a {{TypeError}}.
             </li>
             <li>Let |base:URL| be the [=this=] value's <a>relevant settings
@@ -607,7 +607,7 @@
         <div class="note">
           There is an attempt to standardize the registration of websites to
           receive share data for that final use case; see <a href=
-          "https://github.com/WICG/web-share-target">Web Share Target</a>.
+          "https://github.com/w3c/web-share-target">Web Share Target</a>.
         </div>
         <p>
           In some cases, the host operating system will provide a sharing or
