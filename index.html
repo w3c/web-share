@@ -9,14 +9,14 @@
     "remove"></script>
     <script class='remove'>
       var respecConfig = {
-        specStatus: "ED",
         previousMaturity: "FPWD",
         previousPublishDate: "2019-12-17",
+        specStatus: "ED",
         github: {
-          repoURL: "https://github.com/w3c/web-share/",
-          branch: "master"
+          repoURL: "w3c/web-share",
+          branch: "main"
         },
-        testSuiteURI: "https://w3c-test.org/web-share/",
+        testSuiteURI: "https://wpt.live/web-share/",
         group: "webapps",
         editors: [{
           name: "Matt Giuca",
@@ -163,6 +163,9 @@
             </li>
             <li>If {{[[sharePromise]]}} is not `null`, return [=a promise
             rejected with=] {{InvalidStateError}}.
+            <li>If none of |data|'s members {{ShareData/title}},
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
+            present, return <a>a promise rejected with</a> a {{TypeError}}.
             </li>
             <li>Let |base:URL| be the [=this=] value's <a>relevant settings
             object</a>'s [=environment settings object/api base URL=].
@@ -436,7 +439,7 @@
         <div class="note">
           There is an attempt to standardize the registration of websites to
           receive share data for that final use case; see <a href=
-          "https://github.com/WICG/web-share-target">Web Share Target</a>.
+          "https://github.com/w3c/web-share-target">Web Share Target</a>.
         </div>
         <p>
           In some cases, the host operating system will provide a sharing or
