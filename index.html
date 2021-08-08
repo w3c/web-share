@@ -137,9 +137,9 @@
               {{Promise}}? <dfn>[[\sharePromise]]</dfn>
             </dt>
             <dd>
-              The {{[[sharePromise]]}} is a promise that represents a user's
-              current intent to share some data with a <a>share target</a>. It
-              is initialized to `null`.
+              The {{Navigator/[[sharePromise]]}} is a promise that represents a
+              user's current intent to share some data with a <a>share
+              target</a>. It is initialized to `null`.
             </dd>
           </dl>
         </section>
@@ -157,8 +157,8 @@
             "[=web-share-feature|web-share=]" permission, return [=a promise
             rejected with=] with a {{"NotAllowedError"}} {{DOMException}}.
             </li>
-            <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
-            rejected with</a> {{InvalidStateError}}.
+            <li>If {{Navigator/[[sharePromise]]}} is not `null`, return <a>a
+            promise rejected with</a> {{InvalidStateError}}.
             </li>
             <li>Let |window| be [=relevant global object=] of [=this=].
             </li>
@@ -196,17 +196,17 @@
             return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
-            <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
+            <li>Set {{Navigator/[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
-            <li>Return {{[[sharePromise]]}} and <a>in parallel</a>:
+            <li>Return {{Navigator/[[sharePromise]]}} and <a>in parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available:
                   <ol>
                     <li>
-                      <a>Reject</a> {{[[sharePromise]]}} with an
+                      <a>Reject</a> {{Navigator/[[sharePromise]]}} with an
                       {{"AbortError"}} {{DOMException}}.
                     </li>
-                    <li>Set {{[[sharePromise]]}} to `null`.
+                    <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                     </li>
                     <li>Abort these steps.
                     </li>
@@ -220,10 +220,10 @@
                 <li>If the user chose to cancel the share operation:
                   <ol>
                     <li>
-                      <a>Reject</a> {{[[sharePromise]]}} with an
+                      <a>Reject</a> {{Navigator/[[sharePromise]]}} with an
                       {{"AbortError"}} {{DOMException}},
                     </li>
-                    <li>Set {{[[sharePromise]]}} to `null`.
+                    <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                     </li>
                     <li>Abort these steps.
                     </li>
@@ -237,19 +237,20 @@
                 data:
                   <ol>
                     <li>
-                      <a>Reject</a> {{[[sharePromise]]}} with an
+                      <a>Reject</a> {{Navigator/[[sharePromise]]}} with an
                       {{"DataError"}} {{DOMException}}.
                     </li>
-                    <li>Set {{[[sharePromise]]}} to `null`.
+                    <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                     </li>
                     <li>Abort these steps.
                     </li>
                   </ol>
                 </li>
                 <li>Once the data has been successfully transmitted to the
-                target, <a>resolve</a> {{[[sharePromise]]}} with `undefined`.
+                target, <a>resolve</a> {{Navigator/[[sharePromise]]}} with
+                `undefined`.
                 </li>
-                <li>Set {{[[sharePromise]]}} to `null`.
+                <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                 </li>
               </ol>
             </li>
