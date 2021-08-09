@@ -9,10 +9,7 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 
 ## Implementation status
 
-* The API is shipping in:
-  * Google Chrome 61 on Android.
-  * [Safari 66](https://developer.apple.com/safari/technology-preview/release-notes/#r66).
-  * Firefox Android coming soon.
+The API is shipping in [numerous browsers](https://caniuse.com/web-share).
 
 ## Links
 
