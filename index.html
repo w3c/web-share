@@ -167,8 +167,8 @@
             {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
             present, return <a>a promise rejected with</a> a {{TypeError}}.
             </li>
-            <li>Let |base:URL| be the [=this=] value's <a>relevant settings
-            object</a>'s [=environment settings object/api base URL=].
+            <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
+            [=environment settings object/api base URL=].
             </li>
             <li>If [=validate share data=] with |data| and |base| returns
             false, then return [=a promise rejected with=] a {{TypeError}}.
@@ -297,7 +297,6 @@
                 <li>If the user agent believes sharing any of the files in
                 `files` would result in a potentially hostile share, return
                 false.
-                <div class="issue" data-number="127"></div>
                 </li>
               </ol>
             </li>
