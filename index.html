@@ -151,7 +151,7 @@
             {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>If {{Navigator/[[sharePromise]]}} is not `null`, return <a>a
-            promise rejected with</a> {{InvalidStateError}}.
+            promise rejected with</a> {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>Let |window| be [=relevant global object=] of [=this=].
             </li>
@@ -161,7 +161,8 @@
             <li>[=Consume user activation=] of |window|.
             </li>
             <li>If {{Navigator/[[sharePromise]]}} is not `null`, return [=a
-            promise rejected with=] an {{InvalidStateError}}.
+            promise rejected with=] an {{"InvalidStateError"}}
+            {{DOMException}}.
             </li>
             <li>If none of |data|'s members {{ShareData/title}},
             {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
