@@ -161,10 +161,6 @@
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
-            <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
-            present, return <a>a promise rejected with</a> a {{TypeError}}.
-            </li>
             <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
             [=environment settings object/API base URL=].
             </li>
@@ -298,15 +294,16 @@
                 </li>
               </ol>
             </li>
-            <li>If |data|'s url member is present:
+            <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
                 <li>Let |url:URL| be the result of running the [=URL parser=]
-                on |data|'s url, with |base|, and no encoding override.
+                on |data|'s {{ShareData/url}} member, with |base|, and no
+                encoding override.
                 </li>
                 <li>If |url| is failure, return false.
                 </li>
-                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
-                false.
+                <li>If |url|'s [=URL/scheme=] is not "http" or "https", or is a
+                URL the user agent deems potentially hostile, return false.
                 </li>
               </ol>
             </li>
