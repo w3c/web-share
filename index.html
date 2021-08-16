@@ -155,16 +155,15 @@
             <li>If the [=current settings object=]'s [=environment settings
             object/responsible document=] is not <a>allowed to use</a> the
             "[=web-share-feature|web-share=]" permission, return [=a promise
-            rejected with=] with a {{"NotAllowedError"}} {{DOMException}}.
+            rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>If {{Navigator/[[sharePromise]]}} is not `null`, return <a>a
-            promise rejected with</a> {{InvalidStateError}}.
+            promise rejected with</a> {{"InvalidStateError"}} {{DOMException}}.
             </li>
             <li>Let |window| be [=relevant global object=] of [=this=].
             </li>
             <li>If |window| does not have [=transient activation=], return [=a
-            promise rejected with=] with a {{"NotAllowedError"}}
-            {{DOMException}}.
+            promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
@@ -193,7 +192,7 @@
               </ol>
             </li>
             <li>If a file type is being blocked due to security considerations,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            return [=a promise rejected with=] a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
             <li>Set {{Navigator/[[sharePromise]]}} to be <a>a new promise</a>.
