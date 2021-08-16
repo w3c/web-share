@@ -241,9 +241,10 @@
                     </li>
                   </ol>
                 </li>
-                <li>Once the data has been successfully transmitted to the
-                target, <a>resolve</a> {{Navigator/[[sharePromise]]}} with
-                `undefined`.
+                <li>Once the data has either been successfully transmitted to
+                the [=share target=], or successfully transmitted to the OS (if
+                the transmission to the [=share target=] cannot be confirmed),
+                <a>resolve</a> {{Navigator/[[sharePromise]]}} with `undefined`.
                 </li>
                 <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                 </li>
