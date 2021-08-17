@@ -161,32 +161,18 @@
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
-            <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
-            present, return <a>a promise rejected with</a> a {{TypeError}}.
+            <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
+            [=environment settings object/API base URL=].
             </li>
-            <li>If |data|'s {{ShareData/files}} member is present:
-              <ol>
-                <li>If |data|'s {{ShareData/files}} member is empty, or if the
-                implementation does not support file sharing, return <a>a
-                promise rejected with</a> a {{TypeError}}, and abort these
-                steps.
-                </li>
-              </ol>
+            <li>If [=validate share data=] with |data| and |base| returns
+            false, then return [=a promise rejected with=] a {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
-                <li>Let |base:URL| be the [=this=] value's <a>relevant settings
-                object</a>'s [=environment settings object/api base URL=].
-                </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
                 </li>
-                <li>If |url| is failure, return <a>a promise rejected with</a>
-                {{TypeError}}.
-                </li>
-                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
-                <a>a promise rejected with</a> {{TypeError}}.
+                <li>Assert: |url| is {{URL}}.
                 </li>
                 <li>Set |data| to a copy of |data|, with its {{ShareData/url}}
                 member set to the result of running the <a>URL serializer</a>
@@ -270,6 +256,65 @@
             showing any kind of "always use this target in the future" option,
             or bypassing the UI if there is only a single share target.
           </div>
+        </section>
+        <section>
+          <h3>
+            Validate share data
+          </h3>
+          <p>
+            To <dfn>validate share data</dfn> with |data:ShareData| and
+            |base:URL|, run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>If none of |data|'s members {{ShareData/title}},
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
+            present, return false.
+            </li>
+            <li>Let |titleTextOrUrl:boolean| be true if any of
+            {{ShareData/title}}, or {{ShareData/text}}, or {{ShareData/url}} is
+            present.
+            </li>
+            <li>If |data|'s {{ShareData/files}} member is present:
+              <ol>
+                <li>If |titleTextOrUrl| is false and |data|'s
+                {{ShareData/files}} member is empty, return false.
+                  <p class="note">
+                    This causes a `{ files: [] }` dictionary to be treated as
+                    an empty dictionary. However, passing a dictionary like
+                    `{text: "text", files: []}` is fine, as `files` is just
+                    ignored.
+                  </p>
+                </li>
+                <li>If the implementation does not support file sharing, return
+                false.
+                </li>
+                <li>If the user agent believes sharing any of the files in
+                `files` would result in a potentially hostile share, return
+                false.
+                </li>
+              </ol>
+            </li>
+            <li>If |data|'s {{ShareData/url}} member is present:
+              <ol>
+                <li>Let |url:URL| be the result of running the [=URL parser=]
+                on |data|'s {{ShareData/url}} member, with |base|, and no
+                encoding override.
+                </li>
+                <li>If |url| is failure, return false.
+                </li>
+                <li>
+                  <p>
+                    If |url| is a URL the user agent deems potentially hostile
+                    (e.g., "file:") or wouldn't make sense to outside the scope
+                    of the document (e.g., "blob:"), return false.
+                  </p>
+                  <aside class="issue" data-number="178"></aside>
+                </li>
+              </ol>
+            </li>
+            <li>Return true.
+            </li>
+          </ol>
         </section>
       </section>
       <section data-dfn-for="ShareData">
