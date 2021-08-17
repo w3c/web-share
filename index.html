@@ -302,9 +302,13 @@
                 </li>
                 <li>If |url| is failure, return false.
                 </li>
-                <li>If |url| is a URL the user agent deems potentially hostile
-                (e.g., "file://" or other schemes that are not "http" or
-                "https"), return false.
+                <li>
+                  <p>
+                    If |url| is a URL the user agent deems potentially hostile
+                    (e.g., "file:") or wouldn't make sense to outside the scope
+                    of the document (e.g., "blob:"), return false.
+                  </p>
+                  <aside class="issue" data-number="178"></aside>
                 </li>
               </ol>
             </li>
