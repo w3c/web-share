@@ -145,19 +145,19 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
-            <li>If the current settings object's responsible document is not
-            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
-            permission, return [=a promise rejected with=] with a
-            {{"NotAllowedError"}} {{DOMException}}.
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a> the <a>
+              "web-share"</a> permission, return [=a promise rejected with=]
+              with a {{"NotAllowedError"}} {{DOMException}}.
             </li>
-            <li>If {{Navigator/[[sharePromise]]}} is not `null`, return <a>a
-            promise rejected with</a> {{InvalidStateError}}.
+            <li>If {{Navigator/[[sharePromise]]}} is not `null`, return [=a
+            promise rejected with=] an {{"InvalidStateError"}}
+            {{DOMException}}.
             </li>
             <li>Let |window| be [=relevant global object=] of [=this=].
             </li>
             <li>If |window| does not have [=transient activation=], return [=a
-            promise rejected with=] with a {{"NotAllowedError"}}
-            {{DOMException}}.
+            promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
@@ -195,7 +195,7 @@
               </ol>
             </li>
             <li>If a file type is being blocked due to security considerations,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            return [=a promise rejected with=] a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
             <li>Set {{Navigator/[[sharePromise]]}} to be <a>a new promise</a>.
@@ -248,9 +248,10 @@
                     </li>
                   </ol>
                 </li>
-                <li>Once the data has been successfully transmitted to the
-                target, <a>resolve</a> {{Navigator/[[sharePromise]]}} with
-                `undefined`.
+                <li>Once the data has either been successfully transmitted to
+                the [=share target=], or successfully transmitted to the OS (if
+                the transmission to the [=share target=] cannot be confirmed),
+                <a>resolve</a> {{Navigator/[[sharePromise]]}} with `undefined`.
                 </li>
                 <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                 </li>
@@ -406,12 +407,12 @@
     </section>
     <section id="permissions-policy" data-cite="permissions-policy">
       <h2>
-        Permission Policy integration
+        Permissions Policy integration
       </h2>
       <p>
         This specification defines a policy-controlled permission identified by
-        the string "<code><dfn>web-share</dfn></code>". Its <a>default
-        allowlist</a> is '`self`'.
+        the string <code><dfn class="permission">"web-share"</dfn></code>. Its
+        <a>default allowlist</a> is '`self`'.
       </p>
       <div class="note">
         <p>
