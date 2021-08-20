@@ -92,6 +92,25 @@
         display a picker or chooser dialog, allowing the user to select a
         target to share this title and the page URL to.
       </p>
+      <p>
+        Calling {{Navigator/canShare()}} method with a {{ShareData}} dictionary
+        [=validate share data|validates=] the shared data. unlike
+        {{Navigator/share()}}, it can be called without [=transient
+        activation=].
+      </p>
+      <pre class="js example">
+        const file = new File([], "some.png", { type: "image/png" });
+
+        // Check if files are supported
+        if (navigates.canShare({files: [file]})) {
+          // Sharing a png file would probably be ok...
+        }
+
+        // Check if a URL is ok to share...
+        if (navigates.canShare({ url: someURL })) {
+          // The URL is valid and can probably be shared...
+        }
+      </pre>
     </section>
     <section>
       <h2>
@@ -104,6 +123,8 @@
         <pre class="idl">
           partial interface Navigator {
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
+
+            [SecureContext] boolean canShare(optional ShareData data = {});
           };
         </pre>
         <p>
@@ -256,6 +277,25 @@
             showing any kind of "always use this target in the future" option,
             or bypassing the UI if there is only a single share target.
           </div>
+        </section>
+        <section>
+          <h3>
+            `canShare(data)` method
+          </h3>
+          <p>
+            When the <dfn>canShare(data)</dfn> method is called with argument
+            {{ShareData}} |data:ShareData|, run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a>
+            <a>"web-share"</a>, return false.
+            </li>
+            <li>Return the result of [=validate share data=] with |data| and
+            [=this=]'s [=relevant settings object=]'s [=environment settings
+            object/API base URL=].
+            </li>
+          </ol>
         </section>
         <section>
           <h3>
