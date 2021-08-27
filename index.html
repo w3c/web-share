@@ -9,14 +9,14 @@
     "remove"></script>
     <script class='remove'>
       var respecConfig = {
-        specStatus: "ED",
+        shortName: "web-share",
         previousMaturity: "FPWD",
-        previousPublishDate: "2019-12-17",
+        specStatus: "ED",
         github: {
           repoURL: "w3c/web-share",
           branch: "main"
         },
-        testSuiteURI: "https://w3c-test.org/web-share/",
+        testSuiteURI: "https://wpt.live/web-share/",
         group: "webapps",
         editors: [{
           name: "Matt Giuca",
@@ -29,6 +29,12 @@
           company: "Google Inc.",
           companyURL: "https://google.com",
           w3cid: 67534
+        },        
+        {
+          name: "Marcos Cáceres",
+          company: "W3C",
+          companyURL: "https://www.w3.org",
+          w3cid: 39125,
         }],
         caniuse: {
           feature: "web-share",
@@ -92,6 +98,25 @@
         display a picker or chooser dialog, allowing the user to select a
         target to share this title and the page URL to.
       </p>
+      <p>
+        Calling {{Navigator/canShare()}} method with a {{ShareData}} dictionary
+        [=validate share data|validates=] the shared data. unlike
+        {{Navigator/share()}}, it can be called without [=transient
+        activation=].
+      </p>
+      <pre class="js example">
+        const file = new File([], "some.png", { type: "image/png" });
+
+        // Check if files are supported
+        if (navigates.canShare({files: [file]})) {
+          // Sharing a png file would probably be ok...
+        }
+
+        // Check if a URL is ok to share...
+        if (navigates.canShare({ url: someURL })) {
+          // The URL is valid and can probably be shared...
+        }
+      </pre>
     </section>
     <section>
       <h2>
@@ -104,6 +129,8 @@
         <pre class="idl">
           partial interface Navigator {
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
+
+            [SecureContext] boolean canShare(optional ShareData data = {});
           };
         </pre>
         <p>
@@ -130,9 +157,9 @@
               {{Promise}}? <dfn>[[\sharePromise]]</dfn>
             </dt>
             <dd>
-              The {{[[sharePromise]]}} is a promise that represents a user's
-              current intent to share some data with a <a>share target</a>. It
-              is initialized to `null`.
+              The {{Navigator/[[sharePromise]]}} is a promise that represents a
+              user's current intent to share some data with a <a>share
+              target</a>. It is initialized to `null`.
             </dd>
           </dl>
         </section>
@@ -145,48 +172,34 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
-            <li>If the current settings object's responsible document is not
-            <a>allowed to use</a> the "[=web-share-feature|web-share=]"
-            permission, return [=a promise rejected with=] with a
-            {{"NotAllowedError"}} {{DOMException}}.
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a> the <a>
+              "web-share"</a> permission, return [=a promise rejected with=] a
+              {{"NotAllowedError"}} {{DOMException}}.
             </li>
-            <li>If {{[[sharePromise]]}} is not `null`, return <a>a promise
-            rejected with</a> {{InvalidStateError}}.
+            <li>If {{Navigator/[[sharePromise]]}} is not `null`, return [=a
+            promise rejected with=] an {{"InvalidStateError"}}
+            {{DOMException}}.
             </li>
             <li>Let |window| be [=relevant global object=] of [=this=].
             </li>
             <li>If |window| does not have [=transient activation=], return [=a
-            promise rejected with=] with a {{"NotAllowedError"}}
-            {{DOMException}}.
+            promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
-            <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/file}} are
-            present, return <a>a promise rejected with</a> a {{TypeError}}.
+            <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
+            [=environment settings object/API base URL=].
             </li>
-            <li>If |data|'s {{ShareData/files}} member is present:
-              <ol>
-                <li>If |data|'s {{ShareData/files}} member is empty, or if the
-                implementation does not support file sharing, return <a>a
-                promise rejected with</a> a {{TypeError}}, and abort these
-                steps.
-                </li>
-              </ol>
+            <li>If [=validate share data=] with |data| and |base| returns
+            false, then return [=a promise rejected with=] a {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
-                <li>Let |base:URL| be the [=this=] value's <a>relevant settings
-                object</a>'s [=environment settings object/api base URL=].
-                </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
                 </li>
-                <li>If |url| is failure, return <a>a promise rejected with</a>
-                {{TypeError}}.
-                </li>
-                <li>If |url|'s [=URL/scheme=] is not "http" or "https", return
-                <a>a promise rejected with</a> {{TypeError}}.
+                <li>Assert: |url| is {{URL}}.
                 </li>
                 <li>Set |data| to a copy of |data|, with its {{ShareData/url}}
                 member set to the result of running the <a>URL serializer</a>
@@ -195,20 +208,20 @@
               </ol>
             </li>
             <li>If a file type is being blocked due to security considerations,
-            return <a>a promise rejected with</a> with a {{"NotAllowedError"}}
+            return [=a promise rejected with=] a {{"NotAllowedError"}}
             {{DOMException}}.
             </li>
-            <li>Set {{[[sharePromise]]}} to be <a>a new promise</a>.
+            <li>Set {{Navigator/[[sharePromise]]}} to be <a>a new promise</a>.
             </li>
-            <li>Return {{[[sharePromise]]}} and <a>in parallel</a>:
+            <li>Return {{Navigator/[[sharePromise]]}} and <a>in parallel</a>:
               <ol>
                 <li>If there are no <a>share targets</a> available:
                   <ol>
                     <li>
-                      <a>Reject</a> {{[[sharePromise]]}} with an
+                      <a>Reject</a> {{Navigator/[[sharePromise]]}} with an
                       {{"AbortError"}} {{DOMException}}.
                     </li>
-                    <li>Set {{[[sharePromise]]}} to `null`.
+                    <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                     </li>
                     <li>Abort these steps.
                     </li>
@@ -222,10 +235,10 @@
                 <li>If the user chose to cancel the share operation:
                   <ol>
                     <li>
-                      <a>Reject</a> {{[[sharePromise]]}} with an
+                      <a>Reject</a> {{Navigator/[[sharePromise]]}} with an
                       {{"AbortError"}} {{DOMException}},
                     </li>
-                    <li>Set {{[[sharePromise]]}} to `null`.
+                    <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                     </li>
                     <li>Abort these steps.
                     </li>
@@ -239,19 +252,21 @@
                 data:
                   <ol>
                     <li>
-                      <a>Reject</a> {{[[sharePromise]]}} with an
+                      <a>Reject</a> {{Navigator/[[sharePromise]]}} with an
                       {{"DataError"}} {{DOMException}}.
                     </li>
-                    <li>Set {{[[sharePromise]]}} to `null`.
+                    <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                     </li>
                     <li>Abort these steps.
                     </li>
                   </ol>
                 </li>
-                <li>Once the data has been successfully transmitted to the
-                target, <a>resolve</a> {{[[sharePromise]]}} with `undefined`.
+                <li>Once the data has either been successfully transmitted to
+                the [=share target=], or successfully transmitted to the OS (if
+                the transmission to the [=share target=] cannot be confirmed),
+                <a>resolve</a> {{Navigator/[[sharePromise]]}} with `undefined`.
                 </li>
-                <li>Set {{[[sharePromise]]}} to `null`.
+                <li>Set {{Navigator/[[sharePromise]]}} to `null`.
                 </li>
               </ol>
             </li>
@@ -268,6 +283,84 @@
             showing any kind of "always use this target in the future" option,
             or bypassing the UI if there is only a single share target.
           </div>
+        </section>
+        <section>
+          <h3>
+            `canShare(data)` method
+          </h3>
+          <p>
+            When the <dfn>canShare(data)</dfn> method is called with argument
+            {{ShareData}} |data:ShareData|, run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>If the [=current settings object=]'s [=environment settings
+            object/responsible document=] is not <a>allowed to use</a>
+            <a>"web-share"</a>, return false.
+            </li>
+            <li>Return the result of [=validate share data=] with |data| and
+            [=this=]'s [=relevant settings object=]'s [=environment settings
+            object/API base URL=].
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h3>
+            Validate share data
+          </h3>
+          <p>
+            To <dfn>validate share data</dfn> with |data:ShareData| and
+            |base:URL|, run the following steps:
+          </p>
+          <ol class="algorithm">
+            <li>If none of |data|'s members {{ShareData/title}},
+            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
+            present, return false.
+            </li>
+            <li>Let |titleTextOrUrl:boolean| be true if any of
+            {{ShareData/title}}, or {{ShareData/text}}, or {{ShareData/url}} is
+            present.
+            </li>
+            <li>If |data|'s {{ShareData/files}} member is present:
+              <ol>
+                <li>If |titleTextOrUrl| is false and |data|'s
+                {{ShareData/files}} member is empty, return false.
+                  <p class="note">
+                    This causes a `{ files: [] }` dictionary to be treated as
+                    an empty dictionary. However, passing a dictionary like
+                    `{text: "text", files: []}` is fine, as `files` is just
+                    ignored.
+                  </p>
+                </li>
+                <li>If the implementation does not support file sharing, return
+                false.
+                </li>
+                <li>If the user agent believes sharing any of the files in
+                `files` would result in a potentially hostile share, return
+                false.
+                </li>
+              </ol>
+            </li>
+            <li>If |data|'s {{ShareData/url}} member is present:
+              <ol>
+                <li>Let |url:URL| be the result of running the [=URL parser=]
+                on |data|'s {{ShareData/url}} member, with |base|, and no
+                encoding override.
+                </li>
+                <li>If |url| is failure, return false.
+                </li>
+                <li>
+                  <p>
+                    If |url| is a URL the user agent deems potentially hostile
+                    (e.g., "file:") or wouldn't make sense to outside the scope
+                    of the document (e.g., "blob:"), return false.
+                  </p>
+                  <aside class="issue" data-number="178"></aside>
+                </li>
+              </ol>
+            </li>
+            <li>Return true.
+            </li>
+          </ol>
         </section>
       </section>
       <section data-dfn-for="ShareData">
@@ -405,12 +498,12 @@
     </section>
     <section id="permissions-policy" data-cite="permissions-policy">
       <h2>
-        Permission Policy integration
+        Permissions Policy integration
       </h2>
       <p>
         This specification defines a policy-controlled permission identified by
-        the string "<code><dfn>web-share</dfn></code>". Its <a>default
-        allowlist</a> is '`self`'.
+        the string <code><dfn class="permission">"web-share"</dfn></code>. Its
+        <a>default allowlist</a> is '`self`'.
       </p>
       <div class="note">
         <p>
@@ -461,6 +554,10 @@
         <li>Due to the capabilities of the API surface, {{Navigator/share()}}
         is only [=exposed=] in [=secure contexts=] (such as `https://`
         schemes).
+        </li>
+        <li>Developers can use the means afforded by the
+        [[[permissions-policy]]] specification to control if and when a
+        third-party context is [=allowed to use=] this API.
         </li>
         <li>Use of {{Navigator/share()}} from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
