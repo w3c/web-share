@@ -172,8 +172,10 @@
             |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
-            <li>If the [=current settings object=]'s [=environment settings
-            object/responsible document=] is not [=allowed to use=]
+            <li>Let |document:Document| be the [=current settings object=]'s
+            [=environment settings object/responsible document=].
+            </li>
+            <li>If |document| is not <a>allowed to use</a>
             <a>"web-share"</a>, return [=a promise rejected with=] a
             {{"NotAllowedError"}} {{DOMException}}.
             </li>
@@ -188,14 +190,14 @@
             </li>
             <li>[=Consume user activation=] of |window|.
             </li>
-            <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
-            [=environment settings object/API base URL=].
-            </li>
-            <li>If [=validate share data=] with |data| and |base| returns
+            <li>If [=validate share data=] with |data| and |document| returns
             false, then return [=a promise rejected with=] a {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
+                <li>Let |base:URL| be [=this=]'s <a>relevant settings
+                object</a>'s [=environment settings object/API base URL=].
+                </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
                 </li>
@@ -302,7 +304,7 @@
             </li>
             <li>Return the result of [=validate share data=] with |data| and
             [=this=]'s [=relevant settings object=]'s [=environment settings
-            object/API base URL=].
+            object/responsible document=].
             </li>
           </ol>
         </section>
@@ -312,9 +314,13 @@
           </h3>
           <p>
             To <dfn>validate share data</dfn> with |data:ShareData| and
-            |base:URL|, run the following steps:
+            |document:Document|, run the following steps. The algorithm runs in
+            the [=this=] context from where it is invoked (i.e. {{Navigator}}
+            instance):
           </p>
           <ol class="algorithm">
+            <li>If |document| is not [=Document/fully active=], return false.
+            </li>
             <li>If none of |data|'s members {{ShareData/title}},
             {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
             present, return false.
@@ -345,6 +351,9 @@
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
+                <li>Let |base:URL| be [=this=]'s <a>relevant settings
+                object</a>'s [=environment settings object/API base URL=].
+                </li>
                 <li>Let |url:URL| be the result of running the [=URL parser=]
                 on |data|'s {{ShareData/url}} member, with |base|, and no
                 encoding override.
