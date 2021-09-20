@@ -307,6 +307,9 @@
             </li>
             <li>If |document| is not [=Document/fully active=], return false.
             </li>
+            <li>If |document| is not <a>allowed to use</a> <a>"web-share"</a>,
+            return `false`.
+            </li>
             <li>Return the result of [=validate share data=] with |data| and
             [=this=]'s [=relevant settings object=]'s [=environment settings
             object/API base URL=].
