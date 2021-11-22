@@ -12,12 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: w3c/spec-prod@pubrules
+      - uses: w3c/spec-prod@v2
         with:
+          # Don't copy this... it's experimental!
+          VALIDATE_PUBRULES: true
           W3C_API_KEY: ${{ secrets.W3C_API_KEY }} 
           W3C_ECHIDNA_TOKEN: ${{ secrets.ECHIDNA_TOKEN }}
           W3C_WG_DECISION_URL: "https://lists.w3.org/Archives/Public/public-webapps/2014JulSep/0627.html"
           W3C_NOTIFICATIONS_CC: ${{ secrets.CC }}
-          VALIDATE_PUBRULES: true
           W3C_BUILD_OVERRIDE: |
             specStatus: WD
