@@ -118,10 +118,20 @@
         textfield.value = '';
     }
 
+    function checkBasicFileShare() {
+      // XXX: There is no straightforward API to do this.
+      // For now, assume that text/plain is supported everywhere.
+      const txt = new Blob(['Hello, world!'], {type: 'text/plain'});
+      // XXX: Blob support? https://github.com/w3c/web-share/issues/181
+      const file = new File([txt], "test.txt");
+      return navigator.canShare({ files: [file] });
+    }
+
     async function testWebShare() {
       const title_input = document.querySelector('#title');
       const text_input = document.querySelector('#text');
       const url_input = document.querySelector('#url');
+      /** @type {HTMLInputElement} */
       const file_input = document.querySelector('#files');
 
       const title = title_input.disabled ? undefined : title_input.value;
@@ -130,8 +140,17 @@
       const files = file_input.disabled ? undefined : file_input.files;
 
       if (files && files.length > 0) {
-        if (!navigator.canShare || !navigator.canShare({files})) {
-          logError('Error: Unsupported feature: navigator.canShare()');
+        if (!navigator.canShare) {
+          logError('Warning: canShare is not supported. File sharing may not be supported at all.');
+        } else if (!checkBasicFileShare()) {
+          logError('Error: File sharing is not supported in this browser.');
+          setShareButtonsEnabled(true);
+          return;
+        } else if (!navigator.canShare({files})) {
+          logError('Error: share() does not support the given files');
+          for (const file of files) {
+            logError(`File info: name - ${file.name}, size ${file.size}, type ${file.type}`);
+          }
           setShareButtonsEnabled(true);
           return;
         }
