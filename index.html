@@ -517,7 +517,7 @@
       <p>
         This specification defines a policy-controlled permission identified by
         the string <code><dfn class="permission">"web-share"</dfn></code>. Its
-        <a>default allowlist</a> is '`self`'.
+        <a>default allowlist</a> is `*`.
       </p>
       <div class="note">
         <p>
@@ -526,6 +526,42 @@
           {{"NotAllowedError"}} {{DOMException}}.
         </p>
       </div>
+      <section class="informative">
+        <h3>
+          Disabling the API in third-party contexts
+        </h3>
+        <p>
+          The [=default allowlist=] of `*` makes Web Share API available by
+          default in both first and third-party contexts.
+        </p>
+        <p>
+          Third-party usage of this API can be disabled via an [^iframe^]'s
+          [^iframe/allow^] attribute:
+        </p>
+        <aside class="example" title=
+        "Disabling the web-share API in a third-party context">
+          <pre class="html">
+            &lt;iframe
+              src="https://third-party.example"
+              allow="web-share=()"&gt;
+            &lt;/iframe&gt;
+          </pre>
+        </aside>
+        <p>
+          Alternatively, the API can be disabled in a first-party context by
+          specifying an HTTP response header:
+        </p>
+        <aside class="example" title=
+        "Disabling Web Share over API HTTP using Permissions Policy">
+          <pre class="http">
+            Permissions-Policy: web-share=()
+          </pre>
+        </aside>
+        <p>
+          See the [[[permissions-policy]]] specification for more details and
+          for how to control the permission policies on a per-origin basis.
+        </p>
+      </section>
     </section>
     <section class="informative">
       <h2>
