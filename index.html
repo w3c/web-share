@@ -224,7 +224,9 @@
             <li>Return [=this=].{{Navigator/[[sharePromise]]}} and <a>in
             parallel</a>:
               <ol>
-                <li>If there are no <a>share targets</a> available:
+                <li>If there are no <a>share targets</a> available, [=queue a
+                global task=] on the [=user interaction task source=] using
+                [=this=]'s [=relevant global object=] to:
                   <ol>
                     <li>
                       <a>Reject</a> [=this=].{{Navigator/[[sharePromise]]}}
@@ -241,11 +243,12 @@
                 MUST be given the option to cancel rather than choosing any of
                 the share targets. Wait for the user's choice.
                 </li>
-                <li>If the user chose to cancel the share operation:
+                <li>If the user chose to cancel the share operation, [=queue a
+                global task=] on the [=user interaction task source=] using
+                [=this=]'s [=relevant global object=] to:
                   <ol>
-                    <li>
-                      <a>Reject</a> [=this=].{{Navigator/[[sharePromise]]}}
-                      with an {{"AbortError"}} {{DOMException}},
+                    <li>[=Reject=] [=this=].{{Navigator/[[sharePromise]]}} with
+                    an {{"AbortError"}} {{DOMException}},
                     </li>
                     <li>Set [=this=].{{Navigator/[[sharePromise]]}} to `null`.
                     </li>
@@ -258,11 +261,11 @@
                 transmit the converted data to the target.
                 </li>
                 <li>If an error occurs starting the target or transmitting the
-                data:
+                data, [=queue a global task=] on the [=user interaction task
+                source=] using [=this=]'s [=relevant global object=] to:
                   <ol>
-                    <li>
-                      <a>Reject</a> [=this=].{{Navigator/[[sharePromise]]}}
-                      with an {{"DataError"}} {{DOMException}}.
+                    <li>[=Reject=] [=this=].{{Navigator/[[sharePromise]]}} with
+                    an {{"DataError"}} {{DOMException}}.
                     </li>
                     <li>Set [=this=].{{Navigator/[[sharePromise]]}} to `null`.
                     </li>
@@ -273,10 +276,15 @@
                 <li>Once the data has either been successfully transmitted to
                 the [=share target=], or successfully transmitted to the OS (if
                 the transmission to the [=share target=] cannot be confirmed),
-                <a>resolve</a> [=this=].{{Navigator/[[sharePromise]]}} with
-                `undefined`.
-                </li>
-                <li>Set [=this=].{{Navigator/[[sharePromise]]}} to `null`.
+                [=queue a global task=] on the [=user interaction task source=]
+                using [=this=]'s [=relevant global object=] to:
+                  <ol>
+                    <li>[=Resolve=] [=this=].{{Navigator/[[sharePromise]]}}
+                    with `undefined`.
+                    </li>
+                    <li>Set [=this=].{{Navigator/[[sharePromise]]}} to `null`.
+                    </li>
+                  </ol>
                 </li>
               </ol>
             </li>
