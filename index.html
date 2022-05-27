@@ -188,12 +188,12 @@
             return [=a promise rejected with=] an {{"InvalidStateError"}}
             {{DOMException}}.
             </li>
-            <li>Let |window| be [=relevant global object=] of [=this=].
+            <li>Let |global:Window| be [=this=]'s [=relevant global object=].
             </li>
-            <li>If |window| does not have [=transient activation=], return [=a
+            <li>If |global| does not have [=transient activation=], return [=a
             promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
             </li>
-            <li>[=Consume user activation=] of |window|.
+            <li>[=Consume user activation=] of |global|.
             </li>
             <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
             [=environment settings object/API base URL=].
@@ -226,11 +226,10 @@
               <ol>
                 <li>If there are no <a>share targets</a> available, [=queue a
                 global task=] on the [=user interaction task source=] using
-                [=this=]'s [=relevant global object=] to:
+                |global| to:
                   <ol>
-                    <li>
-                      [=Reject=] [=this=].{{Navigator/[[sharePromise]]}}
-                      with an {{"AbortError"}} {{DOMException}}.
+                    <li>[=Reject=] [=this=].{{Navigator/[[sharePromise]]}} with
+                    an {{"AbortError"}} {{DOMException}}.
                     </li>
                     <li>Set [=this=].{{Navigator/[[sharePromise]]}} to `null`.
                     </li>
@@ -245,7 +244,7 @@
                 </li>
                 <li>If the user chose to cancel the share operation, [=queue a
                 global task=] on the [=user interaction task source=] using
-                [=this=]'s [=relevant global object=] to:
+                |global| to:
                   <ol>
                     <li>[=Reject=] [=this=].{{Navigator/[[sharePromise]]}} with
                     an {{"AbortError"}} {{DOMException}},
@@ -262,7 +261,7 @@
                 </li>
                 <li>If an error occurs starting the target or transmitting the
                 data, [=queue a global task=] on the [=user interaction task
-                source=] using [=this=]'s [=relevant global object=] to:
+                source=] using |global| to:
                   <ol>
                     <li>[=Reject=] [=this=].{{Navigator/[[sharePromise]]}} with
                     an {{"DataError"}} {{DOMException}}.
@@ -277,7 +276,7 @@
                 the [=share target=], or successfully transmitted to the OS (if
                 the transmission to the [=share target=] cannot be confirmed),
                 [=queue a global task=] on the [=user interaction task source=]
-                using [=this=]'s [=relevant global object=] to:
+                using |global| to:
                   <ol>
                     <li>[=Resolve=] [=this=].{{Navigator/[[sharePromise]]}}
                     with `undefined`.
