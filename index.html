@@ -343,6 +343,13 @@
             </li>
             <li>If |data|'s {{ShareData/files}} member is present:
               <ol>
+                <li>For each |file:File| in {{ShareData/files}}:
+                  <ol>
+                    <li>If |file| has {{File/length}} is 0, remove |file| from
+                    {{ShareData/files}}.
+                    </li>
+                  </ol>
+                </li>
                 <li>If |titleTextOrUrl| is false and |data|'s
                 {{ShareData/files}} member is empty, return false.
                   <p class="note">
