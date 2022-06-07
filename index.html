@@ -497,20 +497,13 @@
             A URL string referring to a resource being shared.
           </dd>
         </dl>
-        <div class="note">
+        <aside class="note" data-cite="encoding">
           These members are {{USVString}} (as opposed to {{DOMString}}) because
           they are not allowed to contain surrogate code points. Among other
           things, this means that the user agent can serialize them into any
-          Unicode encoding, such as <a data-cite="rfc3629#section-3">UTF-8</a>,
-          without change or loss of data or the generation of replacement
-          characters.
-        </div>
-        <div class="note">
-          The {{ShareData/url}} member can contain a <a>relative-URL
-          string</a>. In this case, it will be automatically resolved relative
-          to the current page location, just like a {{HTMLBaseElement/href}} on
-          an [^a^] element, before being given to the share target.
-        </div>
+          Unicode encoding, such as [=UTF-8=], without change or loss of data
+          or the generation of replacement characters.
+        </aside>
       </section>
     </section>
     <section>
