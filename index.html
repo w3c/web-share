@@ -200,21 +200,9 @@
         <pre class="idl">
           partial interface Navigator {
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
-
             [SecureContext] boolean canShare(optional ShareData data = {});
           };
         </pre>
-        <p>
-          User agents that do not support sharing SHOULD NOT expose
-          {{Navigator/share()}} on the {{Navigator}} interface.
-        </p>
-        <div class="note">
-          The above statement is designed to permit feature detection. If
-          {{Navigator/share()}} is present, there is a reasonable expectation
-          that it will work and present the user with at least one <a>share
-          target</a>. Clients can use the presence or absence of this method to
-          determine whether to show UI that triggers its use.
-        </div>
         <section>
           <h4>
             Internal Slots
@@ -347,6 +335,14 @@
                 the transmission to the [=share target=] cannot be confirmed),
                 [=queue a global task=] on the [=user interaction task source=]
                 using |global| to:
+                <aside class="note">
+                  Once a share target has been given the payload, the share is considered
+                  successful. If the target considers the data unacceptable or an error
+                  occurs, it can either recover gracefully, or show an error message to
+                  the end-user; it cannot rely on the sender to handle errors. In other
+                  words, the {{Navigator/share()}} method is "fire and forget"; it does
+                  not wait for the target to approve or reject the payload.
+                </aside>
                   <ol>
                     <li>[=Resolve=] [=this=].{{Navigator/[[sharePromise]]}}
                     with `undefined`.
@@ -545,14 +541,6 @@
         Each share target MAY be made conditionally available depending on the
         {{ShareData}} payload delivered to the {{Navigator/share()}} method.
       </p>
-      <div class="note">
-        Once a share target has been given the payload, the share is considered
-        successful. If the target considers the data unacceptable or an error
-        occurs, it can either recover gracefully, or show an error message to
-        the end-user; it cannot rely on the sender to handle errors. In other
-        words, the {{Navigator/share()}} method is "fire and forget"; it does
-        not wait for the target to approve or reject the payload.
-      </div>
       <section class="informative">
         <h3>
           Examples of share targets
