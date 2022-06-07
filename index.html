@@ -75,11 +75,14 @@
       <h2>
         Usage Examples
       </h2>
+      <h3>
+        Sharing text and links
+      </h3>
       <p>
         This example shows a basic share operation. In response to a button
         click, this JavaScript code shares the current page's URL.
       </p>
-      <pre class="example javascript" title="Basic usage">
+      <pre class="example javascript" title="Sharing text and URL">
         shareButton.addEventListener("click", async () =&gt; {
           try {
             await navigator.share({ title: "Example Page", url: "" });
@@ -99,9 +102,33 @@
         display a picker or chooser dialog, allowing the user to select a
         target to share this title and the page URL to.
       </p>
+      <h3>
+        Sharing a file
+      </h3>
+      <p>
+        This example shows how to share a file. Note that the
+        {{ShareData/files}} member is an array, allowing for multiple files to
+        be shared.
+      </p>
+      <pre class="example javascript" title="Sharing a file">
+        shareButton.addEventListener("click", async () =&gt; {
+          const file = new File(data, "some.png", { type: "image/png" });
+          try {
+            await navigator.share({
+              title: "Example File",
+              files: [file]
+            });
+          } catch (err) {
+            console.error("Share failed:", err.message);
+          }
+        });
+      </pre>
+      <h3>
+        Validating a share
+      </h3>
       <p>
         Calling {{Navigator/canShare()}} method with a {{ShareData}} dictionary
-        [=validate share data|validates=] the shared data. unlike
+        [=validate share data|validates=] the shared data. Unlike
         {{Navigator/share()}}, it can be called without [=transient
         activation=].
       </p>
@@ -117,6 +144,49 @@
         if (navigates.canShare({ url: someURL })) {
           // The URL is valid and can probably be shared...
         }
+      </pre>
+      <h3>
+        Checking if members are supported
+      </h3>
+      <p>
+        Because of how WebIDL dictionaries work, members passed to
+        {{Navigator/share(())}} that are unknown to the user agent are ignored.
+        This can be a problem when sharing multiple members, but the user agent
+        doesn't support sharing one of those members. To be sure that every
+        member being passed is supported by the user agent, you can pass them
+        to {{Navigator/canShare()}} individually to check if they are
+        supported.
+      </p>
+      <pre class="js example" title="Future-proofing shares">
+        const data = {
+          title: "Example Page",
+          url: "https://example.com",
+          text: "This is a text to share",
+          someFutureThing: "some future thing",
+        };
+        const allSupported = Object.entries(data).every(([key, value]) =&gt; {
+          return navigator.canShare({ [key]: value });
+        });
+        if (allSupported) {
+          await navigator.share(data);
+        }
+      </pre>
+      <p>
+        Alternatively, you can adjust application's UI to not show UI
+        components for unsupported members.
+      </p>
+      <pre class="js example" title="Filtering out unsupported members">
+        const data = {
+          title: "Example Page",
+          url: "https://example.com",
+          text: "This is a text to share",
+          someFutureThing: "some future thing",
+        };
+        
+        // Things that are not supported...
+        const unsupported = Object.entries(data).filter(([key, value]) =&gt; {
+          return !navigator.canShare({ [key]: value });
+        });
       </pre>
     </section>
     <section>
