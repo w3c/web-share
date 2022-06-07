@@ -309,8 +309,9 @@
                 </li>
                 <li>Present the user with a choice of one or more <a>share
                 targets</a>, selected at the user agent's discretion. The user
-                MUST be given the option to cancel rather than choosing any of
-                the share targets. Wait for the user's choice.
+                agent MUST give the user the option to cancel rather than
+                choosing any of the [=share targets=]. Wait for the user's
+                choice.
                 </li>
                 <li>If the user chose to cancel the share operation, [=queue a
                 global task=] on the [=user interaction task source=] using
@@ -358,18 +359,6 @@
               </ol>
             </li>
           </ol>
-          <p>
-            The user agent MUST NOT allow the website to learn which share
-            targets are available, or the identity of the chosen target.
-          </p>
-          <div class="note">
-            {{Navigator/share()}} always shows some form of UI, to give the
-            user a choice of application and get their approval to invoke and
-            send data to a potentially native application (which carries a
-            security risk). For this reason, user agents are prohibited from
-            showing any kind of "always use this target in the future" option,
-            or bypassing the UI if there is only a single share target.
-          </div>
         </section>
         <section>
           <h3>
@@ -625,10 +614,14 @@
         (depending on the underlying platform).
       </p>
       <ul>
-        <li>There is a requirement to not allow the website to learn which apps
-        are installed, or which app was chosen from {{Navigator/share()}},
-        because this information could be used for fingerprinting, as well as
+        <li>The API does not expose to the website which [=share targets=] are
+        available, or which share target was chosen by the user from
+        {{Navigator/share()}}. Doing so could be used for fingerprinting by
         leaking details about the user's device.
+        </li>
+        <li>User agents are discouraged from showing any kind of "always use
+        this target in the future" option, or bypassing the UI if there is only
+        a single share target.
         </li>
         <li>Implementors will want to carefully consider what information is
         revealed in the error message when {{Navigator/share()}} is rejected.
