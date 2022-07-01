@@ -397,6 +397,21 @@
             Validate share data
           </h3>
           <p>
+            A <dfn>sharable scheme</dfn> is any of the following [=URL=]
+            [=URL/schemes=]:
+          </p>
+          <ol>
+            <li>`http`
+            </li>
+            <li>`https`
+            </li>
+            <li>`data`
+            </li>
+            <li>Any [=safelisted scheme=] that the user agent supports for the
+            purpose of sharing.
+            </li>
+          </ol>
+          <p>
             To <dfn>validate share data</dfn> with |data:ShareData| and
             |base:URL|, run the following steps:
           </p>
@@ -438,13 +453,8 @@
                 </li>
                 <li>If |url| is failure, return false.
                 </li>
-                <li>
-                  <p>
-                    If |url| is a URL the user agent deems potentially hostile
-                    (e.g., "file:") or wouldn't make sense to outside the scope
-                    of the document (e.g., "blob:"), return false.
-                  </p>
-                  <aside class="issue" data-number="178"></aside>
+                <li>If |url|'s [=URL/scheme=] is not a [=sharable scheme=],
+                return false.
                 </li>
               </ol>
             </li>
