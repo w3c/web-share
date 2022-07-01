@@ -200,21 +200,9 @@
         <pre class="idl">
           partial interface Navigator {
             [SecureContext] Promise&lt;undefined&gt; share(optional ShareData data = {});
-
             [SecureContext] boolean canShare(optional ShareData data = {});
           };
         </pre>
-        <p>
-          User agents that do not support sharing SHOULD NOT expose
-          {{Navigator/share()}} on the {{Navigator}} interface.
-        </p>
-        <div class="note">
-          The above statement is designed to permit feature detection. If
-          {{Navigator/share()}} is present, there is a reasonable expectation
-          that it will work and present the user with at least one <a>share
-          target</a>. Clients can use the presence or absence of this method to
-          determine whether to show UI that triggers its use.
-        </div>
         <section>
           <h4>
             Internal Slots
@@ -347,6 +335,14 @@
                 the transmission to the [=share target=] cannot be confirmed),
                 [=queue a global task=] on the [=user interaction task source=]
                 using |global| to:
+                <aside class="note">
+                  Once a share target has been given the payload, the share is considered
+                  successful. If the target considers the data unacceptable or an error
+                  occurs, it can either recover gracefully, or show an error message to
+                  the end-user; it cannot rely on the sender to handle errors. In other
+                  words, the {{Navigator/share()}} method is "fire and forget"; it does
+                  not wait for the target to approve or reject the payload.
+                </aside>
                   <ol>
                     <li>[=Resolve=] [=this=].{{Navigator/[[sharePromise]]}}
                     with `undefined`.
@@ -426,8 +422,9 @@
                 false.
                 </li>
                 <li>If the user agent believes sharing any of the files in
-                `files` would result in a potentially hostile share, return
-                false.
+                `files` would result in a potentially hostile share (i.e., the
+                user agent determines a file is malicious in some way, because
+                of its contents, size, or other characteristic), return false.
                 </li>
               </ol>
             </li>
@@ -497,20 +494,13 @@
             A URL string referring to a resource being shared.
           </dd>
         </dl>
-        <div class="note">
+        <aside class="note" data-cite="encoding">
           These members are {{USVString}} (as opposed to {{DOMString}}) because
           they are not allowed to contain surrogate code points. Among other
           things, this means that the user agent can serialize them into any
-          Unicode encoding, such as <a data-cite="rfc3629#section-3">UTF-8</a>,
-          without change or loss of data or the generation of replacement
-          characters.
-        </div>
-        <div class="note">
-          The {{ShareData/url}} member can contain a <a>relative-URL
-          string</a>. In this case, it will be automatically resolved relative
-          to the current page location, just like a {{HTMLBaseElement/href}} on
-          an [^a^] element, before being given to the share target.
-        </div>
+          Unicode encoding, such as [=UTF-8=], without change or loss of data
+          or the generation of replacement characters.
+        </aside>
       </section>
     </section>
     <section>
@@ -545,14 +535,6 @@
         Each share target MAY be made conditionally available depending on the
         {{ShareData}} payload delivered to the {{Navigator/share()}} method.
       </p>
-      <div class="note">
-        Once a share target has been given the payload, the share is considered
-        successful. If the target considers the data unacceptable or an error
-        occurs, it can either recover gracefully, or show an error message to
-        the end-user; it cannot rely on the sender to handle errors. In other
-        words, the {{Navigator/share()}} method is "fire and forget"; it does
-        not wait for the target to approve or reject the payload.
-      </div>
       <section class="informative">
         <h3>
           Examples of share targets
