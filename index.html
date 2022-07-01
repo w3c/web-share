@@ -603,7 +603,9 @@
         </li>
         <li>User agents are discouraged from showing any kind of "always use
         this target in the future" option, or bypassing the UI if there is only
-        a single share target.
+        a single share target. Further, calls to {{Navigator.share()}} require
+        [=transient activation=] (i.e., some kind of user activation) before
+        any UI is presented to the user.
         </li>
         <li>Implementors will want to carefully consider what information is
         revealed in the error message when {{Navigator/share()}} is rejected.
