@@ -386,6 +386,19 @@
             Validate share data
           </h3>
           <p>
+            A <dfn>sharable scheme</dfn> is any of the following [=URL=]
+            [=URL/schemes=]:
+          </p>
+          <ul>
+            <li>`http`
+            </li>
+            <li>`https`
+            </li>
+            <li>Any [=safelisted scheme=] that the user agent supports for the
+            purpose of sharing.
+            </li>
+          </ul>
+          <p>
             To <dfn>validate share data</dfn> with |data:ShareData| and
             |base:URL|, run the following steps:
           </p>
@@ -427,13 +440,11 @@
                 </li>
                 <li>If |url| is failure, return false.
                 </li>
-                <li>
-                  <p>
-                    If |url| is a URL the user agent deems potentially hostile
-                    (e.g., "file:") or wouldn't make sense to outside the scope
-                    of the document (e.g., "blob:"), return false.
-                  </p>
-                  <aside class="issue" data-number="178"></aside>
+                <li>If the |url|'s [=URL/scheme=] is a [=local scheme=], or
+                `file`, or `javascript`, or `ws`, or `wss`, return false.
+                </li>
+                <li>If |url|'s [=URL/scheme=] is not a [=sharable scheme=],
+                return false.
                 </li>
               </ol>
             </li>
@@ -592,10 +603,13 @@
         Security and privacy considerations
       </h2>
       <p>
-        Web Share enables data to be sent from websites to native applications.
-        While this ability is not unique to Web Share, it does come with a
-        number of potential security issues that can vary in severity
-        (depending on the underlying platform).
+        Web Share enables data to be sent from websites to a [=share target=],
+        which can be a native applications. While this ability is not unique to
+        Web Share, it does come with a number of potential security risks that
+        can vary in severity (depending on the underlying platform).
+      </p>
+      <p>
+        The following points are worth considering:
       </p>
       <ul>
         <li>The API does not expose to the website which [=share targets=] are
@@ -641,11 +655,11 @@
         buffer overflow or other remote code execution vulnerabilities in
         native applications that receive shares. There is no general way to
         guard against this, but implementors will want to be aware that it is a
-        possibility.
+        possibility (particularly when sharing files).
         </li>
         <li>
           <p>
-            Share targets that dereference a shared URL and forward that
+            [=Share targets=] that dereference a shared URL and forward that
             information on might inadvertently forward information that might
             be otherwise confidential. This can lead to unexpected information
             leakage if shares reference content that is only accessible by that
@@ -656,9 +670,9 @@
             by providing URLs that ultimately resolve to local resources,
             including, but not limited to, "file:" URLs or local services that
             might otherwise be inaccessible. Even though this API limits shared
-            URLS to "http:" and "https:", use of redirects to other URLs or
-            tweaks to DNS records for hosts in those URLs might be used to
-            cause applications to acquire content.
+            URLS to a restricted set of [=sharable schemes=], use of redirects
+            to other URLs or tweaks to DNS records for hosts in those URLs
+            might be used to cause applications to acquire content.
           </p>
           <p>
             To avoid being used in these attacks, share targets can consume the
