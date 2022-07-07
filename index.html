@@ -335,14 +335,16 @@
                 the transmission to the [=share target=] cannot be confirmed),
                 [=queue a global task=] on the [=user interaction task source=]
                 using |global| to:
-                <aside class="note">
-                  Once a share target has been given the payload, the share is considered
-                  successful. If the target considers the data unacceptable or an error
-                  occurs, it can either recover gracefully, or show an error message to
-                  the end-user; it cannot rely on the sender to handle errors. In other
-                  words, the {{Navigator/share()}} method is "fire and forget"; it does
-                  not wait for the target to approve or reject the payload.
-                </aside>
+                  <aside class="note">
+                    Once a share target has been given the payload, the share
+                    is considered successful. If the target considers the data
+                    unacceptable or an error occurs, it can either recover
+                    gracefully, or show an error message to the end-user; it
+                    cannot rely on the sender to handle errors. In other words,
+                    the {{Navigator/share()}} method is "fire and forget"; it
+                    does not wait for the target to approve or reject the
+                    payload.
+                  </aside>
                   <ol>
                     <li>[=Resolve=] [=this=].{{Navigator/[[sharePromise]]}}
                     with `undefined`.
