@@ -420,18 +420,6 @@
               </ol>
             </li>
           </ol>
-          <p>
-            The user agent MUST NOT allow the website to learn which share
-            targets are available, or the identity of the chosen target.
-          </p>
-          <div class="note">
-            {{Navigator/share()}} always shows some form of UI, to give the
-            user a choice of application and get their approval to invoke and
-            send data to a potentially native application (which carries a
-            security risk). For this reason, user agents are prohibited from
-            showing any kind of "always use this target in the future" option,
-            or bypassing the UI if there is only a single share target.
-          </div>
         </section>
         <section>
           <h3>
@@ -687,56 +675,6 @@
         be considered sufficient warning.
         </li>
       </ul>
-    </section>
-    <section class="appendix informative">
-      <h2>
-        Extensibility of this API
-      </h2>
-      <p>
-        The Web Share API is designed to be extended in the future by way of
-        new members added to the {{ShareData}} dictionary, to allow both
-        sharing of new types of data (<i>e.g.</i>, <a href=
-        "https://github.com/w3c/web-share/issues/12">images</a>) and strings
-        with new semantics (<i>e.g.</i> author).
-      </p>
-      <div class="warning">
-        This doesn't mean user agents can add whatever members they like. It
-        means that new members can be added to the standard in the future.
-      </div>
-      <p>
-        The three members {{ShareData/title}}, {{ShareData/text}}, and
-        {{ShareData/url}}, are part of the base feature set, and
-        implementations that provide {{Navigator/share()}} need to accept all
-        three. Any new members that are added in the future will be
-        <em>individually feature-detectable</em>, to allow for
-        backwards-compatibility with older implementations that don't recognize
-        those members. These new members might also be added as optional "MAY"
-        requirements.
-      </p>
-      <div class="note">
-        There is <a href="https://github.com/heycam/webidl/issues/107">an open
-        discussion</a> about how to provide feature-detection for dictionary
-        members. Web Share will use the mechanism produced by that discussion.
-      </div>
-      <p>
-        The {{Navigator/share()}} method returns a rejected promise with a
-        {{TypeError}} if none of the specified members are present. The
-        intention is that when a new member is added, it will also be added to
-        this list of recognized members. This is for future-proofing
-        implementations: if a web site written against a future version of this
-        spec uses <em>only</em> new members (<i>e.g.</i>,
-        `navigator.share({image: x})`), it will be valid in future user agents,
-        but a {{TypeError}} on user agents implementing an older version of the
-        spec. Developers will be asked to feature-detect any new members they
-        rely on, to avoid having errors surface in their program.
-      </p>
-      <p>
-        Editors of this spec will want to carefully consider the genericity of
-        any new members being added, avoiding members that are closely
-        associated with a particular service, user agent or operating system,
-        in favour of members that can potentially be applied to a wide range of
-        platforms and targets.
-      </p>
     </section>
     <section id="conformance"></section>
     <section id="idl-index"></section>
