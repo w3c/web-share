@@ -228,7 +228,66 @@
           </h4>
           <p>
             When the {{Navigator/share()}} method is called with argument
-            |data:ShareData|, run the following steps:
+            |data:ShareData|, run the listed steps listed below while taking
+            into consideration the following security implications.
+          </p>
+          <p>
+            Web Share enables data to be sent from websites to a [=share
+            target=], which can be a native applications. While this ability is
+            not unique to Web Share, it does come with a number of potential
+            security risks that can vary in severity (depending on the
+            underlying platform).
+          </p>
+          <p>
+            The data passed to {{Navigator/share()}} might be used to exploit
+            buffer overflow or other remote code execution vulnerabilities in
+            the [=share target=] that receive shares. There is no general way
+            to guard against this, but implementors will want to be aware that
+            it is a possibility (particularly when sharing files).
+          </p>
+          <p>
+            [=Share targets=] that dereference a shared URL and forward that
+            information on might inadvertently forward information that might
+            be otherwise confidential. This can lead to unexpected information
+            leakage if shares reference content that is only accessible by that
+            application, the host on which it runs, or its network location.
+          </p>
+          <p>
+            Malicious sites might exploit share targets that leak information
+            by providing URLs that ultimately resolve to local resources,
+            including, but not limited to, "file:" URLs or local services that
+            might otherwise be inaccessible. Even though this API limits shared
+            URLS to a restricted set of [=sharable schemes=], use of redirects
+            to other URLs or tweaks to DNS records for hosts in those URLs
+            might be used to cause applications to acquire content.
+          </p>
+          <p>
+            To avoid being used in these attacks, share targets can consume the
+            URL, retrieve the content, and process that information without
+            sharing it. For instance, a photo editing application might
+            retrieve an image that is "shared" with it. A share target can also
+            share the URL without fetching any of the referenced content.
+          </p>
+          <p>
+            Share targets that fetch content for the purposes of offering a
+            preview or for sharing content risk information leakage. Content
+            that is previewed and authorized by a user might be safe to
+            forward, however it is not always possible for a person to identify
+            when information should be confidential, so forwarding any content
+            presents a risk. In particular, the {{ShareData/title}} might be
+            used by an attacker to trick a user into misinterpreting the nature
+            of the content. <!--
+              , as demonstrated in the [[Wylecial]] <a data-cite=
+              "Wylecial#">proof of concept attack</a>
+            -->
+          </p>
+          <p>
+            As with any user of {{DOMException}}, implementors need to
+            carefully consider what information is revealed in the error
+            message when {{Navigator/share()}} is rejected. Even distinguishing
+            between the case where no [=share targets=] are available and user
+            cancellation could reveal information about which share targets are
+            installed on the user's device.
           </p>
           <ol class="algorithm">
             <li>Let |document:Document| be the [=current settings object=]'s
@@ -295,13 +354,17 @@
                     </li>
                   </ol>
                 </li>
-                <li>Present the user with a choice of one or more <a>share
-                targets</a>, selected at the user agent's discretion. The user
-                agent MUST give the user the option to cancel rather than
-                choosing any of the [=share targets=]. Wait for the user's
-                choice.
+                <li>Present the user with a choice of one more <a>share
+                targets</a> and the ability abort the operation. This UI
+                surface serves as a security confirmation, ensuring that
+                websites cannot silently send data to native applications. The
+                user agent SHOULD show intermediary UI through which the user
+                can verify the shared content (if the OS-level UI does not
+                provide this functionality).
                 </li>
-                <li>If the user chose to cancel the share operation, [=queue a
+                <li>Wait for the user's choice.
+                </li>
+                <li>If the user chose to abort the share operation, [=queue a
                 global task=] on the [=user interaction task source=] using
                 |global| to:
                   <ol>
@@ -580,6 +643,11 @@
         the string <code><dfn class="permission">"web-share"</dfn></code>. Its
         <a>default allowlist</a> is '`self`'.
       </p>
+      <p>
+        Developers can use the means afforded by the [[[permissions-policy]]]
+        specification to control if and when a third-party context is [=allowed
+        to use=] this API.
+      </p>
       <div class="note">
         <p>
           A <a>document</a>’s permission policy determines whether a
@@ -598,102 +666,24 @@
         guidelines for the platform.
       </p>
     </section>
-    <section class="informative" data-cite="secure-contexts">
+    <section>
       <h2>
-        Security and privacy considerations
+        Privacy considerations
       </h2>
-      <p>
-        Web Share enables data to be sent from websites to a [=share target=],
-        which can be a native applications. While this ability is not unique to
-        Web Share, it does come with a number of potential security risks that
-        can vary in severity (depending on the underlying platform).
-      </p>
-      <p>
-        The following points are worth considering:
-      </p>
       <ul>
-        <li>The API does not expose to the website which [=share targets=] are
-        available, or which share target was chosen by the user from
-        {{Navigator/share()}}. Doing so could be used for fingerprinting by
-        leaking details about the user's device.
-        </li>
-        <li>User agents are discouraged from showing any kind of "always use
-        this target in the future" option, or bypassing the UI if there is only
-        a single share target. Further, calls to {{Navigator.share()}} require
-        [=transient activation=] (i.e., some kind of user activation) before
-        any UI is presented to the user.
-        </li>
-        <li>Implementors will want to carefully consider what information is
-        revealed in the error message when {{Navigator/share()}} is rejected.
-        Even distinguishing between the case where no targets are available and
-        user cancellation could reveal information about which apps are
-        installed on the user's device.
-        </li>
-        <li>There is a requirement that {{Navigator/share()}} presents the user
-        with a dialog asking them to select a target application (even if there
-        is only one possible target). This surface serves as a security
-        confirmation, ensuring that websites cannot silently send data to
-        native applications.
-        </li>
-        <li>Due to the capabilities of the API surface, {{Navigator/share()}}
-        is only [=exposed=] in [=secure contexts=] (such as `https://`
-        schemes).
-        </li>
-        <li>Developers can use the means afforded by the
-        [[[permissions-policy]]] specification to control if and when a
-        third-party context is [=allowed to use=] this API.
+        <li>By design, the API cannot be used by a website to learn which
+        [=share targets=] are available, or which share target the user chose
+        from {{Navigator/share()}}. This is to prevent leaking information that
+        could be used for fingerprinting, as well as leaking details about the
+        user's device or user's preferred share targets.
         </li>
         <li>Use of {{Navigator/share()}} from a <a href=
         "https://en.wikipedia.org/wiki/Privacy_mode">private browsing mode</a>
         might leak private data to a third-party application that does not
         respect the user's privacy setting. User agents could present
-        additional warnings or disable the feature entirely when in a private
-        browsing mode, but this is not mandated as the chooser UI could be
-        considered sufficient warning.
-        </li>
-        <li>The data passed to {{Navigator/share()}} might be used to exploit
-        buffer overflow or other remote code execution vulnerabilities in
-        native applications that receive shares. There is no general way to
-        guard against this, but implementors will want to be aware that it is a
-        possibility (particularly when sharing files).
-        </li>
-        <li>
-          <p>
-            [=Share targets=] that dereference a shared URL and forward that
-            information on might inadvertently forward information that might
-            be otherwise confidential. This can lead to unexpected information
-            leakage if shares reference content that is only accessible by that
-            application, the host on which it runs, or its network location.
-          </p>
-          <p>
-            Malicious sites might exploit share targets that leak information
-            by providing URLs that ultimately resolve to local resources,
-            including, but not limited to, "file:" URLs or local services that
-            might otherwise be inaccessible. Even though this API limits shared
-            URLS to a restricted set of [=sharable schemes=], use of redirects
-            to other URLs or tweaks to DNS records for hosts in those URLs
-            might be used to cause applications to acquire content.
-          </p>
-          <p>
-            To avoid being used in these attacks, share targets can consume the
-            URL, retrieve the content, and process that information without
-            sharing it. For instance, a photo editing application might
-            retrieve an image that is "shared" with it. A share target can also
-            share the URL without fetching any of the referenced content.
-          </p>
-          <p>
-            Share targets that fetch content for the purposes of offering a
-            preview or for sharing content risk information leakage. Content
-            that is previewed and authorized by a user might be safe to
-            forward, however it is not always possible for a person to identify
-            when information should be confidential, so forwarding any content
-            presents a risk. In particular, the {{ShareData/title}} might be
-            used by an attacker to trick a user into misinterpreting the nature
-            of the content. <!--
-              , as demonstrated in the [[Wylecial]] <a data-cite=
-              "Wylecial#">proof of concept attack</a>
-            -->
-          </p>
+        additional warnings or MAY disable the feature entirely when in a
+        private browsing mode, but this is not mandated as the chooser UI could
+        be considered sufficient warning.
         </li>
       </ul>
     </section>
