@@ -188,6 +188,40 @@
           return !navigator.canShare({ [key]: value });
         });
       </pre>
+      <h3>
+        Enabling the API in third-party contexts
+      </h3>
+      <p data-cite="permissions-policy">
+        The [=default allowlist=] of `'self'` makes Web Share API available by
+        default only in first-party contexts.
+      </p>
+      <p>
+        Third-party can be allowed to use this API via an [^iframe^]'s
+        [^iframe/allow^] attribute:
+      </p>
+      <aside class="example" title=
+      "Disabling the web-share API in a third-party context">
+        <pre class="html">
+            &lt;iframe
+              src="https://third-party.example"
+              allow="web-share"&gt;
+            &lt;/iframe&gt;
+          </pre>
+      </aside>
+      <p>
+        Alternatively, the API can be disabled in a first-party context by
+        specifying an HTTP response header:
+      </p>
+      <aside class="example" title=
+      "Disabling Web Share over API HTTP using Permissions Policy">
+        <pre class="http">
+            Permissions-Policy: web-share=()
+          </pre>
+      </aside>
+      <p>
+        See the [[[permissions-policy]]] specification for more details and for
+        how to control the permission policies on a per-origin basis.
+      </p>
     </section>
     <section>
       <h2>
@@ -634,14 +668,27 @@
         </p>
       </section>
     </section>
-    <section id="permissions-policy" data-cite="permissions-policy">
+    <section class="atrisk" id="permissions-policy" data-cite=
+    "permissions-policy">
       <h2>
         Permissions Policy integration
       </h2>
+      <aside class="issue" title="Feature at risk">
+        <p>
+          <strong>This feature is at risk.</strong> Although there is consensus
+          for gating this API on a strict Permissions Policy (`'self'`), there
+          are currently web compatibility issues that are preventing the
+          enforcement of such a policy. The working group has reached out to
+          various sites to include the permissions policy and we are waiting to
+          hear back. However, if too many users are affected by this issue, it
+          may be necessary to either remove this feature, or use a more lax
+          permissions policy ("*").
+        </p>
+      </aside>
       <p>
         This specification defines a policy-controlled permission identified by
         the string <code><dfn class="permission">"web-share"</dfn></code>. Its
-        <a>default allowlist</a> is `*`.
+        <a>default allowlist</a> is `'self'`.
       </p>
       <p>
         Developers can use the means afforded by the [[[permissions-policy]]]
@@ -650,47 +697,11 @@
       </p>
       <div class="note">
         <p>
-          A <a>document</a>’s permission policy determines whether a
+          A <a>document</a>'s permission policy determines whether a
           {{Navigator/share()}} call immediately rejects with a
           {{"NotAllowedError"}} {{DOMException}}.
         </p>
       </div>
-      <section class="informative">
-        <h3>
-          Disabling the API in third-party contexts
-        </h3>
-        <p>
-          The [=default allowlist=] of `*` makes Web Share API available by
-          default in both first and third-party contexts.
-        </p>
-        <p>
-          Third-party usage of this API can be disabled via an [^iframe^]'s
-          [^iframe/allow^] attribute:
-        </p>
-        <aside class="example" title=
-        "Disabling the web-share API in a third-party context">
-          <pre class="html">
-            &lt;iframe
-              src="https://third-party.example"
-              allow="web-share=()"&gt;
-            &lt;/iframe&gt;
-          </pre>
-        </aside>
-        <p>
-          Alternatively, the API can be disabled in a first-party context by
-          specifying an HTTP response header:
-        </p>
-        <aside class="example" title=
-        "Disabling Web Share over API HTTP using Permissions Policy">
-          <pre class="http">
-            Permissions-Policy: web-share=()
-          </pre>
-        </aside>
-        <p>
-          See the [[[permissions-policy]]] specification for more details and
-          for how to control the permission policies on a per-origin basis.
-        </p>
-      </section>
     </section>
     <section class="informative">
       <h2>
