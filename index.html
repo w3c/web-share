@@ -344,8 +344,10 @@
             installed on the user's device.
           </p>
           <ol class="algorithm">
-            <li>Let |document:Document| be the [=current settings object=]'s
-            [=relevant global object=]'s [=associated `Document`=].
+            <li>Let |global:Window| be [=this=]'s [=relevant global object=].
+            </li>
+            <li>Let |document:Document| be |global|'s [=associated
+            `Document`=].
             </li>
             <li>If |document| is not [=Document/fully active=], return [=a
             promise rejected with=] an {{"InvalidStateError"}}
@@ -358,8 +360,6 @@
             <li>If [=this=].{{Navigator/[[sharePromise]]}} is not `null`,
             return [=a promise rejected with=] an {{"InvalidStateError"}}
             {{DOMException}}.
-            </li>
-            <li>Let |global:Window| be [=this=]'s [=relevant global object=].
             </li>
             <li>If |global| does not have [=transient activation=], return [=a
             promise rejected with=] a {{"NotAllowedError"}} {{DOMException}}.
@@ -484,8 +484,8 @@
             {{ShareData}} |data:ShareData|, run the following steps:
           </p>
           <ol class="algorithm">
-            <li>Let |document:Document| be the [=current settings object=]'s
-            [=relevant global object=]'s [=associated `Document`=].
+            <li>Let |document:Document| be the [=this=]'s [=relevant global
+            object=]'s [=associated `Document`=].
             </li>
             <li>If |document| is not [=Document/fully active=], return false.
             </li>
