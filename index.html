@@ -688,27 +688,14 @@
         </p>
       </section>
     </section>
-    <section class="atrisk" id="permissions-policy" data-cite=
-    "permissions-policy">
+    <section id="permissions-policy" data-cite="permissions-policy">
       <h2>
         Permissions Policy integration
       </h2>
-      <aside class="issue" title="Feature at risk">
-        <p>
-          <strong>This feature is at risk.</strong> Although there is consensus
-          for gating this API on a strict Permissions Policy (`'self'`), there
-          are currently web compatibility issues that are preventing the
-          enforcement of such a policy. The working group has reached out to
-          various sites to include the permissions policy and we are waiting to
-          hear back. However, if too many users are affected by this issue, it
-          may be necessary to either remove this feature, or use a more lax
-          permissions policy ("*").
-        </p>
-      </aside>
       <p>
         This specification defines a policy-controlled permission identified by
         the string <code><dfn class="permission">"web-share"</dfn></code>. Its
-        <a>default allowlist</a> is `'self'`.
+        <a>default allowlist</a> is [=default allowlist/'self'=].
       </p>
       <p>
         Developers can use the means afforded by the [[[permissions-policy]]]
