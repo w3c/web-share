@@ -77,6 +77,11 @@
           more available across all OSs over time, and is already widely
           available on popular OSs across a range of devices.
         </p>
+        <p>
+          <!-- TODO: Remove me when this goes to REC, otherwise it will show up twice! -->
+           Future updates to this Recommendation may incorporate [new
+          features](https://www.w3.org/2021/Process-20211102/#allow-new-features).
+        </p>
       </section>
     </section>
     <section class="informative">
@@ -190,7 +195,7 @@
           text: "This is a text to share",
           someFutureThing: "some future thing",
         };
-        
+
         // Things that are not supported...
         const unsupported = Object.entries(data).filter(([key, value]) =&gt; {
           return !navigator.canShare({ [key]: value });
@@ -200,8 +205,8 @@
         Enabling the API in third-party contexts
       </h3>
       <p data-cite="permissions-policy">
-        The [=default allowlist=] of `'self'` makes Web Share API available by
-        default only in first-party contexts.
+        The [=default allowlist=] of [=default allowlist/'self'=] makes Web
+        Share API available by default only in first-party contexts.
       </p>
       <p>
         Third-party can be allowed to use this API via an [^iframe^]'s
@@ -680,20 +685,28 @@
       <p>
         This specification defines a policy-controlled permission identified by
         the string <code><dfn class="permission">"web-share"</dfn></code>. Its
-        <a>default allowlist</a> is [=default allowlist/'self'=].
+        [=default allowlist=] is [=default allowlist/'self'=], which means
+        third-party contexts are not [=allowed to use=] the API by default.
       </p>
       <p>
         Developers can use the means afforded by the [[[permissions-policy]]]
         specification to control if and when a third-party context is [=allowed
         to use=] this API.
       </p>
-      <div class="note">
+      <aside class="note" title="Permissions Policy Implementation Status">
         <p>
-          A <a>document</a>'s permission policy determines whether a
-          {{Navigator/share()}} call immediately rejects with a
-          {{"NotAllowedError"}} {{DOMException}}.
+          Although user agents are unified in preventing the Web Share API from
+          being used in third-party context, at the time of publication there
+          are interoperability with relying on the [[[Permissions-Policy]]] to
+          enable the API in third-party contexts. In particular, although
+          the[^iframe/allow^] attribute is widely supported, the updated syntax
+          for the [^iframe/allow^] attribute is not. Similarly, the
+          `Permissions-Policy:` HTTP header is not yet widely supported.
+          Developers are advised to check the implementation status of the
+          [[[Permissions-Policy]]] specification before relying on it to enable
+          the Web Share API in third-party contexts.
         </p>
-      </div>
+      </aside>
     </section>
     <section class="informative">
       <h2>
