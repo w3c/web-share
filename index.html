@@ -356,14 +356,14 @@
             </li>
             <li>[=Consume user activation=] of |global|.
             </li>
-            <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
-            [=environment settings object/API base URL=].
-            </li>
             <li>If [=validate share data=] with |data| and |base| returns
             false, then return [=a promise rejected with=] a {{TypeError}}.
             </li>
             <li>If |data|'s {{ShareData/url}} member is present:
               <ol>
+                <li>Let |base:URL| be [=this=]'s <a>relevant settings object</a>'s
+                [=environment settings object/API base URL=].
+                </li>
                 <li>Let |url:URL| be the result of running the <a>URL
                 parser</a> on |data|'s {{ShareData/url}} with |base|.
                 </li>
