@@ -324,7 +324,7 @@
             when information should be confidential, so forwarding any content
             presents a risk. In particular, the {{ShareData/title}} might be
             used by an attacker to trick a user into misinterpreting the nature
-            of the content.
+            of the content (see also [[[#a11y]]]).
           </p>
           <p>
             As with any user of {{DOMException}}, implementors need to
@@ -710,14 +710,39 @@
         </p>
       </aside>
     </section>
-    <section class="informative">
+    <section class="informative" id="a11y">
       <h2>
         Accessibility considerations
       </h2>
       <p>
         When this specification is used to present information in the user
         interface, implementors will want to follow the OS level accessibility
-        guidelines for the platform.
+        guidelines for the platform. Further, as sharing can have potential
+        security implications for end-users, as outlined as part of the
+        {{Navigator/share()}} method, the share UI needs to be presented in an
+        accessible manner, while also taking into consideration a platform's
+        security guidelines for user interfaces. Some key considerations are to:
+      </p>
+      <ul>
+        <li>Provide alternative text for images and other non-textual content
+        to ensure that users who are visually impaired can understand the
+        type and/or nature of the content being shared.
+        </li>
+        <li>Ensure that users can navigate through the previewed content using
+        keyboard-only controls, and that the keyboard focus is clearly visible.
+        </li>
+        <li>Use headings and labels to ensure that the previewed content is
+        properly structured and can be understood by users using assistive
+        technology.
+        </li>
+        <li>Ensure sufficient color contrast and font size, and use fonts,
+        icons, and images that are widely recognised and easily understood, in the share UI.
+        </li>
+      </ul>
+      <p>
+        Together, these elements can help users with a range of visual, motor or cognitive
+        disabilities to better understand the nature of the content being
+        shared by a web page.
       </p>
     </section>
     <section>
