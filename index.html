@@ -691,6 +691,10 @@
         to use=] the API by default.
       </p>
       <p>
+        It is OPTIONAL for user agents for user agents to support
+        [[[PERMISSIONS-POLICY]]]'s `Permissions-Policy` HTTP header.
+      </p>
+      <p>
         Developers can use the means afforded by the [[[permissions-policy]]]
         specification to control if and when a third-party context is [=allowed
         to use=] this API.
@@ -707,6 +711,11 @@
           Developers are advised to check the implementation status of the
           [[[Permissions-Policy]]] specification before relying on it to enable
           the Web Share API in third-party contexts.
+        </p>
+        <p>
+          The Working Group expects to make the `Permissions-Policy` HTTP
+          header mandatory in a future revisions of this specification, once
+          the header is more widely supported.
         </p>
       </aside>
     </section>
