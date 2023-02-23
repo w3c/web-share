@@ -488,6 +488,32 @@
             object/API base URL=].
             </li>
           </ol>
+          <aside class="note" title="canShare() is not future compatible">
+            <p>
+              The `canShare()` method of the Web Share API may return false
+              positive results when used with objects that contain members not
+              defined in the `ShareData` dictionary. Because of how WebIDL
+              works, browsers drop unknown members from the input object and
+              will return `true` when testing the remaining members. This behavior is
+              not future-compatible.
+            </p>
+            <p>
+              To ensure reliable testing of shareability, developers can
+              construct the input object using only members defined in the
+              {{ShareData}} dictionary. If an object contains additional
+              members, it should be destructured to only test the defined
+              members individually.
+            </p>
+            <p>
+              Although this doesn't affect any implementations today, the
+              Working Group will work towards addressing this issue in a future
+              revisions of the specification - specially if we make any
+              amendments to the `ShareData` dictionary. To
+              contribute ideas for how to address this issue, see <a href=
+              "https://github.com/w3c/web-share/issues/108">issue #108</a> on
+              GitHub.
+            </p>
+          </aside>
         </section>
         <section>
           <h3>
