@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <title>Implementation Report for Web Share API - February 2022</title>
+  <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/base">
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      
+    }
+
+    tr > td+td,
+    tr td+td  {
+      background-color: #81c784;
+    }
+
+    tr td+td+td+td {
+      background-color: white;
+    }
+
+    td.fails {
+      background-color: #e57373;
+    }
+  </style>
+  <body>
+    <h1>Implementation Report for Web Share API - February 2023</h1>
+    <p>
+      These is a static snapshot of the conformance tests for the
+      <a href="https://w3c.github.io/web-share/">Web Share API Specification</a
+      >. It was created on Thursday 23rd of February 2023 by manually running
+      all confomrance tests in the following user agents.
+    </p>
+    <table class="test-results" border="1">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Edge Canary on macOS - Version 112.0.1699.0</th>
+          <th>Safari Tech Preview on macOS - Version 164</th>
+          <th>Explanation of failure</th>
+        </tr>
+      </thead>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/canShare-files.https.html"
+            >canShare-files.https.html</a
+          >
+        </td>
+        <td>6 / 6</td>
+        <td>6 / 6</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/canShare-insecure.http.html"
+            >canShare-insecure.http.html</a
+          >
+        </td>
+        <td>1 / 1</td>
+        <td>1 / 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/canShare.https.html"
+            >canShare.https.html</a
+          >
+        </td>
+        <td>6 / 6</td>
+        <td>6 / 6</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a
+            href="https://wpt.live/web-share/disabled-by-permissions-policy-cross-origin.https.sub.html"
+            >disabled-by-permissions-policy-cross-origin.https.sub.html</a
+          >
+        </td>
+        <td>3 / 6</td>
+        <td>3 / 6</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a
+            href="https://wpt.live/web-share/disabled-by-permissions-policy.https.sub.html"
+            >disabled-by-permissions-policy.https.sub.html</a
+          >
+        </td>
+        <td>2 / 2</td>
+        <td class="fails">0 / 2</td>
+        <td>Safari Tech Preview does not support the
+          <code>Permissions-Policy</code> HTTP header. However, the specification
+          makes supporting the HTTP header OPTIONAL.</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/idlharness.https.window.html"
+            >idlharness.https.window.html</a
+          >
+        </td>
+        <td>19 / 19</td>
+        <td>19 / 19</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a
+            href="https://wpt.live/web-share/share-consume-activation.https.html"
+            >share-consume-activation.https.html</a
+          >
+        </td>
+        <td>1 / 1</td>
+        <td>1 / 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/share-empty.https.html"
+            >share-empty.https.html</a
+          >
+        </td>
+        <td>6 / 6</td>
+        <td>6 / 6</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/share-securecontext.http.html"
+            >share-securecontext.http.html</a
+          >
+        </td>
+        <td>1 / 1</td>
+        <td>1 / 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a
+            href="https://wpt.live/web-share/share-sharePromise-internal-slot.https.html"
+            >share-sharePromise-internal-slot.https.html</a
+          >
+        </td>
+        <td>1 / 1</td>
+        <td>1 / 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/share-url-invalid.https.html"
+            >share-url-invalid.https.html</a
+          >
+        </td>
+        <td>8 / 8</td>
+        <td>8 / 8</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a
+            href="https://wpt.live/web-share/share-without-user-gesture.https.html"
+            >share-without-user-gesture.https.html</a
+          >
+        </td>
+        <td>1 / 1</td>
+        <td>1 / 1</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://wpt.live/web-share/test-fully-active.https.html"
+            >test-fully-active.https.html</a
+          >
+        </td>
+        <td>3 / 3</td>
+        <td>3 / 3</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Subtest Total</td>
+        <td>61 / 61</td>
+        <td>59 / 61</td>
+        <td></td>
+      </tr>
+    </table>
+    <h2>Excluded tests</h2>
+    <p>
+      The following are present on WPT but are excluded from this report. They
+      are excluded because they are not relevant for conformance purposes.
+    </p>
+    <ul>
+      <li>
+        <a href="">feature-policy-listed.tentative.html</a> - tests a single
+        engine "experimental" API that is expected to be removed from the
+        Permissions Policy spec.
+      </li>
+    </ul>
+    <p>
+      <a
+        href="
+  https://wpt.fyi/results/web-share?label=master&label=experimental&aligned"
+      >
+        Test results summary on WPT.fyi
+      </a>
+    </p>
+  </body>
+</html>
