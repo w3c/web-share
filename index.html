@@ -494,8 +494,8 @@
               positive results when used with objects that contain members not
               defined in the `ShareData` dictionary. Because of how WebIDL
               works, browsers drop unknown members from the input object and
-              will return `true` when testing the remaining members. This behavior is
-              not future-compatible.
+              will return `true` when testing the remaining members. This
+              behavior is not future-compatible.
             </p>
             <p>
               To ensure reliable testing of shareability, developers can
@@ -505,13 +505,13 @@
               members individually.
             </p>
             <p>
-              Although this doesn't affect any implementations today, 
-              the Working Group will work towards addressing this issue in a future
+              Although this doesn't affect any implementations today, the
+              Working Group will work towards addressing this issue in a future
               revision of the specification - especially if we make any
-              amendments to the `ShareData` dictionary. 
-              To contribute ideas for how to address this issue, see 
-              <a href="https://github.com/w3c/web-share/issues/108">issue #108</a> 
-              on GitHub.
+              amendments to the `ShareData` dictionary. To contribute ideas for
+              how to address this issue, see <a href=
+              "https://github.com/w3c/web-share/issues/108">issue #108</a> on
+              GitHub.
             </p>
           </aside>
         </section>
@@ -717,8 +717,8 @@
         to use=] the API by default.
       </p>
       <p>
-        It is OPTIONAL for user agents to support
-        [[[PERMISSIONS-POLICY]]]'s `Permissions-Policy` HTTP header.
+        It is OPTIONAL for user agents to support [[[PERMISSIONS-POLICY]]]'s
+        `Permissions-Policy` HTTP header.
       </p>
       <p>
         Developers can use the means afforded by the [[[permissions-policy]]]
@@ -729,19 +729,19 @@
         <p>
           Although user agents are unified in preventing the Web Share API from
           being used in third-party context, at the time of publication there
-          are interoperability issues with relying on the [[[Permissions-Policy]]] to
-          enable the API in third-party contexts. In particular, although
-          the[^iframe/allow^] attribute is widely supported, the updated syntax
-          for the [^iframe/allow^] attribute is not. Similarly, the
-          `Permissions-Policy:` HTTP header is not yet widely supported.
-          Developers are advised to check the implementation status of the
-          [[[Permissions-Policy]]] specification before relying on it to enable
-          the Web Share API in third-party contexts.
+          are interoperability issues with relying on the
+          [[[Permissions-Policy]]] to enable the API in third-party contexts.
+          In particular, although the[^iframe/allow^] attribute is widely
+          supported, the updated syntax for the [^iframe/allow^] attribute is
+          not. Similarly, the `Permissions-Policy:` HTTP header is not yet
+          widely supported. Developers are advised to check the implementation
+          status of the [[[Permissions-Policy]]] specification before relying
+          on it to enable the Web Share API in third-party contexts.
         </p>
         <p>
-          When the `Permissions-Policy` HTTP header is more widely supported, 
-          the Working Group expects to revise this specification 
-          to require support for the header.
+          When the `Permissions-Policy` HTTP header is more widely supported,
+          the Working Group expects to revise this specification to require
+          support for the header.
         </p>
       </aside>
     </section>
