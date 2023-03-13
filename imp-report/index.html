@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <meta charset="utf-8" />
-  <title>Implementation Report for Web Share API - February 2022</title>
+  <title>Implementation Report for Web Share API - March 2022</title>
   <link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/2021/base">
   <style>
     body {
@@ -10,7 +10,7 @@
     table {
       border-collapse: collapse;
       width: 100%;
-      
+
     }
 
     tr > td+td,
@@ -22,9 +22,6 @@
       background-color: white;
     }
 
-    td.fails {
-      background-color: #e57373;
-    }
   </style>
   <body>
     <h1>Implementation Report for Web Share API - February 2023</h1>
@@ -83,19 +80,6 @@
         <td>3 / 6</td>
         <td>3 / 6</td>
         <td></td>
-      </tr>
-      <tr>
-        <td>
-          <a
-            href="https://wpt.live/web-share/disabled-by-permissions-policy.https.sub.html"
-            >disabled-by-permissions-policy.https.sub.html</a
-          >
-        </td>
-        <td>2 / 2</td>
-        <td class="fails">0 / 2</td>
-        <td>Safari Tech Preview does not support the
-          <code>Permissions-Policy</code> HTTP header. However, the specification
-          makes supporting the HTTP header OPTIONAL.</td>
       </tr>
       <tr>
         <td>
@@ -182,8 +166,8 @@
       </tr>
       <tr>
         <td>Subtest Total</td>
-        <td>61 / 61</td>
-        <td>59 / 61</td>
+        <td>59 / 59</td>
+        <td>59 / 59</td>
         <td></td>
       </tr>
     </table>
@@ -193,6 +177,13 @@
       are excluded because they are not relevant for conformance purposes.
     </p>
     <ul>
+      <li>
+        <a
+        href="https://wpt.live/web-share/disabled-by-permissions-policy.https.sub.html"
+        >disabled-by-permissions-policy.https.sub.html</a
+      > - tests an optional feature (support for the Permissions-Policy HTTP
+        header).
+      </li>
       <li>
         <a href="">feature-policy-listed.tentative.html</a> - tests a single
         engine "experimental" API that is expected to be removed from the
