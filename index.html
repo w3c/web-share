@@ -10,7 +10,7 @@
     <script class='remove'>
       var respecConfig = {
         shortName: "web-share",
-        previousMaturity: "WD",
+        previousMaturity: "PR",
         specStatus: "ED",
         github: {
           repoURL: "w3c/web-share",
@@ -44,6 +44,8 @@
         xref: "web-platform",
         mdn: true,
         crEnd: "2022-09-20",
+        prEnd: "2023-04-12",
+        errata: "https://github.com/w3c/web-share/labels/errata",
       };
     </script>
   </head>
@@ -76,11 +78,6 @@
           the Working Group is optimistic that the Web Share API will become
           more available across all OSs over time, and is already widely
           available on popular OSs across a range of devices.
-        </p>
-        <p>
-          <!-- TODO: Remove me when this goes to REC, otherwise it will show up twice! -->
-           Future updates to this Recommendation may incorporate [new
-          features](https://www.w3.org/2021/Process-20211102/#allow-new-features).
         </p>
       </section>
     </section>
@@ -810,10 +807,19 @@
         Changelog
       </h2>
       <p>
+        The following normative changes were made to the specification during
+        the <a href=
+        "https://www.w3.org/TR/2022/PR-web-share-20221215/">Proposed
+        Recommendation</a> phase. Please see the <a href=
+        "https://github.com/w3c/web-share/commits/main">commit log</a> for a
+        complete list of changes.
+      </p><rs-changelog from="PR" to="e441b96ded837660e826e702b7e041f7f0f15751"
+      filter="removeCommits"></rs-changelog>
+      <p>
         The following normative changes were made to the specification since it
         was published as a <a href=
         "https://www.w3.org/TR/2019/WD-web-share-20191217/">First Public
-        Working Draft</a>. Please see the <a href=
+        Working Draft</a> to Candidate Recommendation. Please see the <a href=
         "https://github.com/w3c/web-share/commits/main">commit log</a> for a
         complete list of changes.
       </p>
@@ -836,7 +842,7 @@
           return !/^editorial|^chore|^\[chore|^fix|^refactor|^tests?|^docs|^typo|^nit/i.test(message);
         }
       </script> <rs-changelog from="1589731080e09b9c7d485e54340ba66bc3ae1be0"
-      filter="removeCommits"></rs-changelog>
+      to="CR" filter="removeCommits"></rs-changelog>
     </section>
     <section class="appendix">
       <h2>
