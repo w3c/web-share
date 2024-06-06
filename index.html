@@ -146,12 +146,12 @@
         const file = new File([], "some.png", { type: "image/png" });
 
         // Check if files are supported
-        if (navigates.canShare({files: [file]})) {
+        if (navigator.canShare({files: [file]})) {
           // Sharing a png file would probably be ok...
         }
 
         // Check if a URL is ok to share...
-        if (navigates.canShare({ url: someURL })) {
+        if (navigator.canShare({ url: someURL })) {
           // The URL is valid and can probably be shared...
         }
       </pre>
