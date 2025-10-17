@@ -70,7 +70,7 @@
           The ability to share content is often dependent on the underlying
           operating system providing a "share" capability and also on OS UI
           conventions. For example, some OSs present a "share sheet", while
-          others rely on an pop-up menu. Due to these aforementioned
+          others rely on a pop-up menu. Due to these aforementioned
           dependencies, there is ongoing work by implementers to bring the Web
           Share API to all OSs. This ongoing effort is reflected as failures in
           the <a href="https://wpt.fyi/web-share">implementation report</a>,
@@ -182,7 +182,7 @@
         }
       </pre>
       <p>
-        Alternatively, you can adjust application's UI to not show UI
+        Alternatively, you can adjust the application's UI to not show UI
         components for unsupported members.
       </p>
       <pre class="js example" title="Filtering out unsupported members">
@@ -207,7 +207,7 @@
         first-party contexts.
       </p>
       <p>
-        Third-party can be allowed to use this API via an [^iframe^]'s
+        Third-party contexts can be allowed to use this API via an [^iframe^]'s
         [^iframe/allow^] attribute:
       </p>
       <aside class="example" title=
@@ -224,7 +224,7 @@
         specifying an HTTP response header:
       </p>
       <aside class="example" title=
-      "Disabling Web Share over API HTTP using Permissions Policy">
+      "Disabling Web Share API over HTTP using Permissions Policy">
         <pre class="http">
             Permissions-Policy: web-share=()
           </pre>
@@ -273,12 +273,12 @@
           </h4>
           <p>
             When the {{Navigator/share()}} method is called with argument
-            |data:ShareData|, run the listed steps listed below while taking
+            |data:ShareData|, run the steps listed below while taking
             into consideration the following security implications.
           </p>
           <p>
             Web Share enables data to be sent from websites to a [=share
-            target=], which can be a native applications. While this ability is
+            target=], which can be native applications. While this ability is
             not unique to Web Share, it does come with a number of potential
             security risks that can vary in severity (depending on the
             underlying platform).
@@ -396,7 +396,7 @@
                     </li>
                   </ol>
                 </li>
-                <li>Present the user with a choice of one more <a>share
+                <li>Present the user with a choice of one or more <a>share
                 targets</a> and the ability abort the operation. This UI
                 surface serves as a security confirmation, ensuring that
                 websites cannot silently send data to native applications. The
@@ -411,7 +411,7 @@
                 |global| to:
                   <ol>
                     <li>[=Reject=] [=this=].{{Navigator/[[sharePromise]]}} with
-                    an {{"AbortError"}} {{DOMException}},
+                    an {{"AbortError"}} {{DOMException}}.
                     </li>
                     <li>Set [=this=].{{Navigator/[[sharePromise]]}} to `null`.
                     </li>
@@ -464,9 +464,9 @@
           </ol>
         </section>
         <section>
-          <h3>
+          <h4>
             `canShare(data)` method
-          </h3>
+          </h4>
           <p>
             When the <dfn>canShare()</dfn> method is called with argument
             {{ShareData}} |data:ShareData|, run the following steps:
@@ -535,7 +535,7 @@
           </p>
           <ol class="algorithm">
             <li>If none of |data|'s members {{ShareData/title}},
-            {{ShareData/text}}, or {{ShareData/url}} or {{ShareData/files}} are
+            {{ShareData/text}}, {{ShareData/url}}, or {{ShareData/files}} are
             present, return false.
             </li>
             <li>Let |titleTextOrUrl:boolean| be true if any of
@@ -728,7 +728,7 @@
           being used in third-party context, at the time of publication there
           are interoperability issues with relying on the
           [[[Permissions-Policy]]] to enable the API in third-party contexts.
-          In particular, although the[^iframe/allow^] attribute is widely
+          In particular, although the [^iframe/allow^] attribute is widely
           supported, the updated syntax for the [^iframe/allow^] attribute is
           not. Similarly, the `Permissions-Policy:` HTTP header is not yet
           widely supported. Developers are advised to check the implementation
