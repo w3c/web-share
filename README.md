@@ -11,7 +11,7 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 
 The API is shipping in [numerous browsers](https://caniuse.com/web-share).
 
-## Links
+## Links and Historical
 
 * [Explainer document](docs/explainer.md), a high-level overview of the proposal.
 * [Specification](https://w3c.github.io/web-share/).
@@ -20,8 +20,8 @@ The API is shipping in [numerous browsers](https://caniuse.com/web-share).
   tests](https://github.com/web-platform-tests/wpt/tree/master/web-share), for
   automatic and manual testing against an implementation.
 
-This is a product of the [Ballista
-project](https://github.com/chromium/ballista), which aims to explore
+This API was derived from Chromium's [Ballista
+project](https://github.com/chromium/ballista), which explored
 website-to-website and website-to-native interoperability.
 
 ## Licensing and contributions
