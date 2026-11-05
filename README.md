@@ -11,7 +11,7 @@ navigator.share({title: 'Example Page', url: 'https://example.com'});
 
 The API is shipping in [numerous browsers](https://caniuse.com/web-share).
 
-## Links and Historical
+## Links and History
 
 * [Explainer document](docs/explainer.md), a high-level overview of the proposal.
 * [Specification](https://w3c.github.io/web-share/).
